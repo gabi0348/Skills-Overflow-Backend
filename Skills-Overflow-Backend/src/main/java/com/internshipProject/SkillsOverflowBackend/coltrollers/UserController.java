@@ -10,16 +10,17 @@ import java.util.List;
 
 @RestController
 public class UserController {
+
     @Autowired
     private UserService userService;
 
     @GetMapping("/users")
     List<User> all() {
-        return userService.list();}
-
+        return userService.list();
+    }
 
     @PostMapping("/add")
-    @ResponseBody
+    //@ResponseBody - nu e necesar @ResponseBody, adnotarea @RestController îl include
     public User addUser(@RequestBody User user){
         return userService.addUser(user);
     }

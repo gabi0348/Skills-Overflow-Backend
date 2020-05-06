@@ -13,6 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
+
     @Id
     @GeneratedValue
     private Long userId;
