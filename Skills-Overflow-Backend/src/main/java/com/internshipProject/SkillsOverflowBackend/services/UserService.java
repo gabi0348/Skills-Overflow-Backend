@@ -1,23 +1,25 @@
 package com.internshipProject.SkillsOverflowBackend.services;
 
+import com.internshipProject.SkillsOverflowBackend.dto.UserDto;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService {
 
-    List<User> list();
+    List<UserDto> findAllDto();
+
     User addUser(User user);
 
-    User getUserById(Long id);
+    UserDto getUserDtoById(Long id);
 
     void removeUserById(Long id);
 
     boolean checkForExistingEmailOrUsername(String email, String username);
 
-    boolean validateEmailAndPassword(String email, String password);
-
     User updateUser(Long id, User user);
+
 
 
 

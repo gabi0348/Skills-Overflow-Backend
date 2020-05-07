@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
@@ -18,10 +19,11 @@ import java.util.Set;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @EnableAutoConfiguration
 @Accessors(chain = true)
-public class User {
+public class User implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long userId;
+
     private String userName;
     private String email;
     private String password;

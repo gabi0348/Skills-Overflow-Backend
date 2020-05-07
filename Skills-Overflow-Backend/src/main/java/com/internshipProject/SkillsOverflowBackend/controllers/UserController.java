@@ -1,12 +1,14 @@
-package com.internshipProject.SkillsOverflowBackend.coltrollers;
+package com.internshipProject.SkillsOverflowBackend.controllers;
 
 
+import com.internshipProject.SkillsOverflowBackend.dto.UserDto;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class UserController {
@@ -14,11 +16,11 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/users")
-    List<User> all() {
-        return userService.list();}
+    public List<UserDto> findAll() {
+        return userService.findAllDto();
+    }
 
-
-    @PostMapping("/signUp")
+    @PostMapping("/addUser")
     @ResponseBody
     public User addUser(@RequestBody User user){
         return userService.addUser(user);
@@ -26,8 +28,8 @@ public class UserController {
 
     @GetMapping("/findById/{id}")
     @ResponseBody
-    public User getById(@PathVariable(value = "id") Long id) {
-        return userService.getUserById(id);
+    public UserDto getById(@PathVariable(value = "id") Long id) {
+        return userService.getUserDtoById(id);
     }
 
     @DeleteMapping("/remove/{id}")
