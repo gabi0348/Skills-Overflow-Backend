@@ -19,17 +19,15 @@ public class TokenService {
     UserRepository userRepository;
 
     public VerificationToken getVerificationToken(String verificationToken) {
-        return tokenRepository.findByToken(verificationToken);
+        return tokenRepository.findAll().stream().filter(u -> u.getToken().equals(verificationToken)).findFirst().orElse(null);
+
     }
 
     public void createVerificationTokenForUser(User user, String token) {
         VerificationToken myToken = new VerificationToken(token);
-        myToken.setUser(user); //o să crape aici: save transient value first; pot doar să salvez token-ul fără user, dar voi avea nevoie ca tokenul să refere userul...
-        //dacă adaug pe child/tokenrepository cascadetype=all, tot nu merge - a different object was declared with the same identifier: User2
+        myToken.setUser(user);
 
         tokenRepository.saveAndFlush(myToken);
-
-        //myToken.setUser(user);
 
 
     }

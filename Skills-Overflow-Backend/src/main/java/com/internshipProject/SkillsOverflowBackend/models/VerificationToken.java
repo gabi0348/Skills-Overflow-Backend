@@ -20,7 +20,9 @@ public class VerificationToken {
     private String token;
     private LocalDateTime expirationDate;
 
-    @OneToOne(mappedBy = "verificationToken", cascade = CascadeType.ALL)
+//    @OneToOne(mappedBy = "verificationToken", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn
     private User user;
 
     public VerificationToken(String token) {

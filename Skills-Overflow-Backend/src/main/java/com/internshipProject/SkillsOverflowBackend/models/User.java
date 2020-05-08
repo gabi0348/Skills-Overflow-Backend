@@ -33,12 +33,11 @@ public class User {
 
     private Boolean enabled;
 
-    @OneToOne
-    //@JoinColumn
-    @JoinTable(
-            name = "verification_token_user",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "verification_token_id"))
+    @OneToOne(mappedBy = "user")
+//    @JoinTable(
+//            name = "verification_token_user",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "verification_token_id"))
     private VerificationToken verificationToken;
 
     @ManyToMany

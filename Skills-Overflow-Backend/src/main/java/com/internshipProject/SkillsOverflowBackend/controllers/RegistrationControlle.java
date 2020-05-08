@@ -25,7 +25,8 @@ public class RegistrationControlle {
     public String confirmRegistration(@RequestParam("token") String token) {
 
         VerificationToken verificationToken = tokenService.getVerificationToken(token);
-        System.out.println(verificationToken);
+        System.out.println("the tokein is" + token);
+        System.out.println("the verification toke ins " + verificationToken);
         if (verificationToken == null) {
             return "no token available";
         }
