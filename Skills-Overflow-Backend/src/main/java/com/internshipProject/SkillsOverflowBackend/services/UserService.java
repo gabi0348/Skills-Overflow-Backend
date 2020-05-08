@@ -18,7 +18,6 @@ public interface UserService {
 
     boolean checkForExistingEmailOrUsername(String email, String username);
 
-    User updateUser(Long id, User user);
 
 
 

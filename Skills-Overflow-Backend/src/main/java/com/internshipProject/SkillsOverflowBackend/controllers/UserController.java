@@ -12,6 +12,7 @@ import java.util.Set;
 
 @RestController
 public class UserController {
+
     @Autowired
     private UserService userService;
 
@@ -37,11 +38,6 @@ public class UserController {
         userService.removeUserById(id);
     }
 
-    @PatchMapping("/update/{id}")
-    @ResponseBody
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
-        return userService.updateUser(id, user);
-    }
 
 
 }

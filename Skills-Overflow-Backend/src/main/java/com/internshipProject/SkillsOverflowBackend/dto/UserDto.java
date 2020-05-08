@@ -7,7 +7,6 @@ import lombok.experimental.Accessors;
 
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.Set;
 
 @Setter
@@ -15,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Accessors(chain = true)
 @Service
-public class UserDto implements Serializable  {
+public class UserDto {
 
     private Long userId;
     private String userName;

@@ -2,6 +2,7 @@ package com.internshipProject.SkillsOverflowBackend.services;
 
 import com.internshipProject.SkillsOverflowBackend.convertors.UserConverter;
 import com.internshipProject.SkillsOverflowBackend.dto.UserDto;
+import com.internshipProject.SkillsOverflowBackend.models.Role;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -22,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     private List<UserDto> usersDto = new ArrayList<>();
+    private Set<Role> userRoles = new HashSet<>();
 
 
     public void convertAllUsers(List<User> usersList){
@@ -42,10 +44,12 @@ public class UserServiceImpl implements UserService {
     }
 
     public  User addUser(User user) {
-//        usersDto.clear();
+        userRoles.clear();
         if (checkForExistingEmailOrUsername(user.getEmail(), user.getUserName())) {
             return null;
         }
+        userRoles.add(new Role(1L, "user"));
+        user.setRoles(userRoles);
         userRepository.saveAndFlush(user);
         return user;
 
@@ -54,23 +58,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserDtoById(Long id) {
         User user = userRepository.getOne(id);
-        return UserConverter.convertToUserDto(user);
+        UserDto userDto = UserConverter.convertToUserDto(user);
+        return userDto;
     }
 
     @Override
     public void removeUserById(Long id) {
         userRepository.deleteById(id);
     }
-
-    public User updateUser(Long id, User user){
-        User existingUser = userRepository.getOne(id);
-        existingUser.setUserName(user.getUserName());
-        existingUser.setEmail(user.getEmail());
-        existingUser.setPassword(user.getPassword());
-        existingUser.setFirstName(user.getFirstName());
-        existingUser.setLastName(user.getLastName());
-        return userRepository.saveAndFlush(existingUser);
-    }
+    
 
     @Override
     public boolean checkForExistingEmailOrUsername(String email, String username){

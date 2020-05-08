@@ -19,13 +19,16 @@ import java.util.Set;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @EnableAutoConfiguration
 @Accessors(chain = true)
-public class User implements Serializable {
+public class User  {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long userId;
 
+    @NotNull
     private String userName;
+    @NotNull
     private String email;
+    @NotNull
     private String password;
     private String firstName;
     private String lastName;
@@ -36,6 +39,7 @@ public class User implements Serializable {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+
 
 
 
