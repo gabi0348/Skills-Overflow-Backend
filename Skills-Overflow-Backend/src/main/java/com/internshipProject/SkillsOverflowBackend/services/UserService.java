@@ -18,7 +18,7 @@ public interface UserService {
 
     boolean checkForExistingEmailOrUsername(String email, String username);
 
-
+    void saveRegisteredUser(User user);
 
 
 

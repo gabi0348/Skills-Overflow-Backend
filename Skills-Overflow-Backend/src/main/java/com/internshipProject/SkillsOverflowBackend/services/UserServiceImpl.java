@@ -5,19 +5,17 @@ import com.internshipProject.SkillsOverflowBackend.dto.UserDto;
 import com.internshipProject.SkillsOverflowBackend.models.Role;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private MailService mailService;
 
     @Autowired
     private UserRepository userRepository;
@@ -36,18 +34,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> findAllDto(){
+    public List<UserDto> findAllDto() {
         usersDto.clear();
-        List <User> usersList = userRepository.findAll();
+        List<User> usersList = userRepository.findAll();
         convertAllUsers(usersList);
         return this.usersDto;
     }
 
+    @Override
     public  User addUser(User user) {
         userRoles.clear();
         if (checkForExistingEmailOrUsername(user.getEmail(), user.getUserName())) {
             return null;
         }
+        mailService.confirmRegistration(user);
         userRoles.add(new Role(1L, "user"));
         user.setRoles(userRoles);
         userRepository.saveAndFlush(user);
@@ -66,7 +66,6 @@ public class UserServiceImpl implements UserService {
     public void removeUserById(Long id) {
         userRepository.deleteById(id);
     }
-    
 
     @Override
     public boolean checkForExistingEmailOrUsername(String email, String username){
@@ -79,6 +78,11 @@ public class UserServiceImpl implements UserService {
             }
         }
         return false;
+    }
+
+    @Override
+    public void saveRegisteredUser(User user) {
+        userRepository.saveAndFlush(user);
     }
 
 

@@ -7,8 +7,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.util.Set;
 
 @Entity
@@ -19,9 +17,10 @@ import java.util.Set;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @EnableAutoConfiguration
 @Accessors(chain = true)
-public class User  {
+public class User {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
     @NotNull
@@ -33,14 +32,17 @@ public class User  {
     private String firstName;
     private String lastName;
 
+    private Boolean enabled;
+
+    @OneToOne(mappedBy = "user")
+
+    private VerificationToken verificationToken;
+
     @ManyToMany
     @JoinTable(
             name = "role_user",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-
-
-
 
 }
