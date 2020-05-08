@@ -25,10 +25,12 @@ public class TokenService {
     public void createVerificationTokenForUser(User user, String token) {
         VerificationToken myToken = new VerificationToken(token);
         myToken.setUser(user);
-        user.setVerificationToken(myToken);
-        //parintele, care persista si copilul fiindca am pus cascadeType= All. Altfel n-ar fi putut persista fiindca nu-i ob.Java
+        //user.setVerificationToken(myToken);
+
+        // token este parintele, care persista si copilul fiindca am pus cascadeType= All.
+        // Altfel n-ar fi putut persista fiindca nu-i ob.Java
         tokenRepository.saveAndFlush(myToken);
-        userRepository.saveAndFlush(user);
+
     }
 
 }
