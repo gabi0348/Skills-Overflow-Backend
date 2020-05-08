@@ -10,7 +10,8 @@ public interface UserService {
 
     List<UserDto> findAllDto();
 
-    User addUser(User user);
+    //??
+    String addUser(User user);
 
     UserDto getUserDtoById(Long id);
 

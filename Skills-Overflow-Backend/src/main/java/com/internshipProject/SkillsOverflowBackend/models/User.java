@@ -35,7 +35,6 @@ public class User {
     private Boolean enabled;
 
     @OneToOne(mappedBy = "user")
-
     private VerificationToken verificationToken;
 
     @ManyToMany

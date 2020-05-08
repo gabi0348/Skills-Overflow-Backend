@@ -36,7 +36,6 @@ public class RegistrationController {
         }
 
         User user = verificationToken.getUser();
-        user.setVerificationToken(verificationToken);
         user.setEnabled(true);
         userService.saveRegisteredUser(user);
         return "successful register";

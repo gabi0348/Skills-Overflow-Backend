@@ -19,17 +19,16 @@ public class TokenService {
     UserRepository userRepository;
 
     public VerificationToken getVerificationToken(String verificationToken) {
-        return tokenRepository.findAll().stream().filter(u -> u.getToken().equals(verificationToken)).findFirst().orElse(null);
-
+        return tokenRepository.findByToken(verificationToken);
     }
 
     public void createVerificationTokenForUser(User user, String token) {
         VerificationToken myToken = new VerificationToken(token);
         myToken.setUser(user);
-
+        user.setVerificationToken(myToken);
+        //parintele, care persista si copilul fiindca am pus cascadeType= All. Altfel n-ar fi putut persista fiindca nu-i ob.Java
         tokenRepository.saveAndFlush(myToken);
-
-
+        userRepository.saveAndFlush(user);
     }
 
 }

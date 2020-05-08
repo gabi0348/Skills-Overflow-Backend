@@ -42,17 +42,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public  User addUser(User user) {
+    public String addUser(User user) {
         userRoles.clear();
         if (checkForExistingEmailOrUsername(user.getEmail(), user.getUserName())) {
-            return null;
+            return "email or username already taken";
         }
-        mailService.confirmRegistration(user);
         userRoles.add(new Role(1L, "user"));
         user.setRoles(userRoles);
-        userRepository.saveAndFlush(user);
-        return user;
-
+        //userRepository.saveAndFlush(user);
+        mailService.confirmRegistration(user);
+        return "Please check your email";
     }
 
     @Override

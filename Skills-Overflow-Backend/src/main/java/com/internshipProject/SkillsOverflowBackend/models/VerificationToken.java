@@ -20,8 +20,8 @@ public class VerificationToken {
     private String token;
     private LocalDateTime expirationDate;
 
-//    @OneToOne(mappedBy = "verificationToken", cascade = CascadeType.ALL)
-    @OneToOne(cascade = CascadeType.ALL)
+    //this class is the owning side; this refers to the fk
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn
     private User user;
 
@@ -31,7 +31,8 @@ public class VerificationToken {
     }
 
     private LocalDateTime calculateExpiryDate(int expiryTimeInMinutes){
-        return LocalDateTime.now().plusMinutes(expiryTimeInMinutes);
+//        return LocalDateTime.now().plusMinutes(0);
+        return LocalDateTime.now().plusSeconds(10);
     }
 
 }

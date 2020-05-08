@@ -18,17 +18,15 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private MailService mailService;
-
     @GetMapping("/users")
     public List<UserDto> findAll() {
         return userService.findAllDto();
     }
 
-    @PostMapping("/addUser")
+    //acum intoarce un string
+    @PostMapping("/singUp")
     @ResponseBody
-    public User addUser(@RequestBody User user) {
+    public String addUser(@RequestBody User user) {
         return userService.addUser(user);
     }
 
@@ -38,22 +36,9 @@ public class UserController {
         return userService.getUserDtoById(id);
     }
 
-        @PostMapping("/signUp")
-        public String addSignUpUser (@RequestBody User user){
-            boolean check = userService.checkForExistingEmailOrUsername(user.getEmail(), user.getEmail());
-            if (!check) {
-                mailService.confirmRegistration(user);
-                return "pending request";
-            } else {
-                return "email or username already taken";
-            }
-        }
-
-        @DeleteMapping("/remove/{id}")
-        public void removeUser (@PathVariable Long id){
+    @DeleteMapping("/remove/{id}")
+    public void removeUser (@PathVariable Long id){
             userService.removeUserById(id);
         }
 
-
-
-    }
+}
