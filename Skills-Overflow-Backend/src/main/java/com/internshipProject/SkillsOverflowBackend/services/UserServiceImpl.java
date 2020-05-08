@@ -1,6 +1,8 @@
 package com.internshipProject.SkillsOverflowBackend.services;
 
 import com.internshipProject.SkillsOverflowBackend.models.User;
+import com.internshipProject.SkillsOverflowBackend.models.VerificationToken;
+import com.internshipProject.SkillsOverflowBackend.repositories.TokenRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +15,21 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     @Autowired
+    private MailService mailService;
+
+    @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TokenRepository tokenRepository;
+
+    @Override
     public List<User> list() {
         List<User> all = userRepository.findAll();
         return all;
     }
 
+    @Override
     public  User addUser(User user) {
         if(checkForExistingEmailOrUsername(user.getEmail(), user.getUserName())){
             return null;
@@ -39,6 +49,7 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
+    @Override
     public User updateUser(Long id, User user){
         User existingUser = userRepository.getOne(id);
         existingUser.setUserName(user.getUserName());
@@ -62,6 +73,7 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+    @Override
     public boolean validateEmailAndPassword(String email, String password){
         if (email.equals("") || password.equals("")) {
             return false;
@@ -87,8 +99,9 @@ public class UserServiceImpl implements UserService {
 
     }
 
-
-
-
+    @Override
+    public void saveRegisteredUser(User user) {
+        userRepository.saveAndFlush(user);
+    }
 
 }

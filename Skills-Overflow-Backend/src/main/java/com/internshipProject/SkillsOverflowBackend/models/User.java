@@ -1,5 +1,6 @@
 package com.internshipProject.SkillsOverflowBackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -19,14 +20,26 @@ import java.util.Set;
 @EnableAutoConfiguration
 @Accessors(chain = true)
 public class User {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
+
     private String userName;
     private String email;
     private String password;
     private String firstName;
     private String lastName;
+
+    private Boolean enabled;
+
+    @OneToOne
+    //@JoinColumn
+    @JoinTable(
+            name = "verification_token_user",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "verification_token_id"))
+    private VerificationToken verificationToken;
 
     @ManyToMany
     @JoinTable(
@@ -34,7 +47,5 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-
-
 
 }
