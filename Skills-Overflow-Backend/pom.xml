@@ -98,16 +98,6 @@
 			<version>6.1.4.Final</version>
 		</dependency>
 
-<<<<<<< HEAD
-		<dependency>
-			<groupId>org.modelmapper</groupId>
-			<artifactId>modelmapper</artifactId>
-			<version>2.3.7</version>
-		</dependency>
-
-
-=======
->>>>>>> myfeature
 	</dependencies>
 
 	<build>

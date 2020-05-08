@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -22,8 +23,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
+    @NotNull
     private String userName;
+    @NotNull
     private String email;
+    @NotNull
     private String password;
     private String firstName;
     private String lastName;
@@ -31,10 +35,7 @@ public class User {
     private Boolean enabled;
 
     @OneToOne(mappedBy = "user")
-//    @JoinTable(
-//            name = "verification_token_user",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "verification_token_id"))
+
     private VerificationToken verificationToken;
 
     @ManyToMany

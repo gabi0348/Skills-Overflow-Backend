@@ -31,7 +31,7 @@ public class TokenThread implements Runnable{
                                     && LocalDateTime.now().isAfter(user.getVerificationToken().getExpirationDate()))
                     .forEach(user-> {
                         tokenRepository.delete(user.getVerificationToken());
-                        user.setEnabled(Boolean.FALSE);
+                        userRepository.delete(user);
                     });
             try {
                 Thread.sleep(1000*3600);
