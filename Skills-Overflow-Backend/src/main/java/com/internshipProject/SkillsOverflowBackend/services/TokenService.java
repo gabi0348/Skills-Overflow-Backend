@@ -28,7 +28,7 @@ public class TokenService {
         //user.setVerificationToken(myToken);
 
         // token este parintele, care persista si copilul fiindca am pus cascadeType= All.
-        // Altfel n-ar fi putut persista fiindca nu-i ob.Java
+        // Altfel n-ar fi putut persista fiindca nu-i obiect Java standard
         tokenRepository.saveAndFlush(myToken);
 
     }

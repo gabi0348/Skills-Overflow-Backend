@@ -28,7 +28,7 @@ public class TokenThread implements Runnable{
                 userRepository
                         .findAll()
                         .forEach(user -> {
-                            if (LocalDateTime.now().isAfter(user.getVerificationToken()
+                            if (user.getVerificationToken()!= null && LocalDateTime.now().isAfter(user.getVerificationToken()
                                     .getExpirationDate())) {
                                 tokenRepository.delete(user.getVerificationToken());
                                 if (!user.getEnabled()) {
