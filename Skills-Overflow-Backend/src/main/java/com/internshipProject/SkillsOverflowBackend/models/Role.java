@@ -13,12 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import java.util.Set;
 
+@Entity
 @Getter
 @Setter
-@Entity(name="role")
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Role {
 
     @Id

@@ -1,6 +1,8 @@
 package com.internshipProject.SkillsOverflowBackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -10,13 +12,13 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
-@Getter(AccessLevel.PUBLIC)
-@Setter(AccessLevel.PUBLIC)
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@EnableAutoConfiguration
-@Accessors(chain = true)
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@EnableAutoConfiguration
+//@Accessors(chain = true)
 public class User {
 
     @Id
@@ -29,6 +31,7 @@ public class User {
     private String email;
     @NotNull
     private String password;
+
     private String firstName;
     private String lastName;
 
@@ -43,5 +46,9 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+//
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<Post> posts;
 
 }

@@ -31,7 +31,7 @@ public class MailService {
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipientAddress);
         email.setSubject(subject);
-        email.setText(message + "\r\n" + "http://localhost:8080" + confirmationUrl);
+        email.setText(message + "\r\n" + "http://localhost:8081" + confirmationUrl);
         mailSender.send(email);
     }
 
