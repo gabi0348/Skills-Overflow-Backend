@@ -13,7 +13,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -23,7 +25,13 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 @Order(SecurityProperties.BASIC_AUTH_ORDER - 10)
-public class SecSecurityConfig extends WebSecurityConfigurerAdapter  {
+public class SecurityConfig extends WebSecurityConfigurerAdapter  {
+
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    JwtTokenFilter jwtTokenFilter;
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -57,19 +65,22 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter  {
        /* .and()
                 .authorizeRequests().anyRequest().permitAll();*/
         http
-
+                .httpBasic().disable()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/login/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/login/**").permitAll()
-                .antMatchers("/signUp").permitAll()
+                .antMatchers("/users").hasAnyRole("admin")
                 .anyRequest().authenticated()
                 .and()
-                .httpBasic()
-                .and()
+               // .httpBasic()
+                //.and()
                 .cors()
                 .and()
-                .csrf()
-                .disable();
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+               // .apply(new JwtConfigurer(jwtTokenProvider));
 
     }
 

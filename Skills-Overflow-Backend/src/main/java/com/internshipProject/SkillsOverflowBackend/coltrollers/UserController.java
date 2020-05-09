@@ -1,6 +1,7 @@
 package com.internshipProject.SkillsOverflowBackend.coltrollers;
 
 
+import com.internshipProject.SkillsOverflowBackend.Configuration.JwtTokenProvider;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserController {
@@ -61,16 +65,20 @@ public class UserController {
     @Autowired
     AuthenticationManager authenticationManager;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Authentication login(@RequestParam String username,@RequestParam String password) {//@PathVariable String username, @PathVariable String password
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToke=new UsernamePasswordAuthenticationToken(username, password);
-        Authentication authentication = null;
-        try {
-            authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToke);
-        } catch (Exception e) {
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
 
-        }
-        return authentication;
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public Map login(@RequestParam String email,@RequestParam String password) {//@PathVariable String username, @PathVariable String password
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToke=new UsernamePasswordAuthenticationToken(email, password);
+        Authentication authentication   = authenticationManager.authenticate(usernamePasswordAuthenticationToke);
+        List<String> roles =authentication.getAuthorities().stream().map(x-> x.getAuthority()).collect(Collectors.toList());
+        String token = jwtTokenProvider.createToken(email,roles);
+        Map<Object, Object> model = new HashMap<>();
+        model.put("email", email);
+        model.put("token", token);
+        model.put("roles",roles);
+        return model;
     }
 
 
