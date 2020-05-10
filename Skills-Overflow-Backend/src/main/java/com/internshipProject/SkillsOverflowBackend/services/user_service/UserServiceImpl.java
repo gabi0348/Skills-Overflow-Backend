@@ -1,10 +1,12 @@
-package com.internshipProject.SkillsOverflowBackend.services;
+package com.internshipProject.SkillsOverflowBackend.services.user_service;
 
 import com.internshipProject.SkillsOverflowBackend.convertors.UserConverter;
 import com.internshipProject.SkillsOverflowBackend.dto.UserDto;
 import com.internshipProject.SkillsOverflowBackend.models.Role;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
+import com.internshipProject.SkillsOverflowBackend.services.MailService;
+import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
@@ -50,8 +52,14 @@ public class UserServiceImpl implements UserService {
         userRoles.add(new Role(1L, "user"));
         user.setRoles(userRoles);
         //userRepository.saveAndFlush(user);
-        mailService.confirmRegistration(user);
+        mailService.confirmRegistrationMail(user);
         return "Please check your email";
+    }
+
+    public User findByEmail(String email){
+       User user = userRepository.findByEmail(email);
+       mailService.resetPasswordMail(user);
+       return user;
     }
 
     @Override
@@ -82,6 +90,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveRegisteredUser(User user) {
         userRepository.saveAndFlush(user);
+    }
+
+    public User resetPassword(Long id, User user) {
+        User existingUser = userRepository.getOne(id);
+        existingUser.setPassword(user.getPassword());
+        userRepository.saveAndFlush(existingUser);
+        return existingUser;
     }
 
 

@@ -2,8 +2,8 @@ package com.internshipProject.SkillsOverflowBackend.controllers;
 
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.models.VerificationToken;
-import com.internshipProject.SkillsOverflowBackend.services.TokenService;
-import com.internshipProject.SkillsOverflowBackend.services.UserService;
+import com.internshipProject.SkillsOverflowBackend.services.VerificationTokenService;
+import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 
 @RestController
-public class RegistrationController {
+public class VerificationController {
 
     @Autowired
-    private TokenService tokenService;
+    private VerificationTokenService verificationTokenService;
 
     @Autowired
     private UserService userService;
@@ -24,7 +24,7 @@ public class RegistrationController {
     @GetMapping("/registrationConfirm")
     public String confirmRegistration(@RequestParam("token") String token) {
 
-        VerificationToken verificationToken = tokenService.getVerificationToken(token);
+        VerificationToken verificationToken = verificationTokenService.getToken(token);
         System.out.println("the tokein is" + token);
         System.out.println("the verification toke ins " + verificationToken);
         if (verificationToken == null) {
@@ -39,6 +39,5 @@ public class RegistrationController {
         user.setEnabled(true);
         userService.saveRegisteredUser(user);
         return "successful register";
-
     }
 }

@@ -1,4 +1,4 @@
-package com.internshipProject.SkillsOverflowBackend.services;
+package com.internshipProject.SkillsOverflowBackend.services.user_service;
 
 import com.internshipProject.SkillsOverflowBackend.dto.UserDto;
 import com.internshipProject.SkillsOverflowBackend.models.User;
@@ -13,6 +13,8 @@ public interface UserService {
     //??
     String addUser(User user);
 
+    User findByEmail(String email);
+
     UserDto getUserDtoById(Long id);
 
     void removeUserById(Long id);
@@ -20,6 +22,8 @@ public interface UserService {
     boolean checkForExistingEmailOrUsername(String email, String username);
 
     void saveRegisteredUser(User user);
+
+    User resetPassword(Long id, User user);
 
 
 

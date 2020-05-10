@@ -1,8 +1,8 @@
 package com.internshipProject.SkillsOverflowBackend.services;
 
+import com.internshipProject.SkillsOverflowBackend.models.ResetPasswordToken;
 import com.internshipProject.SkillsOverflowBackend.models.User;
-import com.internshipProject.SkillsOverflowBackend.models.VerificationToken;
-import com.internshipProject.SkillsOverflowBackend.repositories.TokenRepository;
+import com.internshipProject.SkillsOverflowBackend.services.reset_password_token_service.ResetPasswordTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -17,11 +17,14 @@ public class MailService {
     private JavaMailSender mailSender;
 
     @Autowired
-    private TokenService tokenService;
+    private VerificationTokenService verificationTokenService;
 
-    public void confirmRegistration(User user) {
+    @Autowired
+    private ResetPasswordTokenService resetPasswordTokenService;
+
+    public void confirmRegistrationMail(User user) {
         String token = UUID.randomUUID().toString();
-        tokenService.createVerificationTokenForUser(user, token);
+        verificationTokenService.createTokenForUser(user, token);
 
         String recipientAddress = user.getEmail();
         String subject = "Registration Confirmation";
@@ -31,12 +34,24 @@ public class MailService {
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipientAddress);
         email.setSubject(subject);
-        email.setText(message + "\r\n" + "http://localhost:8081" + confirmationUrl);
+        email.setText(message + "\r\n" + "http://localhost:8080" + confirmationUrl);
         mailSender.send(email);
     }
 
-    public void resetPassword(User user){
+    public void resetPasswordMail(User user){
+        String token = UUID.randomUUID().toString();
+        resetPasswordTokenService.createPasswordTokenForUser(user, token);
 
+        String recipientAddress = user.getEmail();
+        String subject = "Reset password";
+        String changePasswordUrl = "/changePassword?token=" + token;
+        String message = "Click on this link to reset your password";
+
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(recipientAddress);
+        email.setSubject(subject);
+        email.setText(message + "\r\n" + "http://localhost:8080" + changePasswordUrl);
+        mailSender.send(email);
     }
 
 }
