@@ -46,9 +46,19 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-//
-//
+
 //    @OneToMany(mappedBy = "user")
 //    private List<Post> posts;
 
+// ---------pentru unit testing, pls nu sterge
+    public User(@NotNull String userName, @NotNull String email, @NotNull String password, String firstName, String lastName, Boolean enabled, VerificationToken verificationToken, Set<Role> roles) {
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.enabled = enabled;
+        this.verificationToken = verificationToken;
+        this.roles = roles;
+    }
 }

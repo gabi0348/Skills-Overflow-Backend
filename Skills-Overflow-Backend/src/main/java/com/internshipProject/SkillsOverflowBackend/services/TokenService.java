@@ -25,12 +25,10 @@ public class TokenService {
     public void createVerificationTokenForUser(User user, String token) {
         VerificationToken myToken = new VerificationToken(token);
         myToken.setUser(user);
-        //user.setVerificationToken(myToken);
 
-        // token este parintele, care persista si copilul fiindca am pus cascadeType= All.
-        // Altfel n-ar fi putut persista fiindca nu-i obiect Java standard
+        // token este parintele, care va persista si copilul (user) mai intai, fiindca am pus cascadeType = PERSIST.
+        // Altfel n-ar fi putut persista, și ar fi dat eroarea - save transient object first;
         tokenRepository.saveAndFlush(myToken);
-
     }
 
 }

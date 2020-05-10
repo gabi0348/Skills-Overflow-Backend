@@ -10,6 +10,4 @@ class SkillsOverflowBackendApplicationTests {
 	void contextLoads() {
 	}
 
-
-
 }

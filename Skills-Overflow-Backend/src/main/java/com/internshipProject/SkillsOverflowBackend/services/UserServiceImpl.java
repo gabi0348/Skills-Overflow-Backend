@@ -49,8 +49,10 @@ public class UserServiceImpl implements UserService {
         }
         userRoles.add(new Role(1L, "user"));
         user.setRoles(userRoles);
+
         //userRepository.saveAndFlush(user);
-        mailService.confirmRegistration(user);
+        //nou Thread, ca front-end-ul să nu mai aștepte după back-end
+        new Thread(() -> mailService.confirmRegistration(user)).start();
         return "Please check your email";
     }
 
