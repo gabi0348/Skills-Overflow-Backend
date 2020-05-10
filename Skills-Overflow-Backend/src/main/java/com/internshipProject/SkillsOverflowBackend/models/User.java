@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.*;
-import lombok.experimental.Accessors;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -29,7 +27,7 @@ public class User {
     private String userName;
     @NotNull
     private String email;
-    @NotNull
+    @NotNull(message = "Password cannot be empty")
     private String password;
 
     private String firstName;
@@ -50,15 +48,4 @@ public class User {
 //    @OneToMany(mappedBy = "user")
 //    private List<Post> posts;
 
-// ---------pentru unit testing, pls nu sterge
-    public User(@NotNull String userName, @NotNull String email, @NotNull String password, String firstName, String lastName, Boolean enabled, VerificationToken verificationToken, Set<Role> roles) {
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.enabled = enabled;
-        this.verificationToken = verificationToken;
-        this.roles = roles;
-    }
 }

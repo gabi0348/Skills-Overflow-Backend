@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
@@ -26,7 +27,7 @@ public class UserController {
     //acum intoarce un string
     @PostMapping("/singUp")
     @ResponseBody
-    public String addUser(@RequestBody User user) {
+    public String addUser(@RequestBody @Valid User user) {
         return userService.addUser(user);
     }
 
