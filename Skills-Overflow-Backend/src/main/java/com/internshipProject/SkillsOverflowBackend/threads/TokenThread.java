@@ -6,11 +6,15 @@ import com.internshipProject.SkillsOverflowBackend.repositories.TokenRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.MailService;
 import com.internshipProject.SkillsOverflowBackend.services.UserService;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
-public class TokenThread implements Runnable{
+
+@Setter
+public class TokenThread extends Thread{
 
     @Autowired
     UserRepository userRepository;
@@ -18,11 +22,14 @@ public class TokenThread implements Runnable{
     @Autowired
     TokenRepository tokenRepository;
 
+    boolean flag = true;
+
     @Override
     public void run() {
-        while(true) {
-            System.out.println("Token Repository is--->" + tokenRepository.findAll().toString());
-            System.out.println("User Repository is--->" + userRepository.findAll().toString());
+        while(flag) {
+            System.out.println("Token Repository is ---> " + tokenRepository.findAll().toString());
+            System.out.println("User Repository is ---> " + userRepository.findAll().toString());
+
             //am scris acest if pentru setupul initial cand userRepository si tokenRepository sunt goale, ca sa nu arunce NullPointer
             if (userRepository.findAll().size()!=0 && tokenRepository.findAll().size()!=0) {
                 userRepository

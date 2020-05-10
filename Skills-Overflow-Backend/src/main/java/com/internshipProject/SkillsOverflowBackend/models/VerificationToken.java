@@ -1,5 +1,6 @@
 package com.internshipProject.SkillsOverflowBackend.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class VerificationToken {
 
@@ -20,7 +22,7 @@ public class VerificationToken {
     private String token;
     private LocalDateTime expirationDate;
 
-    //this class is the owning side; this refers to the fk
+    //this class is the owning side; this refers to the fk, which it annotates
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn
     private User user;

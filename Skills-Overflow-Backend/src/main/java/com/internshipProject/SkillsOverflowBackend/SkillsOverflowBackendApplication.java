@@ -13,7 +13,7 @@ public class SkillsOverflowBackendApplication {
 		TokenThread tokenThread = new TokenThread();
 		context.getAutowireCapableBeanFactory().autowireBean(tokenThread);
 
-		tokenThread.run();
+		tokenThread.start();
 	}
 
 }

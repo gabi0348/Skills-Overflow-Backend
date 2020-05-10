@@ -12,8 +12,9 @@ import java.util.Set;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
-@Service
+@Service //why?
 public class UserDto {
 
     private Long userId;

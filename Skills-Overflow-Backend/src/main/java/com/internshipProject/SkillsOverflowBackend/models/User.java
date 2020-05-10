@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.*;
-import lombok.experimental.Accessors;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -29,7 +27,7 @@ public class User {
     private String userName;
     @NotNull
     private String email;
-    @NotNull
+    @NotNull(message = "Password cannot be empty")
     private String password;
 
     private String firstName;
@@ -46,8 +44,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-//
-//
+
 //    @OneToMany(mappedBy = "user")
 //    private List<Post> posts;
 
