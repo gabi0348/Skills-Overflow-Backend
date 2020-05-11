@@ -24,9 +24,8 @@ public class VerificationController {
     @GetMapping("/registrationConfirm")
     public String confirmRegistration(@RequestParam("token") String token) {
 
-        VerificationToken verificationToken = verificationTokenService.getToken(token);
-        System.out.println("the tokein is" + token);
-        System.out.println("the verification toke ins " + verificationToken);
+        VerificationToken verificationToken = verificationTokenService.getVerificationToken(token);
+
         if (verificationToken == null) {
             return "no token available";
         }

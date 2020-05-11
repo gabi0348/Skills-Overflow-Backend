@@ -2,8 +2,10 @@ package com.internshipProject.SkillsOverflowBackend.services.user_service;
 
 import com.internshipProject.SkillsOverflowBackend.convertors.UserConverter;
 import com.internshipProject.SkillsOverflowBackend.dto.UserDto;
+import com.internshipProject.SkillsOverflowBackend.models.ResetPasswordToken;
 import com.internshipProject.SkillsOverflowBackend.models.Role;
 import com.internshipProject.SkillsOverflowBackend.models.User;
+import com.internshipProject.SkillsOverflowBackend.repositories.ResetPasswordTokenRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.MailService;
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
@@ -21,6 +23,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ResetPasswordTokenRepository resetPasswordTokenRepository;
 
     private List<UserDto> usersDto = new ArrayList<>();
     private Set<Role> userRoles = new HashSet<>();
@@ -92,8 +97,8 @@ public class UserServiceImpl implements UserService {
         userRepository.saveAndFlush(user);
     }
 
-    public User resetPassword(Long id, User user) {
-        User existingUser = userRepository.getOne(id);
+    public User resetPassword(String token, User user) {
+        User existingUser = resetPasswordTokenRepository.findByToken(token).getUser() ;
         existingUser.setPassword(user.getPassword());
         userRepository.saveAndFlush(existingUser);
         return existingUser;

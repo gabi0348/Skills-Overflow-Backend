@@ -1,6 +1,5 @@
 package com.internshipProject.SkillsOverflowBackend.services;
 
-import com.internshipProject.SkillsOverflowBackend.models.ResetPasswordToken;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.services.reset_password_token_service.ResetPasswordTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class MailService {
 
     public void confirmRegistrationMail(User user) {
         String token = UUID.randomUUID().toString();
-        verificationTokenService.createTokenForUser(user, token);
+        verificationTokenService.createVerificationTokenForUser(user, token);
 
         String recipientAddress = user.getEmail();
         String subject = "Registration Confirmation";

@@ -23,8 +23,7 @@ public interface UserService {
 
     void saveRegisteredUser(User user);
 
-    User resetPassword(Long id, User user);
-
+    User resetPassword(String token, User user);
 
 
 }

@@ -20,28 +20,27 @@ public class ResetPasswordController {
     private UserService userService;
 
     @GetMapping("/changePassword")
-    public void changePassword(HttpServletResponse httpServletResponse) {
+    public void changePassword(@RequestParam String token, HttpServletResponse httpServletResponse) {
 
-        httpServletResponse.setHeader("Location", "127.0.0.1:5500/index.html");
+        httpServletResponse.setHeader("Location", "127.0.0.1:5500/index.html" + token);
         httpServletResponse.setStatus(302);
     }
 
-    @PatchMapping("/savePassword/{id}")
+    @PutMapping("/savePassword")
     @ResponseBody
-    public User savePassword(@PathVariable Long id, @RequestBody User user) {
+    public String savePassword(@RequestParam("token") String token, @RequestBody User user) {
 
-        
-        if (user.getResetPasswordToken() == null) {
-            System.out.println("no token available");
-            return null;
+        ResetPasswordToken resetPasswordToken = resetPasswordTokenService.getPasswordToken(token);
+
+        if (resetPasswordToken == null) {
+            return "no token available";
         }
-        if (LocalDateTime.now().isAfter(user.getResetPasswordToken().getExpirationDate())) {
-            System.out.println("expired time");
-           return null;
+        if (LocalDateTime.now().isAfter(resetPasswordToken.getExpirationDate())) {
+           return "expired time";
        }
-           userService.resetPassword(id, user);
-        System.out.println(user.getPassword());
-            return user;
+
+        userService.resetPassword(token, user);
+        return "password successfully changed";
     }
 
 

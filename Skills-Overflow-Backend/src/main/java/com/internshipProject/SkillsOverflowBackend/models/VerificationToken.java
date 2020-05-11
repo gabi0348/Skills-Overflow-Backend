@@ -1,5 +1,6 @@
 package com.internshipProject.SkillsOverflowBackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,8 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 public class VerificationToken {
 
     private static final int EXPIRATION = 60*3;
@@ -32,7 +35,7 @@ public class VerificationToken {
 
     private LocalDateTime calculateExpiryDate(int expiryTimeInMinutes){
 //        return LocalDateTime.now().plusMinutes(0);
-        return LocalDateTime.now().plusSeconds(60*5);
+        return LocalDateTime.now().plusSeconds(60);
     }
 
 }

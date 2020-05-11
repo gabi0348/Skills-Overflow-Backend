@@ -1,6 +1,7 @@
 package com.internshipProject.SkillsOverflowBackend;
 
-import com.internshipProject.SkillsOverflowBackend.threads.TokenThread;
+import com.internshipProject.SkillsOverflowBackend.threads.ResetPasswordTokenThread;
+import com.internshipProject.SkillsOverflowBackend.threads.VerificationTokenThread;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -10,10 +11,15 @@ public class SkillsOverflowBackendApplication {
 
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(SkillsOverflowBackendApplication.class, args);
-		TokenThread tokenThread = new TokenThread();
-		context.getAutowireCapableBeanFactory().autowireBean(tokenThread);
 
-		tokenThread.run();
+		VerificationTokenThread verificationTokenThread = new VerificationTokenThread();
+		context.getAutowireCapableBeanFactory().autowireBean(verificationTokenThread);
+
+		ResetPasswordTokenThread resetPasswordTokenThread = new ResetPasswordTokenThread();
+		context.getAutowireCapableBeanFactory().autowireBean(resetPasswordTokenThread);
+
+		verificationTokenThread.run();
+		resetPasswordTokenThread.run();
 	}
 
 }

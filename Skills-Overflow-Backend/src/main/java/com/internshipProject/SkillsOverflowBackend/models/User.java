@@ -1,5 +1,6 @@
 package com.internshipProject.SkillsOverflowBackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
@@ -34,9 +35,11 @@ public class User {
     private Boolean enabled;
 
     @OneToOne(mappedBy = "user")
+    @JsonIgnore
     private VerificationToken verificationToken;
 
     @OneToOne(mappedBy = "user")
+    @JsonIgnore
     private ResetPasswordToken resetPasswordToken;
 
     @ManyToMany

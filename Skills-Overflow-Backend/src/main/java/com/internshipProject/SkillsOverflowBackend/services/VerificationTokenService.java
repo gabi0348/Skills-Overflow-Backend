@@ -13,14 +13,12 @@ public class VerificationTokenService {
     @Autowired
     VerificationTokenRepository verificationTokenRepository;
 
-    @Autowired
-    UserRepository userRepository;
 
-    public VerificationToken getToken(String verificationToken) {
+    public VerificationToken getVerificationToken(String verificationToken) {
         return verificationTokenRepository.findByToken(verificationToken);
     }
 
-    public void createTokenForUser(User user, String token) {
+    public void createVerificationTokenForUser(User user, String token) {
         VerificationToken myVerificationToken = new VerificationToken(token);
         myVerificationToken.setUser(user);
         //user.setVerificationToken(myToken);

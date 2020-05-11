@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
-public class TokenThread implements Runnable{
+public class VerificationTokenThread implements Runnable{
 
     @Autowired
     UserRepository userRepository;
