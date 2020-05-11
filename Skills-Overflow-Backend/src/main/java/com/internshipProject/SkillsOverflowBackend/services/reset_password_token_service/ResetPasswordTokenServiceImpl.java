@@ -22,6 +22,10 @@ public class ResetPasswordTokenServiceImpl implements ResetPasswordTokenService 
         resetPasswordTokenRepository.saveAndFlush(resetPasswordToken);
     }
 
+    public void delete(ResetPasswordToken resetPasswordToken){
+        resetPasswordTokenRepository.delete(resetPasswordToken);
+    }
+
 
 
 }

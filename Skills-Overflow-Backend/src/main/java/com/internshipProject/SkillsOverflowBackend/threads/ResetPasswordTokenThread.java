@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
-public class ResetPasswordTokenThread implements Runnable{
+public class ResetPasswordTokenThread extends Thread{
 
     @Autowired
     private UserRepository userRepository;

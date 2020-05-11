@@ -1,5 +1,6 @@
 package com.internshipProject.SkillsOverflowBackend.services;
 
+import com.internshipProject.SkillsOverflowBackend.models.ResetPasswordToken;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.services.reset_password_token_service.ResetPasswordTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -51,6 +53,8 @@ public class MailService {
         email.setSubject(subject);
         email.setText(message + "\r\n" + "http://localhost:8080" + changePasswordUrl);
         mailSender.send(email);
+
+
     }
 
 }

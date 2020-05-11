@@ -40,6 +40,7 @@ public class ResetPasswordController {
        }
 
         userService.resetPassword(token, user);
+
         return "password successfully changed";
     }
 
