@@ -12,19 +12,19 @@ public class ResetPasswordTokenServiceImpl implements ResetPasswordTokenService 
     @Autowired
     ResetPasswordTokenRepository resetPasswordTokenRepository;
 
+    @Override
     public ResetPasswordToken getPasswordToken(String resetPasswordToken) {
         return resetPasswordTokenRepository.findByToken(resetPasswordToken);
     }
 
+    @Override
     public void createPasswordTokenForUser(User user, String token) {
         ResetPasswordToken resetPasswordToken = new ResetPasswordToken(token);
         resetPasswordToken.setUser(user);
         resetPasswordTokenRepository.saveAndFlush(resetPasswordToken);
     }
 
-    public void delete(ResetPasswordToken resetPasswordToken){
-        resetPasswordTokenRepository.delete(resetPasswordToken);
-    }
+
 
 
 

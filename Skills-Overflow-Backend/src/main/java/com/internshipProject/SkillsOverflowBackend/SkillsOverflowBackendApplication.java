@@ -14,6 +14,7 @@ public class SkillsOverflowBackendApplication {
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(SkillsOverflowBackendApplication.class, args);
 
+
 		VerificationTokenThread verificationTokenThread = new VerificationTokenThread();
 		context.getAutowireCapableBeanFactory().autowireBean(verificationTokenThread);
 
@@ -22,6 +23,7 @@ public class SkillsOverflowBackendApplication {
 
 		verificationTokenThread.start();
 		resetPasswordTokenThread.start();
+
 	}
 
 }

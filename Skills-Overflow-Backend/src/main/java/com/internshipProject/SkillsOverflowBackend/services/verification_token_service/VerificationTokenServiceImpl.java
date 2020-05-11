@@ -1,4 +1,4 @@
-package com.internshipProject.SkillsOverflowBackend.services;
+package com.internshipProject.SkillsOverflowBackend.services.verification_token_service;
 
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.models.VerificationToken;
@@ -8,16 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class VerificationTokenService {
+public class VerificationTokenServiceImpl implements VerificationTokenService{
 
     @Autowired
     VerificationTokenRepository verificationTokenRepository;
 
 
+    @Override
     public VerificationToken getVerificationToken(String verificationToken) {
         return verificationTokenRepository.findByToken(verificationToken);
     }
 
+    @Override
     public void createVerificationTokenForUser(User user, String token) {
         VerificationToken myVerificationToken = new VerificationToken(token);
         myVerificationToken.setUser(user);
@@ -27,8 +29,5 @@ public class VerificationTokenService {
         verificationTokenRepository.saveAndFlush(myVerificationToken);
     }
 
-    public void delete(VerificationToken verificationToken){
-        verificationTokenRepository.delete(verificationToken);
-    }
 
 }

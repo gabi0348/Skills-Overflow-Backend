@@ -12,9 +12,9 @@ import java.util.Set;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
-@Service
-public class UserDto {
+public class UserDTO {
 
     private Long userId;
     private String userName;

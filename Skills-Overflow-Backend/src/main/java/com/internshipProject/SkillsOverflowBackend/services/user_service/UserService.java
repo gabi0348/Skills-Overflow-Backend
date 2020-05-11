@@ -1,21 +1,20 @@
 package com.internshipProject.SkillsOverflowBackend.services.user_service;
 
-import com.internshipProject.SkillsOverflowBackend.dto.UserDto;
+import com.internshipProject.SkillsOverflowBackend.dto.LoginDTO;
+import com.internshipProject.SkillsOverflowBackend.dto.UserDTO;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 
 import java.util.List;
-import java.util.Set;
 
 public interface UserService {
 
-    List<UserDto> findAllDto();
+    List<UserDTO> findAllDto();
 
-    //??
     String addUser(User user);
 
     User findByEmail(String email);
 
-    UserDto getUserDtoById(Long id);
+    UserDTO getUserDtoById(Long id);
 
     void removeUserById(Long id);
 
@@ -24,6 +23,9 @@ public interface UserService {
     void saveRegisteredUser(User user);
 
     User resetPassword(String token, User user);
+
+    String userExists(LoginDTO loginDTO);
+
 
 
 }

@@ -19,12 +19,6 @@ public class ResetPasswordController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/changePassword")
-    public void changePassword(@RequestParam String token, HttpServletResponse httpServletResponse) {
-
-        httpServletResponse.setHeader("Location", "127.0.0.1:5500/index.html" + token);
-        httpServletResponse.setStatus(302);
-    }
 
     @PutMapping("/savePassword")
     @ResponseBody
