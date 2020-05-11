@@ -15,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Accessors(chain = true)
 @Service //why?
-public class UserDto {
+public class UserDTO {
 
     private Long userId;
     private String userName;

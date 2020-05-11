@@ -1,19 +1,15 @@
 package com.internshipProject.SkillsOverflowBackend.convertors;
 
-import com.internshipProject.SkillsOverflowBackend.dto.UserDto;
-import com.internshipProject.SkillsOverflowBackend.models.Role;
+import com.internshipProject.SkillsOverflowBackend.dto.UserDTO;
 import com.internshipProject.SkillsOverflowBackend.models.User;
-
-import java.util.HashSet;
-import java.util.Set;
 
 
 public class UserConverter {
 
 
 
-    public static UserDto convertToUserDto(User user) {
-        UserDto userDto = new UserDto();
+    public static UserDTO convertToUserDto(User user) {
+        UserDTO userDto = new UserDTO();
         userDto.setUserId(user.getUserId());
         userDto.setUserName(user.getUserName());
         userDto.setEmail(user.getEmail());

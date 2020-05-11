@@ -1,7 +1,8 @@
 package com.internshipProject.SkillsOverflowBackend.services;
 
 import com.internshipProject.SkillsOverflowBackend.convertors.UserConverter;
-import com.internshipProject.SkillsOverflowBackend.dto.UserDto;
+import com.internshipProject.SkillsOverflowBackend.dto.LoginDTO;
+import com.internshipProject.SkillsOverflowBackend.dto.UserDTO;
 import com.internshipProject.SkillsOverflowBackend.models.Role;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
@@ -20,21 +21,21 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private List<UserDto> usersDto = new ArrayList<>();
+    private List<UserDTO> usersDto = new ArrayList<>();
     private Set<Role> userRoles = new HashSet<>();
 
 
-    public void convertAllUsers(List<User> usersList){
+    public void convertAllUsers(List<User> usersList) {
         usersDto.clear();
         usersList = userRepository.findAll();
-        for(User user : usersList){
-            UserDto userDto = UserConverter.convertToUserDto(user);
-                this.usersDto.add(userDto);
+        for (User user : usersList) {
+            UserDTO userDto = UserConverter.convertToUserDto(user);
+            this.usersDto.add(userDto);
         }
     }
 
     @Override
-    public List<UserDto> findAllDto() {
+    public List<UserDTO> findAllDto() {
         usersDto.clear();
         List<User> usersList = userRepository.findAll();
         convertAllUsers(usersList);
@@ -57,9 +58,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserDtoById(Long id) {
+    public String userExists(LoginDTO loginDTO) {
+        User user = userRepository.findByEmail(loginDTO.getEmail());
+
+        if (user != null && user.getPassword().equals(loginDTO.getPassword()))
+            return "user exists";
+        else
+            return "user does not exist";
+    }
+
+    @Override
+    public UserDTO getUserDtoById(Long id) {
         User user = userRepository.getOne(id);
-        UserDto userDto = UserConverter.convertToUserDto(user);
+        UserDTO userDto = UserConverter.convertToUserDto(user);
         return userDto;
     }
 
@@ -69,12 +80,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkForExistingEmailOrUsername(String email, String username){
+    public boolean checkForExistingEmailOrUsername(String email, String username) {
         List<User> allUsers = userRepository.findAll();
-        for(User user : allUsers) {
-            if(user.getEmail().equals(email)){
+        for (User user : allUsers) {
+            if (user.getEmail().equals(email)) {
                 return true;
-            } else if (user.getUserName().equals(username)){
+            } else if (user.getUserName().equals(username)) {
                 return true;
             }
         }
