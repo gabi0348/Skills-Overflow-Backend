@@ -34,7 +34,7 @@ public class MailService {
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipientAddress);
         email.setSubject(subject);
-        email.setText(message + "\r\n" + "http://localhost:8080" + confirmationUrl);
+        email.setText(message + "\r\n" + "http://localhost:8081" + confirmationUrl);
         mailSender.send(email);
     }
 
@@ -50,7 +50,9 @@ public class MailService {
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipientAddress);
         email.setSubject(subject);
-        email.setText(message + "\r\n" + "http://localhost:8080" + changePasswordUrl);
+
+        //aici va trebuie sa intre pe un link din front-end;
+        email.setText(message + "\r\n" + "http://localhost:8081" + changePasswordUrl);
         mailSender.send(email);
 
 
