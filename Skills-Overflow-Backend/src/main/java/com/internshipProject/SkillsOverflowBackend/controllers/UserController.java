@@ -43,7 +43,7 @@ public class UserController {
 
     @PostMapping("/resetPassword")
     public User resetPassword(@RequestParam("email") String email) {
-        return userService.findByEmail(email);
+        return userService.findByEmailAndSendResetPasswordEmail(email);
     }
 
     @PostMapping("/logIn")

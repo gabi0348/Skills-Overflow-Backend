@@ -12,19 +12,21 @@ public interface UserService {
 
     String addUser(User user);
 
-    User findByEmail(String email);
+    User findByEmailAndSendResetPasswordEmail(String email);
 
     UserDTO getUserDtoById(Long id);
 
     void removeUserById(Long id);
-
-    boolean checkForExistingEmailOrUsername(String email, String username);
 
     void saveRegisteredUser(User user);
 
     User resetPassword(String token, User user);
 
     String userExists(LoginDTO loginDTO);
+
+    boolean checkForExistingEmail(String email);
+
+    boolean checkForExistingUsername(String username);
 
 
 

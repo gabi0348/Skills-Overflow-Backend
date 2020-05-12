@@ -53,9 +53,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public String addUser(User user) {
         userRoles.clear();
-        if (checkForExistingEmailOrUsername(user.getEmail(), user.getUserName())) {
-            return "email or username already taken";
+        if(checkForExistingEmail(user.getEmail())){
+            return "email already taken";
+        } else if(checkForExistingUsername(user.getUserName())){
+            return "username already taken";
         }
+
         userRoles.add(new Role(1L, "user"));
         user.setRoles(userRoles);
         mailService.confirmRegistrationMail(user);
@@ -64,7 +67,7 @@ public class UserServiceImpl implements UserService {
         return "Please check your email";
     }
 
-    public User findByEmail(String email){
+    public User findByEmailAndSendResetPasswordEmail(String email){
        User user = userRepository.findByEmail(email);
        mailService.resetPasswordMail(user);
        return user;
@@ -93,12 +96,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkForExistingEmailOrUsername(String email, String username) {
+    public boolean checkForExistingEmail(String email){
         List<User> allUsers = userRepository.findAll();
         for (User user : allUsers) {
             if (user.getEmail().equals(email)) {
                 return true;
-            } else if (user.getUserName().equals(username)) {
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkForExistingUsername(String username) {
+        List<User> allUsers = userRepository.findAll();
+        for (User user : allUsers) {
+            if (user.getUserName().equals(username)) {
                 return true;
             }
         }
@@ -110,6 +122,7 @@ public class UserServiceImpl implements UserService {
         userRepository.saveAndFlush(user);
     }
 
+    @Override
     public User resetPassword(String token, User user) {
         User existingUser = resetPasswordTokenRepository.findByToken(token).getUser() ;
         existingUser.setPassword(user.getPassword());
