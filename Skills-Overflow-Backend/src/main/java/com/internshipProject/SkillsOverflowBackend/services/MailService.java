@@ -44,7 +44,7 @@ public class MailService {
 
         String recipientAddress = user.getEmail();
         String subject = "Reset password";
-        String changePasswordUrl = "/changePassword?token=" + token;
+        String changePasswordUrl = "/changePassword/" + token;
         String message = "Click on this link to reset your password";
 
         SimpleMailMessage email = new SimpleMailMessage();
@@ -52,7 +52,7 @@ public class MailService {
         email.setSubject(subject);
 
         //aici va trebuie sa intre pe un link din front-end;
-        email.setText(message + "\r\n" + "http://localhost:8081" + changePasswordUrl);
+        email.setText(message + "\r\n" + "http://localhost:3000" + changePasswordUrl);
         mailSender.send(email);
 
 

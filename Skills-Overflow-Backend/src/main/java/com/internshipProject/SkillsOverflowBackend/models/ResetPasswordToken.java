@@ -33,6 +33,6 @@ public class ResetPasswordToken {
     }
 
     public LocalDateTime calculateExpiryDate(int expiryTimeInSeconds){
-        return LocalDateTime.now().plusSeconds(60);
+        return LocalDateTime.now().plusSeconds(60*10);
     }
 }
