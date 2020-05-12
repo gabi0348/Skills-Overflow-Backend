@@ -19,6 +19,10 @@ public class ResetPasswordController {
     @Autowired
     private UserService userService;
 
+    @PostMapping("/resetPassword")
+    public User resetPassword(@RequestParam("email") String email) {
+        return userService.findByEmailAndSendResetPasswordEmail(email);
+    }
 
     @PutMapping("/savePassword")
     @ResponseBody
