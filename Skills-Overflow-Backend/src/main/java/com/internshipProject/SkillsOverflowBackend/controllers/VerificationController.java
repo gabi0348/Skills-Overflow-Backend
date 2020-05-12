@@ -44,7 +44,7 @@ public class VerificationController {
 
         //redirect pe alta pagina din front-end, dupa sign-up.
         // https://stackoverflow.com/questions/57395668/how-to-redirect-from-spring-controller-to-react-page
-        httpServletResponse.setHeader("Location", "http://localhost:8081/");
+        httpServletResponse.setHeader("Location", "http://localhost:3000/register-confirmation");
         httpServletResponse.setStatus(302);
 
         return "successful register";
