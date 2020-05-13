@@ -18,7 +18,7 @@ public interface UserService {
 
     void removeUserById(Long id);
 
-    void saveRegisteredUser(User user);
+    void saveUser(User user);
 
     User resetPassword(String token, User user);
 

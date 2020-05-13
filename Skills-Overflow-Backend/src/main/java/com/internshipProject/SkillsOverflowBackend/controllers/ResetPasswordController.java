@@ -7,7 +7,6 @@ import com.internshipProject.SkillsOverflowBackend.services.reset_password_token
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 
 @RestController
@@ -39,6 +38,10 @@ public class ResetPasswordController {
        }
 
         userService.resetPassword(token, user);
+        User foundUser = resetPasswordToken.getUser();
+        foundUser.setChangedPassword(true);
+        userService.saveUser(foundUser);
+
 
         return "password successfully changed";
     }

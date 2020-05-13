@@ -40,7 +40,7 @@ public class VerificationController {
 
         User user = verificationToken.getUser();
         user.setEnabled(true);
-        userService.saveRegisteredUser(user);
+        userService.saveUser(user);
 
         //redirect pe alta pagina din front-end, dupa sign-up.
         // https://stackoverflow.com/questions/57395668/how-to-redirect-from-spring-controller-to-react-page

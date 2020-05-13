@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveRegisteredUser(User user) {
+    public void saveUser(User user) {
         userRepository.saveAndFlush(user);
     }
 

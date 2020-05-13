@@ -46,6 +46,8 @@ public class User {
 
     private Boolean enabled;
 
+    private Boolean changedPassword = false;
+
     @OneToOne(mappedBy = "user")
     @JsonIgnore
     private VerificationToken verificationToken;
