@@ -69,7 +69,11 @@ public class UserServiceImpl implements UserService {
 
     public String findByEmailAndSendResetPasswordEmail(String email){
        User user = userRepository.findByEmail(email);
+
        if(user != null) {
+           if(user.getResetPasswordToken() != null){
+               return "Check your email. Password reset link already sent";
+           }
            mailService.resetPasswordMail(user);
            return "Email found";
        }

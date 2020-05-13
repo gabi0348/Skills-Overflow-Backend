@@ -38,8 +38,9 @@ public class MailService {
         mailSender.send(email);
     }
 
-    public void resetPasswordMail(User user){
+    public String resetPasswordMail(User user){
         String token = UUID.randomUUID().toString();
+
         resetPasswordTokenService.createPasswordTokenForUser(user, token);
 
         String recipientAddress = user.getEmail();
@@ -54,6 +55,8 @@ public class MailService {
         //aici va trebuie sa intre pe un link din front-end;
         email.setText(message + "\r\n" + "http://localhost:3000" + changePasswordUrl);
         mailSender.send(email);
+
+        return "mail sent";
 
 
     }
