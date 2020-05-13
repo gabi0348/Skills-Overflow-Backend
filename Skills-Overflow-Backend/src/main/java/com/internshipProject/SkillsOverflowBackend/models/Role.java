@@ -7,24 +7,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.Set;
 
 @Getter
 @Setter
-@Entity(name="role")
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Entity
 public class Role {
 
     @Id
     @GeneratedValue
     private Long roleId;
     private String role;
+
+    public Role(Long roleId, String role) {
+        this.roleId = roleId;
+        this.role = role;
+    }
 
     @ManyToMany(mappedBy = "roles")
     @JsonIgnore
