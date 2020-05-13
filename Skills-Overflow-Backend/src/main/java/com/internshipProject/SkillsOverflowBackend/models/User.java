@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -23,13 +26,22 @@ public class User {
     private Long userId;
 
     @NotNull
+    @Size(min = 2, max = 20)
+    @NotBlank
     private String userName;
+
     @NotNull
+    @NotBlank
     private String email;
+
     @NotNull(message = "Password cannot be empty")
+    @Size(min = 5, max = 20)
+    @NotBlank
+    @Pattern(regexp = "[A-Za-z0-9]*")
     private String password;
 
     private String firstName;
+
     private String lastName;
 
     private Boolean enabled;
