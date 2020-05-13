@@ -21,7 +21,7 @@ public class ResetPasswordController {
     private UserService userService;
 
     @PostMapping("/resetPassword")
-    public User resetPassword(@RequestParam("email") String email) {
+    public String resetPassword(@RequestParam("email") String email) {
         return userService.findByEmailAndSendResetPasswordEmail(email);
     }
 

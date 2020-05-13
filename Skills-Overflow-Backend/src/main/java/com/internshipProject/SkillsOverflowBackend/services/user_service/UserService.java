@@ -12,7 +12,7 @@ public interface UserService {
 
     String addUser(User user);
 
-    User findByEmailAndSendResetPasswordEmail(String email);
+    String findByEmailAndSendResetPasswordEmail(String email);
 
     UserDTO getUserDtoById(Long id);
 

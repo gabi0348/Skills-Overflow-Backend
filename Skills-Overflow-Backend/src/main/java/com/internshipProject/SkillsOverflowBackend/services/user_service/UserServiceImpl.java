@@ -67,10 +67,13 @@ public class UserServiceImpl implements UserService {
         return "Please check your email";
     }
 
-    public User findByEmailAndSendResetPasswordEmail(String email){
+    public String findByEmailAndSendResetPasswordEmail(String email){
        User user = userRepository.findByEmail(email);
-       mailService.resetPasswordMail(user);
-       return user;
+       if(user != null) {
+           mailService.resetPasswordMail(user);
+           return "Email found";
+       }
+       return "No email found";
     }
 
     @Override
