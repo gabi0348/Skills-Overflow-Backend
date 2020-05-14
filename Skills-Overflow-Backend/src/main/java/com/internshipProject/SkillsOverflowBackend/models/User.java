@@ -47,7 +47,6 @@ public class User {
     private String lastName;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
 
     private Boolean enabled;
 

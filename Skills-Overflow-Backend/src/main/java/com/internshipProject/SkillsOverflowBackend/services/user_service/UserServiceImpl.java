@@ -11,10 +11,7 @@ import com.internshipProject.SkillsOverflowBackend.services.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -135,6 +132,55 @@ public class UserServiceImpl implements UserService {
         existingUser.setPassword(user.getPassword());
         userRepository.saveAndFlush(existingUser);
         return existingUser;
+    }
+
+    public List<User> list() {
+        List<User> all = userRepository.findAll();
+        return all;
+    }
+
+
+    public User updateUser(Long id, User user) {
+        User existingUser = userRepository.getOne(id);
+        existingUser.setUserName(user.getUserName());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setPassword(user.getPassword());
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        return userRepository.saveAndFlush(existingUser);
+    }
+
+
+
+    public boolean validateEmailAndPassword(String email, String password) {
+        if (email.equals("") || password.equals("")) {
+            return false;
+        }
+
+        int atIndex = email.indexOf("@");
+
+        if (email.lastIndexOf("@") != atIndex) {
+            return false;
+        }
+
+        String beforeAt = email.substring(0, atIndex);
+
+        if (!beforeAt.contains(".")) {
+            return false;
+        }
+
+        if (!beforeAt.matches("[a-zA-Z]+" + "." + "[a-zA-Z]+")) {
+            return false;
+        }
+
+        return true;
+
+    }
+
+    public boolean checkForExistingEmailandPassword(String email, String password) {
+        return false;
+
+
     }
 
 

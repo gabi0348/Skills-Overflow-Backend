@@ -1,6 +1,6 @@
 package com.internshipProject.SkillsOverflowBackend.Configuration;
 
-import com.internshipProject.SkillsOverflowBackend.services.UserDetailsServiceImpl;
+import com.internshipProject.SkillsOverflowBackend.services.user_service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
@@ -72,7 +72,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/login/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/login/**").permitAll()
-                .antMatchers("/users").hasAnyRole("admin")
+                .antMatchers(HttpMethod.POST, "/signIn").permitAll()
+                .antMatchers("/users").permitAll()
                 .anyRequest().authenticated()
                 .and()
                // .httpBasic()
@@ -86,18 +87,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Bean
+ /*   @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         bCryptPasswordEncoder = new BCryptPasswordEncoder(4);
         return bCryptPasswordEncoder;
-    }
+    }*/
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userDetailsService);//.passwordEncoder(passwordEncoder());
     }
 
     @Bean

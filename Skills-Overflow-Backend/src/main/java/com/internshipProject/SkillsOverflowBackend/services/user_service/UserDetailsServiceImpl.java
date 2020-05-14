@@ -1,4 +1,4 @@
-package com.internshipProject.SkillsOverflowBackend.services;
+package com.internshipProject.SkillsOverflowBackend.services.user_service;
 
 import com.internshipProject.SkillsOverflowBackend.models.Role;
 import com.internshipProject.SkillsOverflowBackend.models.User;

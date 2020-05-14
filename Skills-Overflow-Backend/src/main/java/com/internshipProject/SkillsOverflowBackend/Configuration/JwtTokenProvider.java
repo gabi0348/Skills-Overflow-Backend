@@ -1,6 +1,6 @@
 package com.internshipProject.SkillsOverflowBackend.Configuration;
 
-import com.internshipProject.SkillsOverflowBackend.services.UserDetailsServiceImpl;
+import com.internshipProject.SkillsOverflowBackend.services.user_service.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
