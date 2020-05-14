@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService {
     private Role userRole = new Role();
 
 
+    @Override
     public void convertAllUsers(List<User> usersList) {
         usersDto.clear();
         usersList = userRepository.findAll();
@@ -57,9 +58,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String addUser(User user) {
-        if(checkForExistingEmail(user.getEmail())){
+        if (checkForExistingEmail(user.getEmail())) {
             return "email already taken";
-        } else if(checkForExistingUsername(user.getUserName())){
+        } else if (checkForExistingUsername(user.getUserName())) {
             return "username already taken";
         }
 
@@ -73,11 +74,12 @@ public class UserServiceImpl implements UserService {
         return "Please check your email";
     }
 
-    public String findByEmailAndSendResetPasswordEmail(String email){
+    @Override
+    public String findByEmailAndSendResetPasswordEmail(String email) {
         User user = userRepository.findByEmail(email);
 
-        if(user != null) {
-            if(user.getResetPasswordToken() != null){
+        if (user != null) {
+            if (user.getResetPasswordToken() != null) {
                 return "Check your email. Password reset link already sent";
             }
             mailService.resetPasswordMail(user);
@@ -109,7 +111,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkForExistingEmail(String email){
+    public boolean checkForExistingEmail(String email) {
         List<User> allUsers = userRepository.findAll();
         for (User user : allUsers) {
             if (user.getEmail().equals(email)) {
@@ -137,11 +139,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User resetPassword(String token, User user) {
-        User existingUser = resetPasswordTokenRepository.findByToken(token).getUser() ;
+        User existingUser = resetPasswordTokenRepository.findByToken(token).getUser();
         existingUser.setPassword(user.getPassword());
         userRepository.saveAndFlush(existingUser);
         return existingUser;
     }
 
+    @Override
+    public User findById(Long id) {
+        return userRepository.getOne(id);
+    }
 
+    @Override
+    public User findByUserName(String userName) {
+        return userRepository.findByUserName(userName);
+    }
 }

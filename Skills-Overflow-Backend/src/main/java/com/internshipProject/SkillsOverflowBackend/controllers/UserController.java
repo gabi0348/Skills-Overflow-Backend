@@ -47,8 +47,8 @@ public class UserController {
     }
 
 
-
- /*   @PostMapping("/logIn")
+    /*
+    @PostMapping("/logIn")
     @ResponseBody
     public String logIn(@RequestBody LoginDTO user){
             return userService.userExists(user);

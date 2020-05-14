@@ -28,6 +28,10 @@ public interface UserService {
 
     boolean checkForExistingUsername(String username);
 
+    void convertAllUsers(List<User> usersList);
 
+    User findById(Long id);
+
+    User findByUserName(String userName);
 
 }
