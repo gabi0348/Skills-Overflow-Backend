@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
 
     private List<UserDTO> usersDto = new ArrayList<>();
-    private Set<Role> userRoles = new HashSet<>();
+    private Role userRole = new Role();
 
 
     public void convertAllUsers(List<User> usersList) {
@@ -52,15 +52,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String addUser(User user) {
-        userRoles.clear();
         if(checkForExistingEmail(user.getEmail())){
             return "email already taken";
         } else if(checkForExistingUsername(user.getUserName())){
             return "username already taken";
         }
 
-        userRoles.add(new Role(1L, "user"));
-        user.setRoles(userRoles);
+        userRole = new Role(3L, "user pending");
+        user.setRole(userRole);
         mailService.confirmRegistrationMail(user);
         //nou Thread, ca front-end-ul să nu mai aștepte după back-end
         new Thread(() -> mailService.confirmRegistrationMail(user)).start();

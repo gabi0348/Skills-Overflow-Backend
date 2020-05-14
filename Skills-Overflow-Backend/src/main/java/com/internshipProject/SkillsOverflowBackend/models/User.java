@@ -56,12 +56,9 @@ public class User {
     @JsonIgnore
     private ResetPasswordToken resetPasswordToken;
 
-    @ManyToMany
-    @JoinTable(
-            name = "role_user",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
 
 
