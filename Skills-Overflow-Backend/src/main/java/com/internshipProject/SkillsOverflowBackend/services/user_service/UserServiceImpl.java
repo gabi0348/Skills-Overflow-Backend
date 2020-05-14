@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService {
     private Role userRole = new Role();
 
 
+    @Override
     public void convertAllUsers(List<User> usersList) {
         usersDto.clear();
         usersList = userRepository.findAll();
@@ -66,6 +67,7 @@ public class UserServiceImpl implements UserService {
         return "Please check your email";
     }
 
+    @Override
     public String findByEmailAndSendResetPasswordEmail(String email){
        User user = userRepository.findByEmail(email);
 
@@ -136,5 +138,11 @@ public class UserServiceImpl implements UserService {
         return existingUser;
     }
 
+    @Override
+    public User findById(Long id){
+        return userRepository.getOne(id);
+    }
 
+    @Override
+    public User findByUserName(String userName){return userRepository.findByUserName(userName);}
 }

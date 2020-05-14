@@ -27,7 +27,8 @@ public class Post {
     @CreationTimestamp
     private LocalDateTime createDate;
 
-    @ManyToOne
+    //merge sau persist
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

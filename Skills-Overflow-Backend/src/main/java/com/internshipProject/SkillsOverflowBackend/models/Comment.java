@@ -22,6 +22,7 @@ public class Comment {
 
     private String body;
     private Long voteCount;
+    private Boolean approvedComment;
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
