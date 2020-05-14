@@ -35,7 +35,6 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("D:\\Proiect DB- skills overflow\\Skills-Overflow-FrontEnd\\skills-overflow\\src");
-        //registry.addViewController("/login.html");
         registry.addResourceHandler("/*.tsx").addResourceLocations("/WEB-INF/view/react/build/");
         registry.addResourceHandler("/*.json").addResourceLocations("/WEB-INF/view/react/build/");
         registry.addResourceHandler("/*.ico").addResourceLocations("/WEB-INF/view/react/build/");

@@ -29,7 +29,7 @@ public class Role {
         this.role = role;
     }
 
-    @OneToMany(cascade = {CascadeType.ALL},mappedBy = "role")
+    @OneToMany(mappedBy = "role")
     @JsonIgnore
     private Set<User> users;
 

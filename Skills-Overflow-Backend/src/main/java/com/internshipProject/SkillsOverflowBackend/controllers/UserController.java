@@ -14,8 +14,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 
 @CrossOrigin
@@ -71,17 +72,16 @@ public class UserController {
     JwtTokenProvider jwtTokenProvider;
 
     @RequestMapping(value = "/logIn", method = RequestMethod.POST)
-    public String login(@RequestBody LoginDTO user) {//@PathVariable String username, @PathVariable String password
+    public Map<Object, Object> login(@RequestBody LoginDTO user) {//@PathVariable String username, @PathVariable String password
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToke=new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         Authentication authentication   = authenticationManager.authenticate(usernamePasswordAuthenticationToke);
-        List<String> roles =authentication.getAuthorities().stream().map(x-> x.getAuthority()).collect(Collectors.toList());
-        String token = jwtTokenProvider.createToken(user.getEmail(),roles);
-    /*    Map<Object, Object> model = new HashMap<>();
-        model.put("email", email);
+        String role =authentication.getAuthorities().toString();
+        String token = jwtTokenProvider.createToken(user.getEmail(),role);
+        Map<Object, Object> model = new HashMap<>();
+        //model.put("email", email);
         model.put("token", token);
-        model.put("roles",roles);
-        return model;*/
-        return token;
+        model.put("role",role);
+        return model;
     }
     @GetMapping("/user")
     public Authentication returnUser() {

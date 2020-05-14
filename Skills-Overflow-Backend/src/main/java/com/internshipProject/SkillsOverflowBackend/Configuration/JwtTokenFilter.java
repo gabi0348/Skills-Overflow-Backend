@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
     private JwtTokenProvider jwtTokenProvider;
@@ -20,19 +21,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
-            String token = jwtTokenProvider.resolveToken((HttpServletRequest) req);
-            if (token != null && jwtTokenProvider.validateToken(token)) {
-                Authentication auth = token != null ? jwtTokenProvider.getAuthentication(token) : null;
-                SecurityContextHolder.getContext().setAuthentication(auth);
-            }
-            filterChain.doFilter(req, res);
-        }
-    }
-
-/*
-    @Override
-    public void doFilterInternal(ServletRequest req, ServletResponse res, FilterChain filterChain)
-            throws IOException, ServletException {
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) req);
         if (token != null && jwtTokenProvider.validateToken(token)) {
             Authentication auth = token != null ? jwtTokenProvider.getAuthentication(token) : null;
@@ -40,4 +28,5 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(req, res);
     }
-}*/
+}
+

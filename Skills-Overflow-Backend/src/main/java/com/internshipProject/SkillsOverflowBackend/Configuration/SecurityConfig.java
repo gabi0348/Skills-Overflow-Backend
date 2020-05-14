@@ -25,13 +25,14 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 @Order(SecurityProperties.BASIC_AUTH_ORDER - 10)
-public class SecurityConfig extends WebSecurityConfigurerAdapter  {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     JwtTokenFilter jwtTokenFilter;
+
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -40,49 +41,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-       /* http
-                .authorizeRequests()
-                .antMatchers("/admin").hasRole("admin")
-                .antMatchers("/users").hasRole("admin")
-                .antMatchers("/signUp").hasRole("user")
-                .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/login").permitAll()
-                .antMatchers(HttpMethod.GET, "/index*", "/static/**", "/*.tsx", "/*.json", "/*.ico").permitAll()
-                .anyRequest().authenticated();
-        http.csrf().disable();
-
-        http
-                .formLogin().loginPage("/index.html")//"http://localhost:3000/login.html")
-                .loginProcessingUrl("/perform_login")
-                .defaultSuccessUrl("/homepage.html",true)
-                //.failureUrl("/index.html?error=true")
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll();
-        http.headers().frameOptions().disable();
-        http.cors().configurationSource(corsConfigurationSource());*/
-       /* .and()
-                .authorizeRequests().anyRequest().permitAll();*/
         http
                 .httpBasic().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/login/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/login/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/login/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/login/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/signIn").permitAll()
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-               // .httpBasic()
-                //.and()
+
                 .cors()
                 .and()
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers().frameOptions().disable();
-               // .apply(new JwtConfigurer(jwtTokenProvider));
+
 
     }
 
@@ -93,7 +69,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
         bCryptPasswordEncoder = new BCryptPasswordEncoder(4);
         return bCryptPasswordEncoder;
     }
-
 
 
     @Autowired
@@ -108,9 +83,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
         configuration.setAllowCredentials(true);
-        //the below three lines will add the relevant CORS response headers
         configuration.addAllowedOrigin("*");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
@@ -118,16 +92,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
-  /*  @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST","PUT", "DELETE");
-
-
-            }
-        };
-    }*/
 }
