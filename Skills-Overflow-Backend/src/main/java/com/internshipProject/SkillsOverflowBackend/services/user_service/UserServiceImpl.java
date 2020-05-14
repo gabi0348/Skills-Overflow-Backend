@@ -62,7 +62,9 @@ public class UserServiceImpl implements UserService {
         } else if(checkForExistingUsername(user.getUserName())){
             return "username already taken";
         }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         userRole = new Role(3L, "user pending");
         user.setRole(userRole);
         mailService.confirmRegistrationMail(user);
