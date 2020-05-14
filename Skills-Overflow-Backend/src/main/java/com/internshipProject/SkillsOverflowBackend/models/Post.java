@@ -20,8 +20,10 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String topic;
     private String title;
     private String body;
+    private Long numberOfComments;
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
