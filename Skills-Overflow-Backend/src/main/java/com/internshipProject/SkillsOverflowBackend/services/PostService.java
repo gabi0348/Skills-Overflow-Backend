@@ -2,12 +2,7 @@ package com.internshipProject.SkillsOverflowBackend.services;
 
 import com.internshipProject.SkillsOverflowBackend.models.Post;
 import com.internshipProject.SkillsOverflowBackend.repositories.PostRepository;
-import org.graalvm.compiler.serviceprovider.ServiceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
