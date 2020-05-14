@@ -48,6 +48,8 @@ public class User {
 
     private Boolean changedPassword = false;
 
+
+
     @OneToOne(mappedBy = "user")
     @JsonIgnore
     private VerificationToken verificationToken;
@@ -56,9 +58,15 @@ public class User {
     @JsonIgnore
     private ResetPasswordToken resetPasswordToken;
 
+    @OneToOne(mappedBy = "user")
+    @JsonIgnore
+    private BlockedUserToken blockedUserToken;
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
+
 
 
 

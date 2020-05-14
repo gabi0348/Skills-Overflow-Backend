@@ -9,7 +9,6 @@ import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.repositories.ResetPasswordTokenRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.MailService;
-import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
@@ -57,14 +56,14 @@ public class UserServiceImpl implements UserService {
         } else if(checkForExistingUsername(user.getUserName())){
             return "username already taken";
         }
-
         userRole = new Role(3L, "user pending");
         user.setRole(userRole);
-        mailService.confirmRegistrationMail(user);
-        //nou Thread, ca front-end-ul să nu mai aștepte după back-end
-        new Thread(() -> mailService.confirmRegistrationMail(user)).start();
-        return "Please check your email";
+        userRepository.saveAndFlush(user);
+
+        return "Request Pending";
     }
+
+
 
     public String findByEmailAndSendResetPasswordEmail(String email){
        User user = userRepository.findByEmail(email);
@@ -135,6 +134,8 @@ public class UserServiceImpl implements UserService {
         userRepository.saveAndFlush(existingUser);
         return existingUser;
     }
+
+
 
 
 }

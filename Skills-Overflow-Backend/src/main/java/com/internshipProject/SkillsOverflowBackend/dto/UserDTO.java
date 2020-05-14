@@ -5,9 +5,6 @@ import com.internshipProject.SkillsOverflowBackend.models.Role;
 import lombok.*;
 import lombok.experimental.Accessors;
 
-import org.springframework.stereotype.Service;
-
-import java.util.Set;
 
 @Setter
 @Getter

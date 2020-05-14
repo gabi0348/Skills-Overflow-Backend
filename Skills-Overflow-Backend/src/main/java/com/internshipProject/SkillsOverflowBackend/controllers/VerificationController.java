@@ -1,5 +1,6 @@
 package com.internshipProject.SkillsOverflowBackend.controllers;
 
+import com.internshipProject.SkillsOverflowBackend.models.Role;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.models.VerificationToken;
 import com.internshipProject.SkillsOverflowBackend.services.verification_token_service.VerificationTokenService;
@@ -27,17 +28,12 @@ public class VerificationController {
 
 
         VerificationToken verificationToken = verificationTokenService.getVerificationToken(token);
-
         if (verificationToken == null) {
             return "no token available";
-
         }
-
         if (LocalDateTime.now().isAfter(verificationToken.getExpirationDate())) {
             return "expired time";
-
         }
-
         User user = verificationToken.getUser();
         user.setEnabled(true);
         userService.saveUser(user);
