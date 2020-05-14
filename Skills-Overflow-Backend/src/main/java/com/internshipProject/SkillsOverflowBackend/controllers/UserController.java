@@ -86,7 +86,6 @@ public class UserController {
     @GetMapping("/user")
     public Authentication returnUser() {
         return SecurityContextHolder.getContext().getAuthentication();
-
     }
 
 }
