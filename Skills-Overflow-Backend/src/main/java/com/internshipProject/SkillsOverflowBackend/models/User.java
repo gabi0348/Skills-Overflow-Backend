@@ -2,16 +2,15 @@ package com.internshipProject.SkillsOverflowBackend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
-import java.util.Set;
 
 @Entity
 @Getter
@@ -37,16 +36,14 @@ public class User {
     private String email;
 
     @NotNull(message = "Password cannot be empty")
-    @Size(min = 5, max = 20)
+    @Size(min = 5, max = 100)
     @NotBlank
-    @Pattern(regexp = "[A-Za-z0-9]*")
+    //@Pattern(regexp = "[A-Za-z0-9]*")
     private String password;
 
     private String firstName;
 
     private String lastName;
-
-
 
     private Boolean enabled;
 
@@ -60,12 +57,10 @@ public class User {
     @JsonIgnore
     private ResetPasswordToken resetPasswordToken;
 
-    @ManyToMany
-    @JoinTable(
-            name = "role_user",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    @ManyToOne
+    @JoinColumn( name = "role_id")
+    private Role role;
+
 
 
 }

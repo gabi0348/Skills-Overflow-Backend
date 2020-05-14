@@ -9,9 +9,13 @@ import com.internshipProject.SkillsOverflowBackend.repositories.ResetPasswordTok
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,9 +29,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ResetPasswordTokenRepository resetPasswordTokenRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     private List<UserDTO> usersDto = new ArrayList<>();
-    private Set<Role> userRoles = new HashSet<>();
+    private Role userRole = new Role();
 
 
     public void convertAllUsers(List<User> usersList) {
@@ -47,17 +54,17 @@ public class UserServiceImpl implements UserService {
         return this.usersDto;
     }
 
+
     @Override
     public String addUser(User user) {
-        userRoles.clear();
         if(checkForExistingEmail(user.getEmail())){
             return "email already taken";
         } else if(checkForExistingUsername(user.getUserName())){
             return "username already taken";
         }
-
-        userRoles.add(new Role(1L, "user"));
-        user.setRoles(userRoles);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRole = new Role(3L, "user pending");
+        user.setRole(userRole);
         mailService.confirmRegistrationMail(user);
         //nou Thread, ca front-end-ul să nu mai aștepte după back-end
         new Thread(() -> mailService.confirmRegistrationMail(user)).start();
@@ -65,16 +72,16 @@ public class UserServiceImpl implements UserService {
     }
 
     public String findByEmailAndSendResetPasswordEmail(String email){
-       User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email);
 
-       if(user != null) {
-           if(user.getResetPasswordToken() != null){
-               return "Check your email. Password reset link already sent";
-           }
-           mailService.resetPasswordMail(user);
-           return "Email found";
-       }
-       return "No email found";
+        if(user != null) {
+            if(user.getResetPasswordToken() != null){
+                return "Check your email. Password reset link already sent";
+            }
+            mailService.resetPasswordMail(user);
+            return "Email found";
+        }
+        return "No email found";
     }
 
     @Override
@@ -132,55 +139,6 @@ public class UserServiceImpl implements UserService {
         existingUser.setPassword(user.getPassword());
         userRepository.saveAndFlush(existingUser);
         return existingUser;
-    }
-
-    public List<User> list() {
-        List<User> all = userRepository.findAll();
-        return all;
-    }
-
-
-    public User updateUser(Long id, User user) {
-        User existingUser = userRepository.getOne(id);
-        existingUser.setUserName(user.getUserName());
-        existingUser.setEmail(user.getEmail());
-        existingUser.setPassword(user.getPassword());
-        existingUser.setFirstName(user.getFirstName());
-        existingUser.setLastName(user.getLastName());
-        return userRepository.saveAndFlush(existingUser);
-    }
-
-
-
-    public boolean validateEmailAndPassword(String email, String password) {
-        if (email.equals("") || password.equals("")) {
-            return false;
-        }
-
-        int atIndex = email.indexOf("@");
-
-        if (email.lastIndexOf("@") != atIndex) {
-            return false;
-        }
-
-        String beforeAt = email.substring(0, atIndex);
-
-        if (!beforeAt.contains(".")) {
-            return false;
-        }
-
-        if (!beforeAt.matches("[a-zA-Z]+" + "." + "[a-zA-Z]+")) {
-            return false;
-        }
-
-        return true;
-
-    }
-
-    public boolean checkForExistingEmailandPassword(String email, String password) {
-        return false;
-
-
     }
 
 

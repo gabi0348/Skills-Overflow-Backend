@@ -73,32 +73,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
                 .antMatchers(HttpMethod.POST,"/login/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/login/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/signIn").permitAll()
-                .antMatchers("/users").permitAll()
+                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                // .httpBasic()
                 //.and()
                 .cors()
                 .and()
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .headers().frameOptions().disable();
                // .apply(new JwtConfigurer(jwtTokenProvider));
 
     }
 
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
- /*   @Bean
+    @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         bCryptPasswordEncoder = new BCryptPasswordEncoder(4);
         return bCryptPasswordEncoder;
-    }*/
+    }
+
+
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);//.passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Bean

@@ -47,11 +47,11 @@ public class UserController {
 
 
 
-    @PostMapping("/logIn")
+ /*   @PostMapping("/logIn")
     @ResponseBody
     public String logIn(@RequestBody LoginDTO user){
             return userService.userExists(user);
-    }
+    }*/
 
     @GetMapping("/findById/{id}")
     @ResponseBody
@@ -70,12 +70,12 @@ public class UserController {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@RequestParam String email,@RequestParam String password) {//@PathVariable String username, @PathVariable String password
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToke=new UsernamePasswordAuthenticationToken(email, password);
+    @RequestMapping(value = "/logIn", method = RequestMethod.POST)
+    public String login(@RequestBody LoginDTO user) {//@PathVariable String username, @PathVariable String password
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToke=new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         Authentication authentication   = authenticationManager.authenticate(usernamePasswordAuthenticationToke);
         List<String> roles =authentication.getAuthorities().stream().map(x-> x.getAuthority()).collect(Collectors.toList());
-        String token = jwtTokenProvider.createToken(email,roles);
+        String token = jwtTokenProvider.createToken(user.getEmail(),roles);
     /*    Map<Object, Object> model = new HashMap<>();
         model.put("email", email);
         model.put("token", token);
