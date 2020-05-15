@@ -10,10 +10,16 @@ insert into user values(2, false,'george.pop@gmail.com', true, 'gigi','lastname'
 insert into user values(3, false,'george@gmail.com', true, 'coco','lastname','$2a$04$pMF92/IeIwj7qmUEHYxFb.RrzoIh5i/jPsPXl7QV8JxVhQqUtKfry','username', 3);
 insert into user values(4, false,'cristos@gmail.com', true, 'data','lastname','$2a$04$pMF92/IeIwj7qmUEHYxFb.RrzoIh5i/jPsPXl7QV8JxVhQqUtKfry','username', 4);
 
+
+
+//inserare postari
+
+insert into post values ( 1,'dasdasda asdahakfhak afkdfhksd dssdsdsds',null,4,'oare e bine?','java', 2);
+insert into post values ( 2,'dasdasda asdahakfhak afkdfhksd dssdsdsds',null,4,'oare e bine?','java',2);
+
 //inserare notificari
 
-insert into notification values(5,true,'comment','postarea X',2);
-insert into notification values(2,true,'comment are','postarea X',3);
-insert into notification values(3,true,'commentare','postarea X',2);
-insert into notification values(4,true,'comment la stare','postarea X',2);
-
+insert into notification values(1,null,true,'notification type',2,2);
+insert into notification values(2,null,true,'notification type',2,3);
+insert into notification values(3,null,true,'notification type',2,2);
+insert into notification values(4,null,true,'notification type',2,2);

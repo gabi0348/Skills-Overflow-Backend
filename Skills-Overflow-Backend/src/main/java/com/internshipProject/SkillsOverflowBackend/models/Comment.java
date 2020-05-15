@@ -1,8 +1,9 @@
 package com.internshipProject.SkillsOverflowBackend.models;
 
-import com.internshipProject.SkillsOverflowBackend.models.User;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -13,6 +14,8 @@ import java.time.LocalDateTime;
 @Table(name = "comment")
 @Data
 @NoArgsConstructor
+@Getter
+@Setter
 @Entity
 public class Comment {
 
