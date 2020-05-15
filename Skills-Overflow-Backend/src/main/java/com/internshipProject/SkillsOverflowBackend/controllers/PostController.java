@@ -4,6 +4,7 @@ import com.internshipProject.SkillsOverflowBackend.models.Post;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.services.PostService;
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
+import com.internshipProject.SkillsOverflowBackend.utils.Owner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class PostController {
     UserService userService;
 
 
-    @GetMapping(value = "createPost/{userId}")
+    @PostMapping(value = "createPost/{userId}")
     public Post newPost(@RequestBody @Valid Post post, @PathVariable Long userId) {
         User user = userService.findById(userId);
         post.setUser(user);
@@ -28,7 +29,7 @@ public class PostController {
         return post;
     }
 
-    @GetMapping(value = "/editPost/{userId}")
+    @PutMapping(value = "/editPost/{userId}")
     public String editPostWithId(@RequestBody @Valid Post newPost, @PathVariable Long userId) {
 
         User user = userService.findById(userId);
@@ -37,7 +38,7 @@ public class PostController {
         if (optionalOldPost.isPresent()) {
             Post oldPost = optionalOldPost.get();
 
-            if (isPrincipalOwnerOfPost(user, oldPost)) {
+            if (Owner.isPrincipalOwnerOfPost(user, oldPost)) {
                 postService.updateAndSavePost(oldPost, newPost);
                 return "Updated post";
             }
@@ -55,7 +56,7 @@ public class PostController {
         if (optionalOldPost.isPresent()) {
             Post post = optionalOldPost.get();
 
-            if (isPrincipalOwnerOfPost(user, post)) {
+            if (Owner.isPrincipalOwnerOfPost(user, post)) {
                 postService.deletePost(post);
                 return "Deleted post";
             }
@@ -71,9 +72,6 @@ public class PostController {
         return postService.getAllFilteredPosts(pageNo, criteria, topic);
     }
 
-    private boolean isPrincipalOwnerOfPost(User user, Post post) {
-        return user != null && user.getUserName().equals(post.getUser().getUserName());
-    }
 }
 
 
