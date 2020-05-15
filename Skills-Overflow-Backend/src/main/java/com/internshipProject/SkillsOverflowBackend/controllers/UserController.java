@@ -3,7 +3,9 @@ package com.internshipProject.SkillsOverflowBackend.controllers;
 import com.internshipProject.SkillsOverflowBackend.Configuration.JwtTokenProvider;
 import com.internshipProject.SkillsOverflowBackend.dto.LoginDTO;
 import com.internshipProject.SkillsOverflowBackend.dto.UserDTO;
+import com.internshipProject.SkillsOverflowBackend.models.Notification;
 import com.internshipProject.SkillsOverflowBackend.models.User;
+import com.internshipProject.SkillsOverflowBackend.repositories.NotificationRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @GetMapping("/users")
     public List<UserDTO> findAll() {
@@ -87,6 +92,11 @@ public class UserController {
     public Authentication returnUser() {
         return SecurityContextHolder.getContext().getAuthentication();
 
+    }
+
+    @GetMapping("/notifications")
+    public List<Notification> listNotification(){
+        return notificationRepository.findAll();
     }
 
 }

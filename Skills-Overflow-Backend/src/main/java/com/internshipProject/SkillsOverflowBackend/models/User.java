@@ -58,10 +58,11 @@ public class User {
     private ResetPasswordToken resetPasswordToken;
 
     @ManyToOne
-    @JoinColumn( name = "role_id")
-
+    @JoinColumn(name = "role_id")
     private Role role;
 
-
-
+ /*   @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private Set<Notification> notifiactions;*/
 }
+

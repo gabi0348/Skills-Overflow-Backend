@@ -10,6 +10,10 @@ insert into user values(2, false,'george.pop@gmail.com', true, 'gigi','lastname'
 insert into user values(3, false,'george@gmail.com', true, 'coco','lastname','$2a$04$pMF92/IeIwj7qmUEHYxFb.RrzoIh5i/jPsPXl7QV8JxVhQqUtKfry','username', 3);
 insert into user values(4, false,'cristos@gmail.com', true, 'data','lastname','$2a$04$pMF92/IeIwj7qmUEHYxFb.RrzoIh5i/jPsPXl7QV8JxVhQqUtKfry','username', 4);
 
+//inserare notificari
 
-
+insert into notification values(5,true,'comment','postarea X',2);
+insert into notification values(2,true,'comment are','postarea X',3);
+insert into notification values(3,true,'commentare','postarea X',2);
+insert into notification values(4,true,'comment la stare','postarea X',2);
 
