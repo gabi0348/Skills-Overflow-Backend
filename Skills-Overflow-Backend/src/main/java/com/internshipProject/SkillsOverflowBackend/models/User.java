@@ -44,9 +44,11 @@ public class User {
 
     private String lastName;
 
-    private Boolean enabled;
+    private Boolean enabled = false;
 
     private Boolean changedPassword = false;
+
+    private Long blockCount = 0L;
 
 
 

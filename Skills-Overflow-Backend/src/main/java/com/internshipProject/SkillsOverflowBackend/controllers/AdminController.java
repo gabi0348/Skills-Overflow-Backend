@@ -1,6 +1,5 @@
 package com.internshipProject.SkillsOverflowBackend.controllers;
 
-import com.internshipProject.SkillsOverflowBackend.models.BlockedUserToken;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.services.admin_service.AdminService;
 import com.internshipProject.SkillsOverflowBackend.services.blocked_user_token_service.BlockedUserTokenService;
@@ -20,29 +19,31 @@ public class AdminController {
 
     @PutMapping("/approveRequest/{id}")
     @ResponseBody
-    public String savePassword(@PathVariable Long id, @RequestBody User user) {
-        adminService.approveRequest(id, user);
-        return "Request approved";
+    public String approveRequest(@PathVariable Long id, @RequestBody User user) {
+        return adminService.approveRequest(id, user);
     }
 
-    @DeleteMapping("/declineRequest/{id}")
+    @PutMapping("/declineRequest/{id}")
     @ResponseBody
-    public String declineRequest(@PathVariable Long id){
-        adminService.declineRequestAndDeleteUser(id);
-        return "The request has been denied. User has been deleted";
+    public String declineRequest(@PathVariable Long id, @RequestBody User user){
+        return adminService.declineRequest(id, user);
     }
 
     @PutMapping("/blockUser/{id}")
     @ResponseBody
     public String blockUser(@PathVariable Long id, @RequestBody User user){
-        adminService.blockUser(id, user);
-        return "User has been blocked";
+        return adminService.blockUser(id, user);
+    }
+
+    @PutMapping("/unblockUser/{id}")
+    @ResponseBody
+    public String unblockUser(@PathVariable Long id, @RequestBody User user){
+        return adminService.unblockUser(id, user);
     }
 
     @PutMapping("/promoteToAdmin/{id}")
     @ResponseBody
     public String promoteUserToAdmin(@PathVariable Long id, @RequestBody User user){
-        String message = adminService.promoteUserToAdmin(id, user);
-        return message;
+        return adminService.promoteUserToAdmin(id, user);
     }
 }

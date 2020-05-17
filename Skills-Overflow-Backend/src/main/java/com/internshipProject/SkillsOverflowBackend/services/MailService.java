@@ -68,6 +68,32 @@ public class MailService {
         mailSender.send(email);
     }
 
+    public void blockedUserIndefinitelyEmail(User user) {
+        String recipientAddress = user.getEmail();
+        String subject = "Blocked Account Indefinitely";
+        String message = "You have been blocked indefinitely from SkillsOverflow";
+
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(recipientAddress);
+        email.setSubject(subject);
+        email.setText(message);
+        mailSender.send(email);
+
+    }
+
+    public void unblockedByAdminEmail(User user) {
+        String recipientAddress = user.getEmail();
+        String subject = "Unblocked by admin";
+        String message = "One of our admins decided to give you a second chance. Your account has been unblocked";
+
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(recipientAddress);
+        email.setSubject(subject);
+        email.setText(message);
+        mailSender.send(email);
+    }
+
+
     public void promoteUserToAdminEmail(User user){
 
         String recipientAddress = user.getEmail();

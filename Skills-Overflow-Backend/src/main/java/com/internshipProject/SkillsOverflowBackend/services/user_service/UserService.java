@@ -28,6 +28,7 @@ public interface UserService {
 
     boolean checkForExistingUsername(String username);
 
+    List<UserDTO> findAllUsersByRole(String userRole);
 
 
 

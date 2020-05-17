@@ -2,6 +2,7 @@ package com.internshipProject.SkillsOverflowBackend.controllers;
 
 import com.internshipProject.SkillsOverflowBackend.dto.LoginDTO;
 import com.internshipProject.SkillsOverflowBackend.dto.UserDTO;
+import com.internshipProject.SkillsOverflowBackend.enums.UsersRoles;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
@@ -31,6 +32,31 @@ public class UserController {
     @GetMapping("/allUsers")
     public List<User> findAllUsers(){
         return userRepo.findAll();
+    }
+
+    @GetMapping("/allAdmins")
+    public List<UserDTO> findAllAdmins(){
+        return userService.findAllUsersByRole(UsersRoles.ADMIN.toString());
+    }
+
+    @GetMapping("/allApprovedUsers")
+    public List<UserDTO> findAllApprovedUsers(){
+        return userService.findAllUsersByRole(UsersRoles.APPROVED_USER.toString());
+    }
+
+    @GetMapping("/allPendingUsers")
+    public List<UserDTO> findAllPendingUsers(){
+        return userService.findAllUsersByRole(UsersRoles.PENDING_USER.toString());
+    }
+
+    @GetMapping("/allBlockedUsers")
+    public List<UserDTO> findAllBlockedUsers(){
+        return userService.findAllUsersByRole(UsersRoles.BLOCKED_USER.toString());
+    }
+
+    @GetMapping("/allDeclinedUsers")
+    public List<UserDTO> findAllDeclinedUsers(){
+        return userService.findAllUsersByRole(UsersRoles.DECLINED_USER.toString());
     }
 
     //acum intoarce un string

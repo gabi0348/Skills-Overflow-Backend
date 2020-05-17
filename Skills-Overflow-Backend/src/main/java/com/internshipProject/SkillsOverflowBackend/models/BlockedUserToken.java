@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BlockedUserToken {
 
-    public static final int EXPIRATION = 60;
+    public static final int EXPIRATION = 30;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

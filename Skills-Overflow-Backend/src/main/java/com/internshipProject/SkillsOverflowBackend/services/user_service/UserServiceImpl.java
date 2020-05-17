@@ -50,6 +50,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserDTO> findAllUsersByRole(String userRole){
+        usersDto.clear();
+        List<User> usersList = userRepository.findAll();
+        for(User user : usersList) {
+            UserDTO userDto = UserConverter.convertToUserDto(user);
+            if(userDto.getRole().equals(userRole)){
+                usersDto.add(userDto);
+            }
+        }
+        return usersDto;
+    }
+
+    @Override
     public String addUser(User user) {
         if(checkForExistingEmail(user.getEmail())){
             return "email already taken";

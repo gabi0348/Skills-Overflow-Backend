@@ -1,6 +1,7 @@
 package com.internshipProject.SkillsOverflowBackend.services.admin_service;
 
 import com.internshipProject.SkillsOverflowBackend.models.User;
+import com.internshipProject.SkillsOverflowBackend.repositories.BlockedUserTokenRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,33 +14,48 @@ public class AdminServiceImpl implements AdminService{
     private UserRepository userRepository;
 
     @Autowired
+    private BlockedUserTokenRepository blockedUserTokenRepository;
+
+    @Autowired
     private MailService mailService;
 
     @Override
     public String approveRequest(Long id, User user){
         User existingUser = userRepository.getOne(id);
-        existingUser.setRole(user.getRole());
-        mailService.confirmRegistrationMail(existingUser);
-        new Thread(() -> mailService.confirmRegistrationMail(existingUser)).start();
-        userRepository.saveAndFlush(existingUser);
-        return "Please check your email";
+            existingUser.setRole(user.getRole());
+            mailService.confirmRegistrationMail(existingUser);
+            new Thread(() -> mailService.confirmRegistrationMail(existingUser)).start();
+            userRepository.saveAndFlush(existingUser);
+            return "Please check your email.";
     }
 
     @Override
-    public String declineRequestAndDeleteUser(Long id) {
+    public String declineRequest(Long id, User user) {
         User existingUser = userRepository.getOne(id);
+        existingUser.setRole(user.getRole());
         mailService.declineUserEmail(existingUser);
-        userRepository.deleteById(id);
-        return "The request has been denied. User has been deleted";
+        userRepository.saveAndFlush(existingUser);
+        return "The request has been declined.";
     }
 
     @Override
     public String blockUser(Long id, User user){
         User existingUser = userRepository.getOne(id);
+            existingUser.setRole(user.getRole());
+            mailService.blockedUserEmail(existingUser);
+            userRepository.saveAndFlush(existingUser);
+            return "user blocked";
+
+    }
+
+    public String unblockUser(Long id, User user) {
+        User existingUser = userRepository.getOne(id);
+        existingUser.setBlockedUserToken(user.getBlockedUserToken());
         existingUser.setRole(user.getRole());
-        mailService.blockedUserEmail(existingUser);
+        existingUser.setBlockCount(user.getBlockCount());
+        mailService.unblockedByAdminEmail(existingUser);
         userRepository.saveAndFlush(existingUser);
-        return "user blocked";
+        return "user unblocked";
     }
 
     @Override
