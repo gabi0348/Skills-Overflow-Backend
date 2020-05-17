@@ -37,9 +37,9 @@ public class User {
     private String email;
 
     @NotNull(message = "Password cannot be empty")
-    @Size(min = 5, max = 100)
+    @Size(min = 5, max = 200)
     @NotBlank
-    @Pattern(regexp = "[A-Za-z0-9]*")
+//    @Pattern(regexp = "[A-Za-z0-9]*")
     private String password;
 
     private String firstName;
