@@ -10,6 +10,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -38,16 +39,20 @@ public class User {
     @NotNull(message = "Password cannot be empty")
     @Size(min = 5, max = 100)
     @NotBlank
-    //@Pattern(regexp = "[A-Za-z0-9]*")
+    @Pattern(regexp = "[A-Za-z0-9]*")
     private String password;
 
     private String firstName;
 
     private String lastName;
 
-    private Boolean enabled;
+    private Boolean enabled = false;
 
     private Boolean changedPassword = false;
+
+    private Long blockCount = 0L;
+
+
 
     @OneToOne(mappedBy = "user")
     @JsonIgnore
@@ -57,11 +62,15 @@ public class User {
     @JsonIgnore
     private ResetPasswordToken resetPasswordToken;
 
+    @OneToOne(mappedBy = "user")
+    @JsonIgnore
+    private BlockedUserToken blockedUserToken;
+
     @ManyToOne
     @JoinColumn( name = "role_id")
 
     private Role role;
 
 
-
 }
+
