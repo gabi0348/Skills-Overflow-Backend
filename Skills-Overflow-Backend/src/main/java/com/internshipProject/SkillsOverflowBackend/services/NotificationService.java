@@ -23,7 +23,7 @@ public class NotificationService {
                 .stream()
                 .map(Comment::getUser); //doar userii
         Set<User> userList = Stream.concat(Stream.of(post.getUser()), stream)
-                .filter(u -> !(u.getFirstName().equals(user.getFirstName())))
+                .filter(u -> !(u.getUserId().equals(user.getUserId())))
                 .collect(Collectors.toSet());
 
         Notification notification = new Notification();
