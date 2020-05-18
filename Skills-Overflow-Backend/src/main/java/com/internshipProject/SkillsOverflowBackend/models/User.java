@@ -2,15 +2,21 @@ package com.internshipProject.SkillsOverflowBackend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import com.internshipProject.SkillsOverflowBackend.shouldI.Notification;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import java.util.List;
+
+
 
 @Entity
 @Getter
@@ -62,6 +68,13 @@ public class User {
 
     private Role role;
 
+    //??? + json_ignore
+    @ManyToMany(mappedBy = "users")
+    //@JsonIgnore
+    private List<Notification> notifications;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private List<Comment> comments;
 
 }

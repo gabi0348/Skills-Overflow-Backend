@@ -1,8 +1,11 @@
 package com.internshipProject.SkillsOverflowBackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -11,29 +14,31 @@ import java.time.LocalDateTime;
 
 //https://github.com/reljicd/spring-boot-blog/tree/master/src/main/java/com/reljicd
 @Table(name = "comment")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String body;
-    private Long voteCount;
+    private Long voteCount = 0L;
     private Boolean approvedComment;
 
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     @CreationTimestamp
     private LocalDateTime createDate;
 
-    @ManyToOne
-    @JoinColumn(name = "post_id", nullable = false)
-    @NotNull
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "post_id")
+    @JsonIgnore
     private Post post;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "user_id")
+    //@JsonIgnore
     private User user;
 }
