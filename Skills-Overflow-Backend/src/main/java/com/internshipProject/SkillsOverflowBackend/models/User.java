@@ -64,7 +64,7 @@ public class User {
 
     //??? + json_ignore
     @ManyToMany(mappedBy = "users")
-    @JsonIgnore
+    //@JsonIgnore
     private List<Notification> notifications;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
