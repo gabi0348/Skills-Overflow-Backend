@@ -1,7 +1,9 @@
 package com.internshipProject.SkillsOverflowBackend.controllers;
 
+import com.internshipProject.SkillsOverflowBackend.Configuration.JwtTokenProvider;
 import com.internshipProject.SkillsOverflowBackend.models.Post;
 import com.internshipProject.SkillsOverflowBackend.models.User;
+import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.PostService;
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
 import com.internshipProject.SkillsOverflowBackend.utils.Owner;
@@ -20,11 +22,17 @@ public class PostController {
     PostService postService;
     @Autowired
     UserService userService;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
 
+    //{userId} și @PathVariable Long userId nu mai sunt necesare deci
+    @PostMapping(value = "createPost")
+    public Post newPost(@RequestBody @Valid Post post) {
+//        User user = userService.findById(userId);
 
-    @PostMapping(value = "createPost/{userId}")
-    public Post newPost(@RequestBody @Valid Post post, @PathVariable Long userId) {
-        User user = userService.findById(userId);
+        User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
         post.setUser(user);
         postService.save(post);
         return post;
