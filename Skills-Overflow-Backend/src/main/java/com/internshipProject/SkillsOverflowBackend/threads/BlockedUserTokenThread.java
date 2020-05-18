@@ -3,8 +3,10 @@ package com.internshipProject.SkillsOverflowBackend.threads;
 import com.internshipProject.SkillsOverflowBackend.enums.UsersRoles;
 import com.internshipProject.SkillsOverflowBackend.models.Role;
 import com.internshipProject.SkillsOverflowBackend.repositories.BlockedUserTokenRepository;
+import com.internshipProject.SkillsOverflowBackend.repositories.RoleRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.MailService;
+import com.internshipProject.SkillsOverflowBackend.services.role_service.RoleService;
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,6 +26,9 @@ import java.time.LocalDateTime;
         @Autowired
         private MailService mailService;
 
+        @Autowired
+        private RoleService roleService;
+
         @Override
         public void run() {
             while(true) {
@@ -33,8 +38,7 @@ import java.time.LocalDateTime;
                             .forEach(user -> {
                                 if(user.getBlockedUserToken() != null && LocalDateTime.now().isAfter(user.getBlockedUserToken().getExpirationDate())) {
                                     if(user.getBlockCount() < 2) {
-                                        Role role = new Role(2L, UsersRoles.APPROVED_USER.toString());
-                                        user.setRole(role);
+                                        user.setRole(roleService.getRoleByRoleName(UsersRoles.APPROVED_USER.toString()));
                                         user.setBlockCount(user.getBlockCount()+1L);
                                         blockedUserTokenRepository.delete(user.getBlockedUserToken());
                                     } else if(user.getBlockCount() == 2){
