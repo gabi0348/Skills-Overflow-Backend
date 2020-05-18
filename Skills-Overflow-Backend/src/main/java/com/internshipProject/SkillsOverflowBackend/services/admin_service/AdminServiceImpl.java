@@ -4,6 +4,7 @@ import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.repositories.BlockedUserTokenRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.MailService;
+import com.internshipProject.SkillsOverflowBackend.services.role_service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +20,13 @@ public class AdminServiceImpl implements AdminService{
     @Autowired
     private MailService mailService;
 
+    @Autowired
+    private RoleService roleService;
+
     @Override
-    public String approveRequest(Long id, User user){
+    public String approveRequest(Long id){
         User existingUser = userRepository.getOne(id);
-            existingUser.setRole(user.getRole());
+            existingUser.setRole(roleService.getRoleById(2L));
             mailService.confirmRegistrationMail(existingUser);
             new Thread(() -> mailService.confirmRegistrationMail(existingUser)).start();
             userRepository.saveAndFlush(existingUser);

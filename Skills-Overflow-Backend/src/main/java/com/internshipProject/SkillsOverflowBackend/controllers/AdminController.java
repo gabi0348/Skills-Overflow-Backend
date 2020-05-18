@@ -19,8 +19,8 @@ public class AdminController {
 
     @PutMapping("/approveRequest/{id}")
     @ResponseBody
-    public String approveRequest(@PathVariable Long id, @RequestBody User user) {
-        return adminService.approveRequest(id, user);
+    public String approveRequest(@PathVariable Long id) {
+        return adminService.approveRequest(id);
     }
 
     @PutMapping("/declineRequest/{id}")
