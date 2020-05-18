@@ -62,8 +62,13 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    //???
+    //??? + json_ignore
     @ManyToMany(mappedBy = "users")
+    @JsonIgnore
     private List<Notification> notifications;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private List<Comment> comments;
 
 }

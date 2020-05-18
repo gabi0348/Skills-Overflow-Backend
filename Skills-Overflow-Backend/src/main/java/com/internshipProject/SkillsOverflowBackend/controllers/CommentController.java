@@ -18,6 +18,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@CrossOrigin
 @RestController
 public class CommentController {
 
@@ -59,6 +60,8 @@ public class CommentController {
             comment.setUser(user);
             comment.setPost(post);
             commentService.save(comment);
+
+//            userService.saveUser(user);
 
             return comment;
         }
@@ -110,5 +113,66 @@ public class CommentController {
                 return commentService.updateComment(oldComment, newComment);
         }
         return null;
+    }
+
+    @DeleteMapping (value = "deleteComment/{commentId}")
+    public String deleteComment(@PathVariable Long id){
+        Optional<Comment> comment = commentService.findById(id);
+
+        if(comment.isPresent()){
+            Comment actualComment = comment.get();
+            Post commentedPost = actualComment.getPost();
+
+            if (Owner.isPrincipalOwnerOfComment(commentedPost.getUser(), actualComment)) {
+
+                commentedPost.setNumberOfComments(commentedPost.getNumberOfComments() - 1L);
+                commentService.deleteComment(id);
+
+                return "successful delete";
+            }
+
+            return "not the owner";
+        }
+
+        return "no comment found";
+    }
+
+    @GetMapping (value = "getPostWithSortedComments/{postId}/{pageNo}")
+    public List<Comment> getPostWithSortedComments(@PathVariable Long postId, @PathVariable Long pageNo){
+
+        Optional<Post> optionalPost = postService.findById(postId);
+        if(optionalPost.isPresent()){
+
+            Post post = optionalPost.get();
+            //daca sunt mai multe pagini decat am
+            int noOfPages = post.getComments().size() / 10 + 1;
+            if (pageNo > noOfPages) {
+                return new ArrayList<>();
+            }
+
+            //daca imi trimite pagina nr.0 (prima)
+            int comLimit = 10;
+            List<Comment> comments = new ArrayList<>();
+            if (pageNo == 0) {
+                comLimit = 9;
+                comments = post.getComments().
+                        stream().
+                        filter(Comment::getApprovedComment).
+                        collect(Collectors.toList());
+            }
+
+            //compar in functie de vote count
+            List<Comment> sortedComments = post.getComments()
+                    .stream()
+                    .sorted(Comparator.comparing(Comment::getVoteCount).reversed())
+                    .skip(pageNo*10)
+                    .limit(comLimit)
+                    .collect(Collectors.toList());
+
+            comments.addAll(sortedComments);
+            return comments;
+        }
+
+        return new ArrayList<>();
     }
 }

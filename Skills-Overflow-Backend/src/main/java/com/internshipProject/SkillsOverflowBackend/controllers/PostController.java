@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 public class PostController {
 
@@ -66,10 +67,16 @@ public class PostController {
     }
 
     //intoarce null daca n-a mai gasit postari; cate postari pe pagina, 10? daca topicul e null, intoarce tot sortat dupa data
-    @GetMapping(value = "/allPosts/{pageNo}/{criteria}/{topic}")
-    public List<Post> getAllFilteredPosts(@RequestParam Integer pageNo, @RequestParam String criteria,
-                                          @RequestParam String topic) {
+    @GetMapping(value = "/allPosts/{pageNo}/{topic}/{criteria}")
+    public List<Post> getAllFilteredPosts(@PathVariable Integer pageNo, @PathVariable String criteria,
+                                          @PathVariable String topic) {
         return postService.getAllFilteredPosts(pageNo, criteria, topic);
+    }
+
+    @GetMapping(value = "/singlePost/{postId}")
+    public Post getPost(@PathVariable Long postId){
+        Optional<Post> optionalPost = postService.findById(postId);
+        return optionalPost.orElse(null);
     }
 
 }

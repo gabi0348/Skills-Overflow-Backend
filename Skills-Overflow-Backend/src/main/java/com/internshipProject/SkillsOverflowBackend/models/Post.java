@@ -1,5 +1,6 @@
 package com.internshipProject.SkillsOverflowBackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import lombok.Data;
 import lombok.Getter;
@@ -20,7 +21,7 @@ import java.util.List;
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String topic;
@@ -28,16 +29,18 @@ public class Post {
     private String body;
     private Long numberOfComments = 0L;
 
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     @CreationTimestamp
     private LocalDateTime createDate;
 
     //merge sau persist
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<Comment> comments;
 
 }

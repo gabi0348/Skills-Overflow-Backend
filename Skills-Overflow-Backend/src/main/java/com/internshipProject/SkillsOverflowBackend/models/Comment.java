@@ -21,24 +21,24 @@ import java.time.LocalDateTime;
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String body;
     private Long voteCount = 0L;
     private Boolean approvedComment;
 
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     @CreationTimestamp
     private LocalDateTime createDate;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "post_id")
     @JsonIgnore
     private Post post;
 
-    @ManyToOne (cascade = CascadeType.MERGE)
+    @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "user_id")
-    @JsonIgnore
+    //@JsonIgnore
     private User user;
 }

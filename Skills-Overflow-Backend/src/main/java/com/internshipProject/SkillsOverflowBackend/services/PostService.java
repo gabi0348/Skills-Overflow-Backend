@@ -45,6 +45,7 @@ public class PostService {
 
 
     //https://howtodoinjava.com/spring-boot2/pagination-sorting-example/
+    //asta e baza!!!
     public List<Post> getAllFilteredPosts(Integer pageNo, String criteria, String topic) {
 
         int noOfPages = postRepository.findAll().size() / 10 + 1;
@@ -52,36 +53,58 @@ public class PostService {
             return new ArrayList<>();
         }
 
-        if (topic == null){
-            return getPostsWithNoTopic(pageNo);
+        Stream<Post> allPosts = postRepository.findAll()
+                .stream();
+        if (! (topic.equals("undefined") || (topic.equals("all"))) ) {
+
+            //filtare pe postari
+            Stream<Post> postTopicList = allPosts
+                    .filter(post -> post.getTopic().equals(topic));
+
+            //aici automat topicurile nu sunt undefined
+            if (!criteria.equals("undefined")) {
+                //return getPostsOnTopicAndCriteria(criteria, posts, pageNo, topic);
+                return getPostsOnCriteria(criteria, postTopicList, pageNo);
+            }
+            //aici ajunge in caz ca avem topicuri(!), dar nu au criterii; le sortez dupa data
+            else {
+                return getPostsJustByDate(pageNo, postTopicList);
+            }
         }
 
-        Stream<Post> posts = postRepository.findAll()
-                .stream()
-                .filter(post -> post.getTopic().equals(topic));
-
-        if (criteria.equals("date")) {
-            posts.sorted(Comparator.comparing(Post::getCreateDate))
-                    .skip(pageNo * 10)
-                    .limit(10)
-                    .collect(Collectors.toList());
+        //else topicurile sunt undefined
+        else {
+            if(!criteria.equals("undefined")) {
+                return getPostsOnCriteria(criteria, allPosts, pageNo);
+            }
+            //toate postarile buluc, doar in functie de data; topicul si criteria sunt undefined
+            else {
+                return getPostsJustByDate(pageNo, allPosts);
+            }
         }
-
-        if (criteria.equals("no of comms")){
-            posts.sorted(Comparator.comparing(Post::getNumberOfComments))
-                    .skip(pageNo * 10)
-                    .limit(10)
-                    .collect(Collectors.toList());
-        }
-
-        return new ArrayList<>();
-
     }
 
-    private List<Post> getPostsWithNoTopic(Integer pageNo) {
-        return postRepository.findAll()
-                .stream()
-                .sorted(Comparator.comparing(Post::getCreateDate))
+    private List<Post> getPostsOnCriteria(String criteria, Stream<Post> posts, Integer pageNo) {
+        if (criteria.equals("date")) {
+            return posts.sorted(Comparator.comparing(Post::getCreateDate).reversed())
+                    .skip(pageNo * 10)
+                    .limit(10)
+                    .collect(Collectors.toList());
+        }
+
+        if (criteria.equals("comms")){
+            return posts.sorted(Comparator.comparing(Post::getNumberOfComments).reversed())
+                    .skip(pageNo * 10)
+                    .limit(10)
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    //de adaugat in controller
+    private List<Post> getPostsJustByDate(Integer pageNo, Stream<Post> posts) {
+        return posts
+                .sorted(Comparator.comparing(Post::getCreateDate).reversed())
                 .skip(pageNo*10)
                 .limit(10)
                 .collect(Collectors.toList());
