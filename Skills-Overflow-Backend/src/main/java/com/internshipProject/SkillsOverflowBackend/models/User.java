@@ -1,5 +1,4 @@
 package com.internshipProject.SkillsOverflowBackend.models;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -8,15 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import com.internshipProject.SkillsOverflowBackend.shouldI.Notification;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import java.util.List;
-
-
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -24,8 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//@EnableAutoConfiguration
-//@Accessors(chain = true)
+
 public class User {
 
     @Id
@@ -42,18 +37,19 @@ public class User {
     private String email;
 
     @NotNull(message = "Password cannot be empty")
-    @Size(min = 5, max = 100)
+    @Size(min = 5, max = 200)
     @NotBlank
-    //@Pattern(regexp = "[A-Za-z0-9]*")
     private String password;
 
     private String firstName;
 
     private String lastName;
 
-    private Boolean enabled;
+    private Boolean enabled = false;
 
     private Boolean changedPassword = false;
+
+    private Long blockCount = 0L;
 
     @OneToOne(mappedBy = "user")
     @JsonIgnore
@@ -63,9 +59,13 @@ public class User {
     @JsonIgnore
     private ResetPasswordToken resetPasswordToken;
 
-    @ManyToOne
-    @JoinColumn( name = "role_id")
+    @OneToOne(mappedBy = "user")
+    @JsonIgnore
+    private BlockedUserToken blockedUserToken;
 
+    @ManyToOne
+
+    @JoinColumn(name = "role_id")
     private Role role;
 
     //??? + json_ignore
@@ -77,4 +77,12 @@ public class User {
     @JsonIgnore
     private List<Comment> comments;
 
+    public List<Notification> getUnreadNotifications() {
+        notifications.stream()
+                .filter(item -> item.isUnread)
+                .collect(Collectors.toList());
+        return notifications;
+    }
 }
+
+

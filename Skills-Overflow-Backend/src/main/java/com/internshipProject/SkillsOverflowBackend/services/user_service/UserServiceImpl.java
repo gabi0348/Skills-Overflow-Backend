@@ -57,21 +57,31 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    public List<UserDTO> findAllUsersByRole(String userRole){
+        usersDto.clear();
+        List<User> usersList = userRepository.findAll();
+        for(User user : usersList) {
+            UserDTO userDto = UserConverter.convertToUserDto(user);
+            if(userDto.getRole().equals(userRole)){
+                usersDto.add(userDto);
+            }
+        }
+        return usersDto;
+    }
+
+    @Override
     public String addUser(User user) {
         if (checkForExistingEmail(user.getEmail())) {
             return "email already taken";
         } else if (checkForExistingUsername(user.getUserName())) {
             return "username already taken";
         }
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
         userRole = new Role(3L, "user pending");
         user.setRole(userRole);
-        mailService.confirmRegistrationMail(user);
-        //nou Thread, ca front-end-ul să nu mai aștepte după back-end
-        new Thread(() -> mailService.confirmRegistrationMail(user)).start();
-        return "Please check your email";
+        userRepository.saveAndFlush(user);
+
+        return "Request Pending";
     }
 
     @Override
@@ -86,7 +96,9 @@ public class UserServiceImpl implements UserService {
             return "Email found";
         }
         return "No email found";
+
     }
+
 
     @Override
     public String userExists(LoginDTO loginDTO) {
@@ -155,3 +167,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUserName(userName);
     }
 }
+
+
+

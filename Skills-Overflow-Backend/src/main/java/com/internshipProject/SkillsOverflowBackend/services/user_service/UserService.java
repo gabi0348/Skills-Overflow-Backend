@@ -30,6 +30,8 @@ public interface UserService {
 
     void convertAllUsers(List<User> usersList);
 
+    List<UserDTO> findAllUsersByRole(String userRole);
+
     User findById(Long id);
 
     User findByUserName(String userName);

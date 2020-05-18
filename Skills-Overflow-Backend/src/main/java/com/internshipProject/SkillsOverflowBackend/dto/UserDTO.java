@@ -1,12 +1,12 @@
 package com.internshipProject.SkillsOverflowBackend.dto;
 
 
-import com.internshipProject.SkillsOverflowBackend.models.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
 
 @Setter
 @Getter
@@ -20,6 +20,6 @@ public class UserDTO {
     private String email;
     private String firstName;
     private String lastName;
-    private Role role;
+    private String role;
 
 }

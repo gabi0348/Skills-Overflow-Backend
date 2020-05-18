@@ -2,6 +2,8 @@ package com.internshipProject.SkillsOverflowBackend;
 
 //import com.internshipProject.SkillsOverflowBackend.threads.ResetPasswordTokenThread;
 //import com.internshipProject.SkillsOverflowBackend.threads.VerificationTokenThread;
+import com.internshipProject.SkillsOverflowBackend.models.BlockedUserToken;
+import com.internshipProject.SkillsOverflowBackend.threads.BlockedUserTokenThread;
 import com.internshipProject.SkillsOverflowBackend.threads.ResetPasswordTokenThread;
 import com.internshipProject.SkillsOverflowBackend.threads.VerificationTokenThread;
 import org.springframework.boot.SpringApplication;
@@ -21,8 +23,14 @@ public class SkillsOverflowBackendApplication {
 		ResetPasswordTokenThread resetPasswordTokenThread = new ResetPasswordTokenThread();
 		context.getAutowireCapableBeanFactory().autowireBean(resetPasswordTokenThread);
 
+		BlockedUserTokenThread blockedUserTokenThread = new BlockedUserTokenThread();
+		context.getAutowireCapableBeanFactory().autowireBean(blockedUserTokenThread);
+
+
+
 		verificationTokenThread.start();
 		resetPasswordTokenThread.start();
+		blockedUserTokenThread.start();
 
 	}
 

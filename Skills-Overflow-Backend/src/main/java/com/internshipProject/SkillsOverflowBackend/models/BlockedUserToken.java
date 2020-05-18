@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class ResetPasswordToken {
+public class BlockedUserToken {
 
-    public static final int EXPIRATION = 60;
+    public static final int EXPIRATION = 30;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,12 +26,14 @@ public class ResetPasswordToken {
     @JoinColumn
     private User user;
 
-    public ResetPasswordToken(String token) {
+    public BlockedUserToken(String token) {
         this.token = token;
         this.expirationDate = calculateExpiryDate(EXPIRATION);
     }
 
     public LocalDateTime calculateExpiryDate(int expiryTimeInSeconds){
-        return LocalDateTime.now().plusSeconds(60*10);
+        return LocalDateTime.now().plusSeconds(expiryTimeInSeconds);
     }
 }
+
+
