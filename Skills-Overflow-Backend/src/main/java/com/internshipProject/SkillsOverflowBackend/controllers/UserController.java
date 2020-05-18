@@ -3,7 +3,6 @@ package com.internshipProject.SkillsOverflowBackend.controllers;
 import com.internshipProject.SkillsOverflowBackend.Configuration.JwtTokenProvider;
 import com.internshipProject.SkillsOverflowBackend.dto.LoginDTO;
 import com.internshipProject.SkillsOverflowBackend.dto.UserDTO;
-import com.internshipProject.SkillsOverflowBackend.models.Notification;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.repositories.NotificationRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
@@ -83,6 +82,7 @@ public class UserController {
         String role =authentication.getAuthorities().toString();
         String token = jwtTokenProvider.createToken(user.getEmail(),role);
         Map<Object, Object> model = new HashMap<>();
+        model.put("email",jwtTokenProvider.getEmail(token));
         //model.put("email", email);
         model.put("token", token);
         model.put("role",role);
@@ -93,9 +93,8 @@ public class UserController {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
-    @GetMapping("/notifications")
-    public List<Notification> listNotification(){
-        return notificationRepository.findAll();
-    }
+
+
+
 
 }

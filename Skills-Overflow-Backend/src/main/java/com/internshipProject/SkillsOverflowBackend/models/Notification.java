@@ -1,6 +1,7 @@
 package com.internshipProject.SkillsOverflowBackend.models;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,12 +9,13 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 @Entity
 public class Notification {
 
@@ -21,26 +23,31 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long notificationId;
 
-    @ManyToOne
-    @JoinColumn( name = "user_id")
-    private User user;
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "notification_user",
+            joinColumns = { @JoinColumn(name = "notification_id") },
+            inverseJoinColumns = { @JoinColumn(name = "user_id") }
+    )
+    private Set<User> users;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
     @Column( updatable = false)
     @CreationTimestamp
-    private LocalDateTime createDate;
+    private LocalDateTime date;
 
-    private String notificationType;
+    private String notification;
 
     boolean isUnread;
 
-    public Notification(User user, Post post, String notificationType, boolean isUnread) {
-        this.user = user;
-        this.post = post;
-        this.notificationType = notificationType;
-        this.isUnread = isUnread;
-    }
+
 }

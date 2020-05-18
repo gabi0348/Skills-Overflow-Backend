@@ -11,6 +11,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -61,8 +63,15 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
- /*   @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    private Set<Notification> notifiactions;*/
+
+    @ManyToMany(mappedBy = "users")
+    private List<Notification> notifications;
+
+    public List<Notification> getUnreadNotifications() {
+        notifications.stream()
+                .filter(item -> item.isUnread)
+                .collect(Collectors.toList());
+        return notifications;
+    }
 }
 
