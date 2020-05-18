@@ -5,8 +5,8 @@ import com.internshipProject.SkillsOverflowBackend.models.User;
 public interface AdminService {
 
     String approveRequest(Long id);
-    String blockUser(Long id, User user);
-    String unblockUser(Long id, User user);
-    String declineRequest(Long id, User user);
-    String promoteUserToAdmin(Long id, User user);
+    String blockUser(Long id);
+    String unblockUser(Long id);
+    String declineRequest(Long id);
+    String promoteUserToAdmin(Long id);
 }

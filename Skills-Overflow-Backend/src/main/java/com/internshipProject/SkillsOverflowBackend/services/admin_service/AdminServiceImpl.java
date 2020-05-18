@@ -1,5 +1,6 @@
 package com.internshipProject.SkillsOverflowBackend.services.admin_service;
 
+import com.internshipProject.SkillsOverflowBackend.enums.UsersRoles;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.repositories.BlockedUserTokenRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
@@ -26,7 +27,7 @@ public class AdminServiceImpl implements AdminService{
     @Override
     public String approveRequest(Long id){
         User existingUser = userRepository.getOne(id);
-            existingUser.setRole(roleService.getRoleById(2L));
+            existingUser.setRole(roleService.getRoleByRoleName(UsersRoles.APPROVED_USER.toString()));
             mailService.confirmRegistrationMail(existingUser);
             new Thread(() -> mailService.confirmRegistrationMail(existingUser)).start();
             userRepository.saveAndFlush(existingUser);
@@ -34,39 +35,40 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
-    public String declineRequest(Long id, User user) {
+    public String declineRequest(Long id) {
         User existingUser = userRepository.getOne(id);
-        existingUser.setRole(user.getRole());
+        existingUser.setRole(roleService.getRoleByRoleName(UsersRoles.DECLINED_USER.toString()));
         mailService.declineUserEmail(existingUser);
         userRepository.saveAndFlush(existingUser);
         return "The request has been declined.";
     }
 
     @Override
-    public String blockUser(Long id, User user){
+    public String blockUser(Long id){
         User existingUser = userRepository.getOne(id);
-            existingUser.setRole(user.getRole());
+            existingUser.setRole(roleService.getRoleByRoleName(UsersRoles.BLOCKED_USER.toString()));
             mailService.blockedUserEmail(existingUser);
             userRepository.saveAndFlush(existingUser);
             return "user blocked";
 
     }
 
-    public String unblockUser(Long id, User user) {
+    @Override
+    public String unblockUser(Long id) {
         User existingUser = userRepository.getOne(id);
-        existingUser.setBlockedUserToken(user.getBlockedUserToken());
-        existingUser.setRole(user.getRole());
-        existingUser.setBlockCount(user.getBlockCount());
+        existingUser.setBlockedUserToken(null);
+        existingUser.setRole(roleService.getRoleByRoleName(UsersRoles.APPROVED_USER.toString()));
+        existingUser.setBlockCount(0L);
         mailService.unblockedByAdminEmail(existingUser);
         userRepository.saveAndFlush(existingUser);
         return "user unblocked";
     }
 
     @Override
-    public String promoteUserToAdmin(Long id, User user){
+    public String promoteUserToAdmin(Long id){
         User existingUser = userRepository.getOne(id);
-        if(existingUser.getRole().getRole().equals("approved user")){
-            existingUser.setRole(user.getRole());
+        if(existingUser.getRole().getRole().equals(UsersRoles.APPROVED_USER.toString())){
+            existingUser.setRole(roleService.getRoleByRoleName(UsersRoles.ADMIN.toString()));
             mailService.promoteUserToAdminEmail(existingUser);
             userRepository.saveAndFlush(existingUser);
             return "promoted to admin";

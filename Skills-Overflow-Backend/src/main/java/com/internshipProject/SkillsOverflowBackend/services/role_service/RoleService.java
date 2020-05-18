@@ -4,5 +4,5 @@ import com.internshipProject.SkillsOverflowBackend.models.Role;
 
 public interface RoleService {
 
-    Role getRoleById(Long id);
+    Role getRoleByRoleName(String role);
 }
