@@ -86,11 +86,6 @@ public class UserController {
         return userService.getUserDtoById(id);
     }
 
-    @DeleteMapping("/remove/{id}")
-    public void removeUser(@PathVariable Long id) {
-        userService.removeUserById(id);
-    }
-
     @Autowired
     AuthenticationManager authenticationManager;
 
