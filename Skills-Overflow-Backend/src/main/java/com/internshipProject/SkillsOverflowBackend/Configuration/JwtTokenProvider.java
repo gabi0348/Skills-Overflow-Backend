@@ -1,11 +1,14 @@
 package com.internshipProject.SkillsOverflowBackend.Configuration;
 
+import com.internshipProject.SkillsOverflowBackend.models.User;
+import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +25,9 @@ public class JwtTokenProvider {
     private long validityInMilliseconds = 3600000; // 1h- aici e timpul de expirare
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    UserRepository userRepository;
 
     @PostConstruct
     protected void init() {
@@ -42,11 +48,11 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
+        UserDetails userDetails = this.userDetailsService.loadUserByUsername(getEmail(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public String getUsername(String token) {
+    public String getEmail(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
@@ -69,4 +75,14 @@ public class JwtTokenProvider {
             throw new RuntimeException("Expired or invalid JWT token");//InvalidJwtAuthenticationException("Expired or invalid JWT token");
         }
     }
+
+    public User getUser(String token) {
+        String email=  Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        return userRepository.findByEmail(email);
+    }
+    public User getUser() {
+        String email=  SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByEmail(email);
+    }
+
 }
