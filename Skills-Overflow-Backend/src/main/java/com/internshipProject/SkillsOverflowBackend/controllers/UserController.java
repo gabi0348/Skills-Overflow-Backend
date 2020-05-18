@@ -5,6 +5,7 @@ import com.internshipProject.SkillsOverflowBackend.dto.LoginDTO;
 import com.internshipProject.SkillsOverflowBackend.dto.UserDTO;
 import com.internshipProject.SkillsOverflowBackend.enums.UsersRoles;
 import com.internshipProject.SkillsOverflowBackend.models.User;
+import com.internshipProject.SkillsOverflowBackend.repositories.NotificationRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @GetMapping("/users")
     public List<UserDTO> findAll() {
@@ -99,6 +103,7 @@ public class UserController {
         String role =authentication.getAuthorities().toString();
         String token = jwtTokenProvider.createToken(user.getEmail(),role);
         Map<Object, Object> model = new HashMap<>();
+        model.put("email",jwtTokenProvider.getEmail(token));
         //model.put("email", email);
         model.put("token", token);
         model.put("role",role);
@@ -108,5 +113,9 @@ public class UserController {
     public Authentication returnUser() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
+
+
+
+
 
 }

@@ -14,6 +14,19 @@ insert into user values(5, 0, false,'cristos@gmail.com', true, 'data','lastname'
 
 
 
+//inserare postari
 
+insert into post values ( 1,'dasdasda asdahakfhak afkdfhksd dssdsdsds',null,4,'oare e bine?','java', 2);
+insert into post values ( 2,'dasdasda asdahakfhak afkdfhksd dssdsdsds',null,4,'oare e bine?','java',2);
 
+//inserare notificari
 
+insert into notification values(1,null,true,'notification type',2);
+insert into notification values(2,null,true,'notification type',2);
+insert into notification values(3,null,true,'notification type',2);
+insert into notification values(4,null,true,'notification type',2);
+
+insert  into notification_user values ( 2,3 );
+insert  into notification_user values ( 4,2 );
+insert  into notification_user values ( 3,4 );
+insert  into notification_user values ( 3,3 );

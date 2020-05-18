@@ -1,31 +1,34 @@
 package com.internshipProject.SkillsOverflowBackend.models;
 
-import com.internshipProject.SkillsOverflowBackend.models.User;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long postId;
 
     private String topic;
     private String title;
     private String body;
     private Long numberOfComments;
 
-    @Column(nullable = false, updatable = false)
+    //nullable = false: l-am scos pentru teste, nu am reusit sa inserez manual
+    @Column( updatable = false)
     @CreationTimestamp
     private LocalDateTime createDate;
 
@@ -36,5 +39,9 @@ public class Post {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Comment> comments;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<Notification> notifications;
 
 }
