@@ -1,4 +1,4 @@
-package com.internshipProject.SkillsOverflowBackend.configuration;
+package com.internshipProject.SkillsOverflowBackend.Configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

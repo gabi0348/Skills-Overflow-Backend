@@ -34,7 +34,7 @@ public class PostController {
     public String editPostWithId(@RequestBody @Valid Post newPost, @PathVariable Long userId) {
 
         User user = userService.findById(userId);
-        Optional<Post> optionalOldPost = postService.findById(newPost.getPostId());
+        Optional<Post> optionalOldPost = postService.findById(newPost.getId());
 
         if (optionalOldPost.isPresent()) {
             Post oldPost = optionalOldPost.get();
@@ -52,7 +52,7 @@ public class PostController {
     public String deletePostWithId(@RequestBody @Valid Post newPost, @PathVariable Long userId) {
 
         User user = userService.findById(userId);
-        Optional<Post> optionalOldPost = postService.findById(newPost.getPostId());
+        Optional<Post> optionalOldPost = postService.findById(newPost.getId());
 
         if (optionalOldPost.isPresent()) {
             Post post = optionalOldPost.get();

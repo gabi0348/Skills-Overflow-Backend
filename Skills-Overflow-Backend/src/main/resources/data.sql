@@ -10,7 +10,7 @@ insert into user values(1, 0, false,'george.popescu@gmail.com', true, 'deliric',
 insert into user values(2, 0, false,'george.pop@gmail.com', true, 'gigi','lastname','$2a$04$pMF92/IeIwj7qmUEHYxFb.RrzoIh5i/jPsPXl7QV8JxVhQqUtKfry','username', 2);
 insert into user values(3, 0, false,'george@gmail.com', true, 'coco','lastname','$2a$04$pMF92/IeIwj7qmUEHYxFb.RrzoIh5i/jPsPXl7QV8JxVhQqUtKfry','username', 3);
 insert into user values(4, 0, false,'cristos@gmail.com', true, 'data','lastname','$2a$04$pMF92/IeIwj7qmUEHYxFb.RrzoIh5i/jPsPXl7QV8JxVhQqUtKfry','username', 4);
-insert into user values(5, 0, false,'cristos@gmail.com', true, 'data','lastname','parola','user4', 5)
+insert into user values(5, 0, false,'cristos@gmail.com', true, 'data','lastname','parola','user4', 5);
 
 
 --insert into post (body, create_date, number_of_comments, title, topic, user_id, id) values (?, ?, ?, ?, ?, ?, ?)
@@ -24,11 +24,6 @@ insert into comment values (1, false, 'de ce abi', '1974-01-01', -2, 1, 3);
 insert into comment values (2, false, 'abi e baza', '1975-01-01', 10, 1, 4);
 insert into comment values (3, true, 'abi e rason d etre fratelo', '1976-01-01', 6969, 1, 2);
 insert into comment values (4, false, 'asa e', '1977-01-01', 0, 1, 1);
-
---//inserare postari
-
-insert into post values ( 1,'dasdasda asdahakfhak afkdfhksd dssdsdsds',null,4,'oare e bine?','java', 2);
-insert into post values ( 2,'dasdasda asdahakfhak afkdfhksd dssdsdsds',null,4,'oare e bine?','java',2);
 
 --//inserare notificari
 

@@ -1,4 +1,4 @@
-package com.internshipProject.SkillsOverflowBackend.configuration;
+package com.internshipProject.SkillsOverflowBackend.Configuration;
 
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;

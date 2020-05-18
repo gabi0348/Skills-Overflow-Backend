@@ -1,6 +1,6 @@
 package com.internshipProject.SkillsOverflowBackend.controllers;
 
-import com.internshipProject.SkillsOverflowBackend.configuration.JwtTokenProvider;
+import com.internshipProject.SkillsOverflowBackend.Configuration.JwtTokenProvider;
 import com.internshipProject.SkillsOverflowBackend.dto.LoginDTO;
 import com.internshipProject.SkillsOverflowBackend.dto.UserDTO;
 import com.internshipProject.SkillsOverflowBackend.enums.UsersRoles;

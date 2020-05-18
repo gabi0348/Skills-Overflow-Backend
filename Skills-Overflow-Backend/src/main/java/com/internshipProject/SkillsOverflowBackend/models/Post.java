@@ -20,7 +20,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 public class Post {
