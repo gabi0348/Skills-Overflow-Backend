@@ -33,7 +33,6 @@ public class Post {
     private String body;
     private Long numberOfComments = 0L;
 
-
     //nullable = false: l-am scos pentru teste, nu am reusit sa inserez manual
     @Column(updatable = false)
     @CreationTimestamp
