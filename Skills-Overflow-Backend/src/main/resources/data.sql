@@ -14,10 +14,19 @@ insert into user values(5, 0, false,'cristos@gmail.com', true, 'data','lastname'
 
 
 --insert into post (body, create_date, number_of_comments, title, topic, user_id, id) values (?, ?, ?, ?, ?, ?, ?)
-insert into post values(1, 'ascult abi talent', '2020-01-01', 4, 'muzica', 'spring', 1);
-insert into post values (2, 'ascult stravinsky', '1970-01-01', 0, 'muzicologie', 'spring', 1);
-insert into post values (3, 'mananc chipsuri', '2001-01-01', 0,'mancarica', 'spring', 2);
-insert into post values (4, 'mananc caviar', '2999-01-01', 0, 'caviar', 'java', 2);
+insert into post values(1, 'ascult abi talent', '2020-01-01', 4, 'muzica', 1);
+insert into post values (2, 'ascult stravinsky', '1970-01-01', 0, 'muzicologie', 1);
+insert into post values (3, 'mananc chipsuri', '2001-01-01', 0,'mancarica', 2);
+insert into post values (4, 'mananc caviar', '2999-01-01', 0, 'caviar', 2);
+
+--insert into topic values(1, 'spring');
+--insert into topic values(2, 'java');
+
+insert into post_topic values(1, 'spring');
+insert into post_topic values(1, 'java');
+insert into post_topic values(2, 'java');
+
+--
 
 --create table comment (id bigint not null, approved_comment boolean, body varchar(255), create_date timestamp not null, vote_count bigint, post_id bigint, user_id bigint, primary key (id))
 insert into comment values (1, false, 'de ce abi', '1974-01-01', -2, 1, 3);

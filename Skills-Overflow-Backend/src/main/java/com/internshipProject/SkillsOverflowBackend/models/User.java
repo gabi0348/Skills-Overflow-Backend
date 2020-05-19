@@ -64,7 +64,6 @@ public class User {
     private BlockedUserToken blockedUserToken;
 
     @ManyToOne
-
     @JoinColumn(name = "role_id")
     private Role role;
 
@@ -76,6 +75,14 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<Comment> comments;
+
+    //le-am adaugat eu, merg oare
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Post> posts;
+
+    @OneToMany (mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<VotedComm> votedComms;
 
     public List<Notification> getUnreadNotifications() {
         notifications.stream()
