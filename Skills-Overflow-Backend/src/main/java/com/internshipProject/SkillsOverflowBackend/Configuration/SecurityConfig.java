@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/login/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/signIn").permitAll()
                 .antMatchers("/admin/**").hasRole("admin")
-                .antMatchers("/allPendingUsers/**").hasRole("admin")
+                .antMatchers(HttpMethod.GET,"/allPendingUsers/**").hasRole("admin")
                 .antMatchers("/allBlockedUsers").hasRole("admin")
                 .antMatchers("/allDeclinedUsers").hasRole("admin")
                 //.antMatchers(HttpMethod.GET, "/allPendingUsers").hasRole("admin")
