@@ -1,10 +1,12 @@
 package com.internshipProject.SkillsOverflowBackend.controllers;
 
+import com.internshipProject.SkillsOverflowBackend.Configuration.JwtTokenProvider;
 import com.internshipProject.SkillsOverflowBackend.models.Comment;
 import com.internshipProject.SkillsOverflowBackend.models.Post;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 
-import com.internshipProject.SkillsOverflowBackend.repositories.NotificationRepository;
+import com.internshipProject.SkillsOverflowBackend.models.VotedComm;
+import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.CommentService;
 import com.internshipProject.SkillsOverflowBackend.services.PostService;
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
@@ -29,12 +31,12 @@ public class CommentController {
     PostService postService;
     @Autowired
     UserService userService;
-
-    @Autowired
-    NotificationRepository notificationRepository;
-
     @Autowired
     NotificationService notificationService;
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    UserRepository userRepository;
 
     @PostMapping(value = "addComment/{postId}/{userId}")
     public Comment addComment(@RequestBody @Valid Comment comment, @PathVariable Long postId,
@@ -77,18 +79,27 @@ public class CommentController {
     }
 
     @PutMapping (value = "voteComment/{commentId}/{how}")
-    public Comment voteComment(@PathVariable String how, @PathVariable Long commentId) {
+    public String voteComment(@PathVariable String how, @PathVariable Long commentId) {
         Optional<Comment> optionalComment = commentService.findById(commentId);
+        User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
+
         if (optionalComment.isPresent()) {
             Comment comment = optionalComment.get();
+            Long postId = comment.getPost().getId();
+
+            for (VotedComm votedComm: user.getVotedComms()){
+                if (votedComm.getPostId().equals(postId)) return "you already voted";
+            }
 
             if (how.equals("up")) comment.setVoteCount(comment.getVoteCount() + 1L);
             if (how.equals("down")) comment.setVoteCount(comment.getVoteCount() - 1L);
 
+            user.getVotedComms().add(new VotedComm(postId));
+            userService.saveUser(user);
             commentService.save(comment);
-            return comment;
+            return "voted";
         }
-        return null;
+        return "no comment present";
     }
 
     @PutMapping (value = "editCommentBody/{userId}")
@@ -164,5 +175,14 @@ public class CommentController {
         }
 
         return new ArrayList<>();
+    }
+
+    @GetMapping (value = "allCommentsForUser")
+    public List<Comment> getAllCommsForUser(){
+        User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
+        return user.getComments()
+                .stream()
+                .sorted(Comparator.comparing(Comment::getCreateDate).reversed())
+                .collect(Collectors.toList());
     }
 }

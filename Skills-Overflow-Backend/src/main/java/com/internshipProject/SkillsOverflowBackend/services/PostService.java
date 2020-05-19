@@ -1,14 +1,13 @@
 package com.internshipProject.SkillsOverflowBackend.services;
 
 import com.internshipProject.SkillsOverflowBackend.models.Post;
+import com.internshipProject.SkillsOverflowBackend.models.TopicFront;
 import com.internshipProject.SkillsOverflowBackend.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,7 +33,7 @@ public class PostService {
 
         updatePost.setBody(post.getBody());
         updatePost.setTitle(post.getTitle());
-        updatePost.setTopic(post.getTopic());
+        updatePost.setTopics(post.getTopics());
         postRepository.save(updatePost);
         return updatePost;
     }
@@ -46,7 +45,7 @@ public class PostService {
 
     //https://howtodoinjava.com/spring-boot2/pagination-sorting-example/
     //asta e baza!!!
-    public List<Post> getAllFilteredPosts(Integer pageNo, String criteria, String topic) {
+    public List<Post> getAllFilteredPosts(Integer pageNo, String criteria, TopicFront topic) {
 
         int noOfPages = postRepository.findAll().size() / 10 + 1;
         if (pageNo > noOfPages) {
@@ -55,15 +54,22 @@ public class PostService {
 
         Stream<Post> allPosts = postRepository.findAll()
                 .stream();
-        if (! (topic.equals("undefined") || (topic.equals("all"))) ) {
+        //null???
+        if (topic.getTopics() != null && !topic.getTopics()[0].equals("")) {
 
             //filtare pe postari
             Stream<Post> postTopicList = allPosts
-                    .filter(post -> post.getTopic().equals(topic));
+                    .filter(post -> {
+                        for(String top :post.getTopics()) {
+                            for (String str:topic.getTopics()) {
+                                if (top.equals(str)) return true;
+                            }
+                        }
+                        return false;
+                    });
 
             //aici automat topicurile nu sunt undefined
             if (!criteria.equals("undefined")) {
-                //return getPostsOnTopicAndCriteria(criteria, posts, pageNo, topic);
                 return getPostsOnCriteria(criteria, postTopicList, pageNo);
             }
             //aici ajunge in caz ca avem topicuri(!), dar nu au criterii; le sortez dupa data
@@ -101,7 +107,7 @@ public class PostService {
         return null;
     }
 
-    //de adaugat in controller
+    //metoda utilitara
     private List<Post> getPostsJustByDate(Integer pageNo, Stream<Post> posts) {
         return posts
                 .sorted(Comparator.comparing(Post::getCreateDate).reversed())
@@ -110,5 +116,25 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
+
+    private List<Post> searchForPosts(String queryParam){
+        List<Post> bodys = postRepository.findAll()
+                .stream()
+                .filter(post->post.getBody().contains(queryParam))
+                .sorted(Comparator.comparingInt(post -> {
+                    String[] array = post.getBody().split("\\s+");
+                    int count = 0;
+                    for (String s: array) {if (s.equals(queryParam)) count ++;}
+                    return count;
+                }))
+                .collect(Collectors.toList());
+
+        Collections.reverse(bodys);
+        return bodys;
+    }
+
+    public Integer getNumberOfPosts(){
+        return postRepository.findAll().size();
+    }
 
 }
