@@ -35,9 +35,11 @@ public class VerificationTokenThread extends Thread{
                                 if (!user.getEnabled()) {
                                     userRepository.delete(user);
                                 }
-                                if(user.getEnabled()) {
-                                    verificationTokenRepository.delete(user.getVerificationToken());
-                                }
+
+                            }
+
+                            if(user.getVerificationToken() != null && user.getEnabled() ) {
+                                verificationTokenRepository.delete(user.getVerificationToken());
                             }
                         });
             }
