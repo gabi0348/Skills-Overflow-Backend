@@ -31,9 +31,12 @@ public class VerificationTokenThread extends Thread{
                         .forEach(user -> {
                             if (user.getVerificationToken() != null && LocalDateTime.now().isAfter(user.getVerificationToken()
                                     .getExpirationDate())) {
-                                verificationTokenRepository.delete(user.getVerificationToken());
+                                    verificationTokenRepository.delete(user.getVerificationToken());
                                 if (!user.getEnabled()) {
                                     userRepository.delete(user);
+                                }
+                                if(user.getEnabled()) {
+                                    verificationTokenRepository.delete(user.getVerificationToken());
                                 }
                             }
                         });
