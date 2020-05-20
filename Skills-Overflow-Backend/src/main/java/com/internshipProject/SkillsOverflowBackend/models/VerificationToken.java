@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 
 public class VerificationToken {
 
-    private static final int EXPIRATION = 60*3;
+    private static final int EXPIRATION = 30;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,9 +35,9 @@ public class VerificationToken {
         this.expirationDate = calculateExpiryDate(EXPIRATION);
     }
 
-    private LocalDateTime calculateExpiryDate(int expiryTimeInMinutes){
+    private LocalDateTime calculateExpiryDate(int expiryTimeInSeconds){
 //        return LocalDateTime.now().plusMinutes(0);
-        return LocalDateTime.now().plusSeconds(60*10);
+        return LocalDateTime.now().plusSeconds(expiryTimeInSeconds);
     }
 
 }
