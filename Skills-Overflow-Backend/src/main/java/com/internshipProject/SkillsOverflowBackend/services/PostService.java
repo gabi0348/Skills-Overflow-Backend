@@ -55,7 +55,7 @@ public class PostService {
         Stream<Post> allPosts = postRepository.findAll()
                 .stream();
         //null???
-        if (topic.getTopics() != null && !topic.getTopics()[0].equals("")) {
+        if (topic.getTopics() != null && topic.getTopics().length>0) {
 
             //filtare pe postari
             Stream<Post> postTopicList = allPosts

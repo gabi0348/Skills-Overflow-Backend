@@ -80,7 +80,7 @@ public class PostController {
     //intoarce null daca n-a mai gasit postari; cate postari pe pagina, 10? daca topicul e null, intoarce tot sortat dupa data
     //acum din front-end poti lua atat postarile, cat si numarul de postari;
     //pot trimite un array de postari din front-end? trebuie modificat si front-endul
-    @GetMapping(value = "/allPosts/{pageNo}/{criteria}")
+    @PostMapping(value = "/allPosts/{pageNo}/{criteria}")
     public Object[] getAllFilteredPosts(@PathVariable Integer pageNo, @PathVariable String criteria,
                                           @RequestBody TopicFront topic) {
         Object[] arr = new Object[2];

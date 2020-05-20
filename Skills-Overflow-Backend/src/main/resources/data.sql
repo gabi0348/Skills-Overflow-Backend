@@ -15,16 +15,16 @@ insert into user values(5, 0, false,'cristos@gmail.com', true, 'data','lastname'
 
 --insert into post (body, create_date, number_of_comments, title, topic, user_id, id) values (?, ?, ?, ?, ?, ?, ?)
 insert into post values(1, 'ascult abi talent', '2020-01-01', 4, 'muzica', 1);
-insert into post values (2, 'ascult stravinsky', '1970-01-01', 0, 'muzicologie', 1);
+insert into post values (2, 'ascult stravinsky', '1970-01-01', 341141, 'muzicologie', 1);
 insert into post values (3, 'mananc chipsuri', '2001-01-01', 0,'mancarica', 2);
 insert into post values (4, 'mananc caviar', '2999-01-01', 0, 'caviar', 2);
 
 --insert into topic values(1, 'spring');
 --insert into topic values(2, 'java');
 
-insert into post_topic values(1, 'spring');
-insert into post_topic values(1, 'java');
-insert into post_topic values(2, 'java');
+insert into post_topic values(1, 'Springboot');
+insert into post_topic values(1, 'Java');
+insert into post_topic values(2, 'Java');
 
 --
 
