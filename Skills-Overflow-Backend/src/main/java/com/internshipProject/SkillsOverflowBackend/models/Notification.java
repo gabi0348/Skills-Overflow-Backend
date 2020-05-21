@@ -49,5 +49,4 @@ public class Notification {
 
     boolean isUnread;
 
-
 }

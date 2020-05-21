@@ -29,9 +29,14 @@ public class VerificationController {
 
         VerificationToken verificationToken = verificationTokenService.getVerificationToken(token);
         if (verificationToken == null) {
+            httpServletResponse.setHeader("Location", "http://localhost:3000/registration-invalid-token");
+            httpServletResponse.setStatus(302);
             return "no token available";
+
         }
         if (LocalDateTime.now().isAfter(verificationToken.getExpirationDate())) {
+            httpServletResponse.setHeader("Location", "http://localhost:3000/registration-expired-token");
+            httpServletResponse.setStatus(302);
             return "expired time";
         }
         User user = verificationToken.getUser();

@@ -3,11 +3,13 @@ package com.internshipProject.SkillsOverflowBackend.services.user_service;
 import com.internshipProject.SkillsOverflowBackend.convertors.UserConverter;
 import com.internshipProject.SkillsOverflowBackend.dto.LoginDTO;
 import com.internshipProject.SkillsOverflowBackend.dto.UserDTO;
+import com.internshipProject.SkillsOverflowBackend.enums.UsersRoles;
 import com.internshipProject.SkillsOverflowBackend.models.Role;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.repositories.ResetPasswordTokenRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.MailService;
+import com.internshipProject.SkillsOverflowBackend.services.role_service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RoleService roleService;
 
 
     private List<UserDTO> usersDto = new ArrayList<>();
@@ -77,8 +82,7 @@ public class UserServiceImpl implements UserService {
             return "username already taken";
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRole = new Role(3L, "user pending");
-        user.setRole(userRole);
+        user.setRole(roleService.getRoleByRoleName(UsersRoles.PENDING_USER.toString()));
         userRepository.saveAndFlush(user);
 
         return "Request Pending";
