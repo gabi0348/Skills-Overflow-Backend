@@ -10,12 +10,12 @@ insert into user values(1, 0, false,'george.popescu@gmail.com', true, 'deliric',
 insert into user values(2, 0, false,'george.pop@gmail.com', true, 'gigi','lastname','$2a$04$pMF92/IeIwj7qmUEHYxFb.RrzoIh5i/jPsPXl7QV8JxVhQqUtKfry','username', 2);
 insert into user values(3, 0, false,'george@gmail.com', true, 'coco','lastname','$2a$04$pMF92/IeIwj7qmUEHYxFb.RrzoIh5i/jPsPXl7QV8JxVhQqUtKfry','username', 3);
 insert into user values(4, 0, false,'cristos@gmail.com', true, 'data','lastname','$2a$04$pMF92/IeIwj7qmUEHYxFb.RrzoIh5i/jPsPXl7QV8JxVhQqUtKfry','username', 4);
-insert into user values(5, 0, false,'cristos@gmail.com', true, 'data','lastname','parola','user4', 5);
+--insert into user values(5, 0, false,'cristos@gmail.com', true, 'data','lastname','parola','user4', 5);
 
 
 --insert into post (body, create_date, number_of_comments, title, topic, user_id, id) values (?, ?, ?, ?, ?, ?, ?)
-insert into post values(1, 'ascult abi talent', '2020-01-01', 4, 'muzica', 1);
-insert into post values (2, 'ascult stravinsky', '1970-01-01', 341141, 'muzicologie', 1);
+insert into post values(1, 'ascult abi talent', '2020-01-01', 4, 'Cum fac bani fara sa muncesc?', 1);
+insert into post values (2, 'ascult stravinsky', '1970-01-01', 341141, 'Este legal sa munceti pana mori?', 1);
 insert into post values (3, 'mananc chipsuri', '2001-01-01', 0,'mancarica', 2);
 insert into post values (4, 'mananc caviar', '2999-01-01', 0, 'caviar', 2);
 
@@ -36,10 +36,10 @@ insert into comment values (4, false, 'asa e', '1977-01-01', 0, 1, 1);
 
 --//inserare notificari
 
-insert into notification values(1,null,true,'notification type',2);
-insert into notification values(2,null,true,'notification type',2);
-insert into notification values(3,null,true,'notification type',2);
-insert into notification values(4,null,true,'notification type',2);
+insert into notification values(1,'1977-01-01',true,'notification type',4);
+insert into notification values(2,'2020-01-01',true,'notification type',2);
+insert into notification values(3,'2020-03-05',true,'notification type',1);
+insert into notification values(4,'2020-06-02',true,'notification type',3);
 
 insert  into notification_user values ( 2,3 );
 insert  into notification_user values ( 4,2 );
