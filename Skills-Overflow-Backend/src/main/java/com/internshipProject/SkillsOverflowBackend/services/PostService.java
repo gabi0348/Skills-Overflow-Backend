@@ -1,6 +1,7 @@
 package com.internshipProject.SkillsOverflowBackend.services;
 
 import com.internshipProject.SkillsOverflowBackend.models.Post;
+import com.internshipProject.SkillsOverflowBackend.models.Topic;
 import com.internshipProject.SkillsOverflowBackend.models.TopicFront;
 import com.internshipProject.SkillsOverflowBackend.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,9 +61,10 @@ public class PostService {
             //filtare pe postari
             Stream<Post> postTopicList = allPosts
                     .filter(post -> {
-                        for(String top :post.getTopics()) {
-                            for (String str:topic.getTopics()) {
-                                if (top.equals(str)) return true;
+                        for(Topic topic1 :post.getTopics()) {
+                            String postTopic= topic1.getTopic();
+                            for (String frontTopic: topic.getTopics()) {
+                                if (postTopic.equals(frontTopic)) return true;
                             }
                         }
                         return false;
@@ -116,8 +118,12 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
+    public Object[] searchForPosts(String queryParam, Integer pageNo){
+        int noOfPages = postRepository.findAll().size() / 10 + 1;
+        if (pageNo > noOfPages) {
+            return null;
+        }
 
-    private List<Post> searchForPosts(String queryParam){
         List<Post> bodys = postRepository.findAll()
                 .stream()
                 .filter(post->post.getBody().contains(queryParam))
@@ -127,10 +133,15 @@ public class PostService {
                     for (String s: array) {if (s.equals(queryParam)) count ++;}
                     return count;
                 }))
+                .skip(pageNo * 10)
+                .limit(10)
                 .collect(Collectors.toList());
 
         Collections.reverse(bodys);
-        return bodys;
+        Object[] object = new Object[2];
+        object[0] = bodys.size();
+        object[1] = bodys;
+        return object;
     }
 
     public Integer getNumberOfPosts(){
