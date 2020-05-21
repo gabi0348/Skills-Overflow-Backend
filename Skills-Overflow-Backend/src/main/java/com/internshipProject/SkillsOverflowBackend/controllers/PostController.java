@@ -1,6 +1,7 @@
 package com.internshipProject.SkillsOverflowBackend.controllers;
 
 import com.internshipProject.SkillsOverflowBackend.Configuration.JwtTokenProvider;
+import com.internshipProject.SkillsOverflowBackend.convertors.PostConverter;
 import com.internshipProject.SkillsOverflowBackend.models.Post;
 import com.internshipProject.SkillsOverflowBackend.models.TopicFront;
 import com.internshipProject.SkillsOverflowBackend.models.User;
@@ -85,7 +86,11 @@ public class PostController {
                                           @RequestBody TopicFront topic) {
         Object[] arr = new Object[2];
         arr[0] = postService.getAllFilteredPosts(pageNo, criteria, topic).size();
-        arr[1] = postService.getAllFilteredPosts(pageNo, criteria, topic);
+        arr[1] = postService.getAllFilteredPosts(pageNo, criteria, topic)
+                .stream()
+                .map(PostConverter::convertToPostDTO)
+                .collect(Collectors.toList());
+
         return arr;
     }
 
