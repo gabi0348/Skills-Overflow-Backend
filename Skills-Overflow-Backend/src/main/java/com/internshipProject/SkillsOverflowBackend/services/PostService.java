@@ -61,10 +61,9 @@ public class PostService {
             //filtare pe postari
             Stream<Post> postTopicList = allPosts
                     .filter(post -> {
-                        for(Topic topic1 :post.getTopics()) {
-                            String postTopic= topic1.getTopic();
+                        for(String topic1 :post.getTopics()) {
                             for (String frontTopic: topic.getTopics()) {
-                                if (postTopic.equals(frontTopic)) return true;
+                                if (topic1.equals(frontTopic)) return true;
                             }
                         }
                         return false;
