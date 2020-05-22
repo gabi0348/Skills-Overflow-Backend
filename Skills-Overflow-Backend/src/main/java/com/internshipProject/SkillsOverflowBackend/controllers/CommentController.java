@@ -61,12 +61,12 @@ public class CommentController {
 
             return "your comment is under review";
         }
-        return null;
+        return "no posts here";
     }
 
-    @PutMapping(value = "voteMostRelevantComment/{commentId}/{userId}")
-    public Comment voteMostRelevantComment(@PathVariable Long commentId, @PathVariable Long userId) {
-        User user = userService.findById(userId);
+    @PutMapping(value = "voteMostRelevantComment/{commentId}")
+    public Comment voteMostRelevantComment(@PathVariable Long commentId) {
+        User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
         Optional<Comment> optionalComment = commentService.findById(commentId);
 
         if (optionalComment.isPresent()) {
@@ -77,12 +77,12 @@ public class CommentController {
             for (Topic topic : topicList) {
 
                 UserTopic userTopic =userTopicRepository.findByTopicIdAndUserId(topic.getId(),id);
-                if(userTopic != null) {
+                if (userTopic != null) {
                     //nu mai e nevoie? userTopic= userTopicRepository.findById(userTopic.getUserTopicId()).get();
                     userTopic.setVoteCount(userTopic.getVoteCount()+1);
                     userTopicRepository.save(userTopic);
                 }
-                else{
+                else {
                     UserTopic userTopic1 =new UserTopic();
                     userTopic1.setTopicId(topic.getId());
                     userTopic1.setUserId(id);
@@ -110,20 +110,7 @@ public class CommentController {
 
         if (optionalComment.isPresent()) {
             Comment comment = optionalComment.get();
-            Long postId = comment.getPost().getId();
-
-            for (LikedComm likedComm : user.getLikedComms()) {
-                if (likedComm.getPostId().equals(postId))
-                    return "you already voted this comment";
-            }
-
-            if (how.equals("up")) comment.setVoteCount(comment.getVoteCount() + 1L);
-            if (how.equals("down")) comment.setVoteCount(comment.getVoteCount() - 1L);
-
-            user.getLikedComms().add(new LikedComm(postId));
-            userService.saveUser(user);
-            commentService.save(comment);
-            return "voted";
+            return commentService.likeOrDislikeComm(how, user, comment);
         }
         return "no comment present";
     }
@@ -155,6 +142,7 @@ public class CommentController {
 
                 commentedPost.setNumberOfComments(commentedPost.getNumberOfComments() - 1L);
                 commentService.deleteComment(id);
+                postService.save(commentedPost);
 
                 return "successful delete";
             }

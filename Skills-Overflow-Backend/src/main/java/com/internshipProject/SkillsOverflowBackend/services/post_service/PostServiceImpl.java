@@ -56,19 +56,10 @@ public class PostServiceImpl implements PostService{
                 .filter(Post::getIsApproved);
         //null???
        //aici DOAR DACA am filtrare - array primit din front-end
-        if (topic.getTopics() != null && topic.getTopics().length>0) {
+        if (topic.getTopics().length>0) {
 
             //filtare pe postari
-            Stream<Post> postTopicList = allPosts
-                    .filter(post -> {
-                        for(Topic topic1 :post.getTopics()) {
-                            String topicName = topic1.getTopic();
-                            for (String frontTopic: topic.getTopics()) {
-                                if (topicName.equals(frontTopic)) return true;
-                            }
-                        }
-                        return false;
-                    });
+            Stream<Post> postTopicList = getPostWithTopicStream(topic, allPosts);
 
             //aici automat topicurile nu sunt undefined
             if (!criteria.equals("undefined")) {
@@ -90,6 +81,24 @@ public class PostServiceImpl implements PostService{
                 return getPostsJustByDate(pageNo, allPosts);
             }
         }
+    }
+
+    public Stream<Post> getPostWithTopicStream(TopicFront topic, Stream<Post> allPosts) {
+        return allPosts
+                        .filter(post -> {
+                            int found = 0;
+                            int totalNumberOfTopics = topic.getTopics().length;
+                            for(Topic topic1 :post.getTopics()) {
+                                String topicName = topic1.getTopic();
+                                for (String frontTopic: topic.getTopics()) {
+                                    if (topicName.equals(frontTopic)) {
+                                        found++;
+                                        if (found == totalNumberOfTopics) return true;
+                                    }
+                                }
+                            }
+                            return false;
+                        });
     }
 
     private List<PostDTO> getPostsOnCriteria(String criteria, Stream<Post> posts, Integer pageNo) {
@@ -127,9 +136,7 @@ public class PostServiceImpl implements PostService{
             return null;
         }
 
-        List<PostDTO> searchedPosts = postRepository.findAll()
-                .stream()
-                .filter(post->post.getTitle().toLowerCase().contains(queryParam.toLowerCase()))
+        List<PostDTO> searchedPosts = getQueryStream(queryParam)
                 .sorted(Comparator.comparingInt(post -> {
                     String[] bodyArray = post.getBody().split("\\s+");
                     String[] titleArray = post.getTitle().split("\\s+");
@@ -151,10 +158,16 @@ public class PostServiceImpl implements PostService{
         Collections.reverse(searchedPosts);
 
         Object[] object = new Object[2];
-        object[0] = searchedPosts.size();
+        object[0] = (int) getQueryStream(queryParam).count();
         object[1] = searchedPosts;
         return object;
         //faci aici convertirea direct
+    }
+
+    private Stream<Post> getQueryStream(String queryParam) {
+        return postRepository.findAll()
+                .stream()
+                .filter(post->post.getTitle().toLowerCase().contains(queryParam.toLowerCase()));
     }
 
     public Integer getNumberOfPosts(){

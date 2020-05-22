@@ -2,9 +2,11 @@ package com.internshipProject.SkillsOverflowBackend.controllers;
 
 import com.internshipProject.SkillsOverflowBackend.configuration.JwtTokenProvider;
 import com.internshipProject.SkillsOverflowBackend.convertors.PostConverter;
+import com.internshipProject.SkillsOverflowBackend.dto.PostDTO;
 import com.internshipProject.SkillsOverflowBackend.models.Post;
 import com.internshipProject.SkillsOverflowBackend.models.TopicFront;
 import com.internshipProject.SkillsOverflowBackend.models.User;
+import com.internshipProject.SkillsOverflowBackend.repositories.PostRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.post_service.PostService;
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
@@ -17,6 +19,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @CrossOrigin
 @RestController
@@ -28,6 +31,8 @@ public class PostController {
     UserService userService;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    PostRepository postRepository;
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
@@ -78,15 +83,17 @@ public class PostController {
         return "Post or user not found";
     }
 
-    //intoarce null daca n-a mai gasit postari; cate postari pe pagina, 10? daca topicul e null, intoarce tot sortat dupa data
-    //acum din front-end poti lua atat postarile, cat si numarul de postari;
-    //pot trimite un array de postari din front-end? trebuie modificat si front-endul
+    //intoarce null daca n-a mai gasit postari; daca topicul e null, intoarce tot sortat dupa data
     @PostMapping(value = "/allPosts/{pageNo}/{criteria}")
     public Object[] getAllFilteredPosts(@PathVariable Integer pageNo, @PathVariable String criteria,
                                           @RequestBody TopicFront topic) {
         Object[] arr = new Object[2];
 
-        arr[0] = postService.getAllFilteredPosts(pageNo, criteria, topic).size();
+        Stream<Post> postDTOStream = postRepository.findAll().stream();
+        //all posts counted, regardless of page number, depending if the topic array is empty or not
+        arr[0] = (topic.getTopics().length>0)
+                ? (int) postService.getPostWithTopicStream(topic, postDTOStream).count()
+                : postRepository.findAll().size();
         arr[1] = postService.getAllFilteredPosts(pageNo, criteria, topic);
 
         return arr;

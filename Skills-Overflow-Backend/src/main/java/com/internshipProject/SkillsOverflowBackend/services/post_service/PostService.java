@@ -8,6 +8,7 @@ import com.internshipProject.SkillsOverflowBackend.models.User;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface PostService {
     Optional<Post> findById(Long postId);
@@ -18,5 +19,6 @@ public interface PostService {
     Integer getNumberOfPosts();
     Post save(Post post);
     Object[] getPostWithSortedComments(Long postId, Long pageNo, User user);
+    public Stream<Post> getPostWithTopicStream(TopicFront topic, Stream<Post> allPosts);
 
 }
