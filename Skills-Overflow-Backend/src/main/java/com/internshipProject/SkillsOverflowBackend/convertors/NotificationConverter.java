@@ -8,7 +8,7 @@ public class NotificationConverter {
         NotificationDTO notificationDTO = new NotificationDTO();
         notificationDTO.setNotificationString("Someone commented on this post: ");
         notificationDTO.setPostName(notification.getPost().getTitle());
-        notificationDTO.setPostURL("http://localhost:8081//singlePost/" + notification.getPost().getId());
+        notificationDTO.setPostURL("http://localhost:8081/singlePost/" + notification.getPost().getId());
         notificationDTO.setPostDate(notification.getDate().toLocalDate().toString());
         return notificationDTO;
     }

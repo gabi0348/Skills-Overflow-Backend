@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -22,12 +21,11 @@ public class Topic {
     private Long id;
 
     private String topic;
-    private Long voteCount;
 
 //    @ManyToMany(mappedBy = "topics")
 //    private Set<User> users;
 //
-//    @JsonIgnore
-//    @ManyToMany(mappedBy = "topics")
-//    private List<Post> posts;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "topics")
+    private List<Post> posts;
 }

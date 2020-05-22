@@ -45,7 +45,9 @@ public class Notification {
     @CreationTimestamp
     private LocalDateTime date;
 
-    private String notification;
+    private int notificationType;
+    //1 - cineva a comentat
+    //2 - mi-a fost votat raspunsul cu cel mai bun raspuns
 
     boolean isUnread;
 

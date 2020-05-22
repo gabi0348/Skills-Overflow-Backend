@@ -24,6 +24,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 500)
     private String body;
     private Long voteCount = 0L;
     private Boolean isMostRelevantComment;

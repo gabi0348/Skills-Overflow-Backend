@@ -4,8 +4,12 @@ import com.internshipProject.SkillsOverflowBackend.configuration.JwtTokenProvide
 import com.internshipProject.SkillsOverflowBackend.models.*;
 
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
+
 import com.internshipProject.SkillsOverflowBackend.services.comment_service.CommentService;
 import com.internshipProject.SkillsOverflowBackend.services.post_service.PostService;
+
+import com.internshipProject.SkillsOverflowBackend.repositories.UserTopicRepository;
+
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
 import com.internshipProject.SkillsOverflowBackend.utils.Owner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +27,7 @@ import java.util.stream.Collectors;
 public class CommentController {
 
     @Autowired
-    CommentService commentServiceImpl;
+    CommentService commentService;
     @Autowired
     PostService postService;
     @Autowired
@@ -35,9 +39,12 @@ public class CommentController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    UserTopicRepository userTopicRepository;
+
     @PostMapping(value = "addComment/{postId}/{userId}")
     public String addComment(@RequestBody @Valid Comment comment, @PathVariable Long postId,
-                              @PathVariable Long userId) {
+                             @PathVariable Long userId) {
         Optional<Post> optionalPost = postService.findById(postId);
         User user = userService.findById(userId);
 
@@ -50,7 +57,7 @@ public class CommentController {
 
             comment.setUser(user);
             comment.setPost(post);
-            commentServiceImpl.save(comment);
+            commentService.save(comment);
 
             return "your comment is under review";
         }
@@ -60,88 +67,109 @@ public class CommentController {
     @PutMapping(value = "voteMostRelevantComment/{commentId}/{userId}")
     public Comment voteMostRelevantComment(@PathVariable Long commentId, @PathVariable Long userId) {
         User user = userService.findById(userId);
-        Optional<Comment> optionalComment = commentServiceImpl.findById(commentId);
+        Optional<Comment> optionalComment = commentService.findById(commentId);
 
         if (optionalComment.isPresent()) {
             Comment comment = optionalComment.get();
+
+            Long id= user.getUserId();
+            List<Topic> topicList = comment.getPost().getTopics();
+            for (Topic topic : topicList) {
+
+                UserTopic userTopic =userTopicRepository.findByTopicIdAndUserId(topic.getId(),id);
+                if(userTopic != null) {
+                    //nu mai e nevoie? userTopic= userTopicRepository.findById(userTopic.getUserTopicId()).get();
+                    userTopic.setVoteCount(userTopic.getVoteCount()+1);
+                    userTopicRepository.save(userTopic);
+                }
+                else{
+                    UserTopic userTopic1 =new UserTopic();
+                    userTopic1.setTopicId(topic.getId());
+                    userTopic1.setUserId(id);
+                    userTopic1.setVoteCount(1);
+                    userTopicRepository.save(userTopic1);
+                }
+            }
 
             if (Owner.isPrincipalOwnerOfPost(user, comment.getPost())) {
 
                 comment.setIsMostRelevantComment(Boolean.TRUE);
 //                trebuie sa gasesc comentariile acelei postari si sa dau false la acea comentarii
 
-                commentServiceImpl.save(comment);
+                commentService.save(comment);
                 return comment;
             }
         }
         return null;
     }
 
-    @PutMapping (value = "voteComment/{commentId}/{how}")
-    public String voteComment(@PathVariable String how, @PathVariable Long commentId) {
-        Optional<Comment> optionalComment = commentServiceImpl.findById(commentId);
+    @PutMapping(value = "likeComment/{commentId}/{how}")
+    public String likeComment(@PathVariable String how, @PathVariable Long commentId) {
+        Optional<Comment> optionalComment = commentService.findById(commentId);
         User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
 
         if (optionalComment.isPresent()) {
             Comment comment = optionalComment.get();
             Long postId = comment.getPost().getId();
 
-            for (VotedComm votedComm: user.getVotedComms()){
-                if (votedComm.getPostId().equals(postId)) return "you already voted";
+            for (LikedComm likedComm : user.getLikedComms()) {
+                if (likedComm.getPostId().equals(postId))
+                    return "you already voted this comment";
             }
 
             if (how.equals("up")) comment.setVoteCount(comment.getVoteCount() + 1L);
             if (how.equals("down")) comment.setVoteCount(comment.getVoteCount() - 1L);
 
-            user.getVotedComms().add(new VotedComm(postId));
+            user.getLikedComms().add(new LikedComm(postId));
             userService.saveUser(user);
-            commentServiceImpl.save(comment);
+            commentService.save(comment);
             return "voted";
         }
         return "no comment present";
     }
 
-    @PutMapping (value = "editCommentBody/{userId}")
+    @PutMapping(value = "editCommentBody/{userId}")
     public Comment editCommentBody(@RequestBody @Valid Comment newComment, @PathVariable Long userId) {
         User user = userService.findById(userId);
-        Optional<Comment> optionalComment = commentServiceImpl.findById(newComment.getId());
+        Optional<Comment> optionalComment = commentService.findById(newComment.getId());
 
         if (optionalComment.isPresent()) {
             Comment oldComment = optionalComment.get();
 
-            if(Owner.isPrincipalOwnerOfComment(user, oldComment))
-                return commentServiceImpl.updateComment(oldComment, newComment);
+            if (Owner.isPrincipalOwnerOfComment(user, oldComment))
+                return commentService.updateComment(oldComment, newComment);
+
         }
         return null;
     }
 
-    @DeleteMapping (value = "deleteComment/{commentId}")
-    public String deleteComment(@PathVariable Long id){
-        Optional<Comment> comment = commentServiceImpl.findById(id);
+    @DeleteMapping(value = "deleteComment/{commentId}")
+    public String deleteComment(@PathVariable Long id) {
+        Optional<Comment> comment = commentService.findById(id);
 
-        if(comment.isPresent()){
+        if (comment.isPresent()) {
             Comment actualComment = comment.get();
             Post commentedPost = actualComment.getPost();
 
             if (Owner.isPrincipalOwnerOfComment(commentedPost.getUser(), actualComment)) {
 
                 commentedPost.setNumberOfComments(commentedPost.getNumberOfComments() - 1L);
-                commentServiceImpl.deleteComment(id);
+                commentService.deleteComment(id);
 
                 return "successful delete";
             }
-
             return "not the owner";
         }
-
         return "no comment found";
     }
 
-    @GetMapping (value = "getPostWithSortedComments/{postId}/{pageNo}")
-    public List<Comment> getPostWithSortedComments(@PathVariable Long postId, @PathVariable Long pageNo){
+
+    //pageNo
+    @GetMapping(value = "getPostWithSortedComments/{postId}/{pageNo}")
+    public List<Comment> getPostWithSortedComments(@PathVariable Long postId, @PathVariable Long pageNo) {
 
         Optional<Post> optionalPost = postService.findById(postId);
-        if(optionalPost.isPresent()){
+        if (optionalPost.isPresent()) {
 
             Post post = optionalPost.get();
             //daca sunt mai multe pagini decat am
@@ -165,7 +193,7 @@ public class CommentController {
             List<Comment> sortedComments = post.getComments()
                     .stream()
                     .sorted(Comparator.comparing(Comment::getVoteCount).reversed())
-                    .skip(pageNo*10)
+                    .skip(pageNo * 10)
                     .limit(comLimit)
                     .collect(Collectors.toList());
 
@@ -176,8 +204,8 @@ public class CommentController {
         return new ArrayList<>();
     }
 
-    @GetMapping (value = "allCommentsForUser")
-    public List<Comment> getAllCommsForUser(){
+    @GetMapping(value = "allCommentsForUser")
+    public List<Comment> getAllCommsForUser() {
         User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
         return user.getComments()
                 .stream()

@@ -9,7 +9,6 @@ import com.internshipProject.SkillsOverflowBackend.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -44,7 +43,7 @@ public class PostServiceImpl implements PostService{
 
     //https://howtodoinjava.com/spring-boot2/pagination-sorting-example/
     //asta e baza!!!
-    public List<Post> getAllFilteredPosts(Integer pageNo, String criteria, TopicFront topic) {
+   public List<Post> getAllFilteredPosts(Integer pageNo, String criteria, TopicFront topic) {
 
         int noOfPages = postRepository.findAll().size() / 10 + 1;
         if (pageNo > noOfPages) {
@@ -52,16 +51,19 @@ public class PostServiceImpl implements PostService{
         }
 
         Stream<Post> allPosts = postRepository.findAll()
-                .stream();
+                .stream()
+                .filter(Post::getIsApproved);
         //null???
+       //aici DOAR DACA am filtrare
         if (topic.getTopics() != null && topic.getTopics().length>0) {
 
             //filtare pe postari
             Stream<Post> postTopicList = allPosts
                     .filter(post -> {
-                        for(String topic1 :post.getTopics()) {
+                        for(Topic topic1 :post.getTopics()) {
+                            String topicName = topic1.getTopic();
                             for (String frontTopic: topic.getTopics()) {
-                                if (topic1.equals(frontTopic)) return true;
+                                if (topicName.equals(frontTopic)) return true;
                             }
                         }
                         return false;

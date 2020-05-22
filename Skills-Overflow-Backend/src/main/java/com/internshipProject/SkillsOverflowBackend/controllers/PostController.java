@@ -42,10 +42,10 @@ public class PostController {
         return "your post is under review";
     }
 
-    @PutMapping(value = "/editPost/{userId}")
-    public String editPostWithId(@RequestBody @Valid Post newPost, @PathVariable Long userId) {
+    @PutMapping(value = "/editPost")
+    public String editPostWithId(@RequestBody @Valid Post newPost) {
 
-        User user = userService.findById(userId);
+        User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
         Optional<Post> optionalOldPost = postService.findById(newPost.getId());
 
         if (optionalOldPost.isPresent()) {
@@ -60,10 +60,10 @@ public class PostController {
         return "Post or user not found";
     }
 
-    @DeleteMapping(value = "/deletePost/{userId}")
+    @DeleteMapping(value = "/deletePost")
     public String deletePostWithId(@RequestBody @Valid Post newPost, @PathVariable Long userId) {
 
-        User user = userService.findById(userId);
+        User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
         Optional<Post> optionalOldPost = postService.findById(newPost.getId());
 
         if (optionalOldPost.isPresent()) {
@@ -85,6 +85,7 @@ public class PostController {
     public Object[] getAllFilteredPosts(@PathVariable Integer pageNo, @PathVariable String criteria,
                                           @RequestBody TopicFront topic) {
         Object[] arr = new Object[2];
+
         arr[0] = postService.getAllFilteredPosts(pageNo, criteria, topic).size();
         arr[1] = postService.getAllFilteredPosts(pageNo, criteria, topic)
                 .stream()
@@ -98,7 +99,7 @@ public class PostController {
     public void getPost(@PathVariable Long postId){
         Optional<Post> optionalPost = postService.findById(postId);
         //return optionalPost.orElse(null); de returnat obiect care sa zice dace acel user e owner (boolean)
-
+        //3 chestii
         //check
     }
 
