@@ -78,6 +78,11 @@ class Pair
 --insert into post_topic values(1, 'Springboot');
 --insert into post_topic values(1, 'Java');
 --insert into post_topic values(2, 'Java');
+insert into topic values(1,'Javra');
+insert into topic values(2,'Nu vreau');
+insert into post_topic values(1,1);
+insert into post_topic values(1,2);
+
 
 
 --create table comment (id bigint not null, approved_comment boolean, body varchar(255), create_date timestamp not null, vote_count bigint, post_id bigint, user_id bigint, primary key (id))
@@ -95,10 +100,10 @@ insert into comment values (4,  'Using this(args). The preferred pattern is to w
 
 --//inserare notificari
 
-insert into notification values(1,'1977-01-01',true,'notification type',4);
-insert into notification values(2,'2020-01-01',true,'notification type',2);
-insert into notification values(3,'2020-03-05',true,'notification type',1);
-insert into notification values(4,'2020-06-02',true,'notification type',3);
+insert into notification values(1,'1977-01-01',true,2,4);
+insert into notification values(2,'2020-01-01',true,1,2);
+insert into notification values(3,'2020-03-05',true,1,1);
+insert into notification values(4,'2020-06-02',true,1,3);
 
 insert  into notification_user values ( 2,3 );
 insert  into notification_user values ( 4,2 );

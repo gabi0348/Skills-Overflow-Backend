@@ -10,7 +10,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -35,9 +34,11 @@ public class Post {
     @CreationTimestamp
     private LocalDateTime createDate;
 
+/*
     @ElementCollection
     @CollectionTable(name = "post_topic", joinColumns = @JoinColumn(name = "post_id"))
     private List<String> topics = new ArrayList<>();
+*/
 
     //merge sau persist
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
@@ -52,5 +53,14 @@ public class Post {
     @JsonIgnore
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Notification> notifications;
+
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "post_topic",
+            joinColumns = { @JoinColumn(name = "post_id") },
+            inverseJoinColumns = { @JoinColumn(name = "topic_id") }
+    )
+    List<Topic> topics;
 
 }

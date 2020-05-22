@@ -84,8 +84,8 @@ public class PostController {
     public Object[] getAllFilteredPosts(@PathVariable Integer pageNo, @PathVariable String criteria,
                                           @RequestBody TopicFront topic) {
         Object[] arr = new Object[2];
-        arr[0] = postService.getAllFilteredPosts(pageNo, criteria, topic).size();
-        arr[1] = postService.getAllFilteredPosts(pageNo, criteria, topic);
+        //arr[0] = postService.getAllFilteredPosts(pageNo, criteria, topic).size();
+        //arr[1] = postService.getAllFilteredPosts(pageNo, criteria, topic);
         return arr;
     }
 

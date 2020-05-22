@@ -41,7 +41,7 @@ public class NotificationService {
         Notification notification = new Notification();
         notification.setUsers(userList);
         notification.setPost(post);
-        notification.setNotification("Someone commented on this post");
+        notification.setNotificationType(1);
         notificationRepository.save(notification);
     }
 

@@ -1,14 +1,14 @@
 package com.internshipProject.SkillsOverflowBackend.services;
 
 import com.internshipProject.SkillsOverflowBackend.models.Post;
-import com.internshipProject.SkillsOverflowBackend.models.Topic;
-import com.internshipProject.SkillsOverflowBackend.models.TopicFront;
 import com.internshipProject.SkillsOverflowBackend.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -46,7 +46,7 @@ public class PostService {
 
     //https://howtodoinjava.com/spring-boot2/pagination-sorting-example/
     //asta e baza!!!
-    public List<Post> getAllFilteredPosts(Integer pageNo, String criteria, TopicFront topic) {
+   /* public List<Post> getAllFilteredPosts(Integer pageNo, String criteria, TopicFront topic) {
 
         int noOfPages = postRepository.findAll().size() / 10 + 1;
         if (pageNo > noOfPages) {
@@ -90,7 +90,7 @@ public class PostService {
             }
         }
     }
-
+*/
     private List<Post> getPostsOnCriteria(String criteria, Stream<Post> posts, Integer pageNo) {
         if (criteria.equals("date")) {
             return posts.sorted(Comparator.comparing(Post::getCreateDate).reversed())
