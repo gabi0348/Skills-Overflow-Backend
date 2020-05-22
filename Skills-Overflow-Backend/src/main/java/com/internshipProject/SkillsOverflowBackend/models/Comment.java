@@ -24,9 +24,10 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 500)
     private String body;
     private Long voteCount = 0L;
-    private Boolean approvedComment;
+    private Boolean isMostRelevantComment;
 
     @Column(updatable = false)
     @CreationTimestamp
@@ -39,6 +40,6 @@ public class Comment {
 
     @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "user_id")
-    //@JsonIgnore
+    @JsonIgnore
     private User user;
 }

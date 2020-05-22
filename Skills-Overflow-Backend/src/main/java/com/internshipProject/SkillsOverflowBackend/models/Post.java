@@ -1,15 +1,11 @@
 package com.internshipProject.SkillsOverflowBackend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
-
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -29,20 +25,8 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JsonIgnore
-//    @JoinTable(
-//            name = "post_topic",
-//            joinColumns = { @JoinColumn(name = "post_id") },
-//            inverseJoinColumns = { @JoinColumn(name = "topic_id") }
-//    )
-//    private List<Topic> topics;
-
-    @ElementCollection
-    @CollectionTable(name = "post_topic", joinColumns = @JoinColumn(name = "post_id"))
-    private List<String> topics = new ArrayList<>();
-
     private String title;
+    @Column(length = 700)
     private String body;
     private Long numberOfComments = 0L;
 
@@ -50,6 +34,10 @@ public class Post {
     @Column(updatable = false)
     @CreationTimestamp
     private LocalDateTime createDate;
+
+    @ElementCollection
+    @CollectionTable(name = "post_topic", joinColumns = @JoinColumn(name = "post_id"))
+    private List<String> topics = new ArrayList<>();
 
     //merge sau persist
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
