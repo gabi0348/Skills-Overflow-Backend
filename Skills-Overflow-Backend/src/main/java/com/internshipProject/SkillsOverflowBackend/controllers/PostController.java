@@ -1,11 +1,11 @@
 package com.internshipProject.SkillsOverflowBackend.controllers;
 
-import com.internshipProject.SkillsOverflowBackend.Configuration.JwtTokenProvider;
+import com.internshipProject.SkillsOverflowBackend.configuration.JwtTokenProvider;
 import com.internshipProject.SkillsOverflowBackend.models.Post;
 import com.internshipProject.SkillsOverflowBackend.models.TopicFront;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
-import com.internshipProject.SkillsOverflowBackend.services.PostService;
+import com.internshipProject.SkillsOverflowBackend.services.post_service.PostService;
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
 import com.internshipProject.SkillsOverflowBackend.utils.Owner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class PostController {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
-    //{userId} și @PathVariable Long userId nu mai sunt necesare deci
+    //user id nu mai e necesar, il ia direct security
     @PostMapping(value = "createPost")
     public String newPost(@RequestBody @Valid Post post) {
         //aici trebuie sa dai mail cu mail service
@@ -41,10 +41,10 @@ public class PostController {
         return "your post is under review";
     }
 
-    @PutMapping(value = "/editPost/{userId}")
-    public String editPostWithId(@RequestBody @Valid Post newPost, @PathVariable Long userId) {
+    @PutMapping(value = "/editPost")
+    public String editPostWithId(@RequestBody @Valid Post newPost) {
 
-        User user = userService.findById(userId);
+        User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
         Optional<Post> optionalOldPost = postService.findById(newPost.getId());
 
         if (optionalOldPost.isPresent()) {
@@ -59,10 +59,10 @@ public class PostController {
         return "Post or user not found";
     }
 
-    @DeleteMapping(value = "/deletePost/{userId}")
+    @DeleteMapping(value = "/deletePost")
     public String deletePostWithId(@RequestBody @Valid Post newPost, @PathVariable Long userId) {
 
-        User user = userService.findById(userId);
+        User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
         Optional<Post> optionalOldPost = postService.findById(newPost.getId());
 
         if (optionalOldPost.isPresent()) {
@@ -84,17 +84,18 @@ public class PostController {
     public Object[] getAllFilteredPosts(@PathVariable Integer pageNo, @PathVariable String criteria,
                                           @RequestBody TopicFront topic) {
         Object[] arr = new Object[2];
-        //arr[0] = postService.getAllFilteredPosts(pageNo, criteria, topic).size();
-        //arr[1] = postService.getAllFilteredPosts(pageNo, criteria, topic);
+
+        arr[0] = postService.getAllFilteredPosts(pageNo, criteria, topic).size();
+        arr[1] = postService.getAllFilteredPosts(pageNo, criteria, topic);
+
         return arr;
     }
 
+    //i'm returning the comment, the posts, and IF this actual user is the owner of the post
     @GetMapping(value = "/singlePost/{postId}")
-    public void getPost(@PathVariable Long postId){
-        Optional<Post> optionalPost = postService.findById(postId);
-        //return optionalPost.orElse(null); de returnat obiect care sa zice dace acel user e owner (boolean)
-
-        //check
+    public Object[] getPost(@PathVariable Long postId){
+        User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
+        return postService.getPostWithSortedComments(postId, 0L, user);
     }
 
     @GetMapping(value = "/allPostsForUser")
@@ -105,10 +106,12 @@ public class PostController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping (value = "/allSearchedPosts/{pageNo}/{searchParam}")
+    @GetMapping (value = "/allSearchedPosts/{pageNo}/{searchParam}")
     public Object[] getSearchedPosts(@PathVariable Integer pageNo, @PathVariable String searchParam){
         return postService.searchForPosts(searchParam, pageNo);
     }
+
+
 
 }
 

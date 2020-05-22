@@ -34,11 +34,7 @@ public class Post {
     @CreationTimestamp
     private LocalDateTime createDate;
 
-/*
-    @ElementCollection
-    @CollectionTable(name = "post_topic", joinColumns = @JoinColumn(name = "post_id"))
-    private List<String> topics = new ArrayList<>();
-*/
+    private Boolean isApproved = false;
 
     //merge sau persist
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})

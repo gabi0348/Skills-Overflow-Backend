@@ -21,7 +21,6 @@ public class Topic {
     private Long id;
 
     private String topic;
-   // private Long voteCount;
 
 //    @ManyToMany(mappedBy = "topics")
 //    private Set<User> users;

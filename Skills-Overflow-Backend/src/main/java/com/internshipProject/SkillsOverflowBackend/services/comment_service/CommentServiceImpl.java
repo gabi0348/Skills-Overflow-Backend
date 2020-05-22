@@ -1,4 +1,4 @@
-package com.internshipProject.SkillsOverflowBackend.services;
+package com.internshipProject.SkillsOverflowBackend.services.comment_service;
 
 import com.internshipProject.SkillsOverflowBackend.models.Comment;
 import com.internshipProject.SkillsOverflowBackend.repositories.CommentRepository;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class CommentService {
+public class CommentServiceImpl implements CommentService{
 
     @Autowired
     CommentRepository commentRepository;

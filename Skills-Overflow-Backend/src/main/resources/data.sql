@@ -21,13 +21,13 @@ given json request
 
 { "articleId": "1" }
 
-My Controller class:', '2020-01-01', 4, 'Sprin JPA Repository throws bean creation error?', 1);
+My Controller class:', '2020-01-01', true, 4, 'Sprin JPA Repository throws bean creation error?', 1);
 insert into post values (2, 'Exapmele : I have payment object with 3 request formats
 
 1. request 1 card payment: validate card number, exp date and amount
 2. token payment: token , exp date
 3. validate card : card number, exp date
-==> How it is possible from single payment object', '1970-01-01', 341141, 'How to do sring validations on particular fields for each request?', 1);
+==> How it is possible from single payment object', '1970-01-01', false, 341141, 'How to do sring validations on particular fields for each request?', 1);
 insert into post values (3, 'How to parse the response JSON and get summary and action each time and form a separate object with that.' ||
                             '{
   "issues": [
@@ -44,7 +44,7 @@ insert into post values (3, 'How to parse the response JSON and get summary and 
                    }
        }
 
-}```', '2001-01-01', 0,'How to parse belowJSON in springboot?', 2);
+}```', '2001-01-01', 0, false, 'How to parse belowJSON in springboot for Java?', 2);
 insert into post values (4, 'I know how to create multiple instances of a bean class. However, now I have a series of classes, say:' ||
                             'class AppleInModule {
   @Autowired RedisTemplate template; // <-- just any *external* dependencies
@@ -54,8 +54,8 @@ insert into post values (4, 'I know how to create multiple instances of a bean c
 
 class OrangeInModule {
   ... // similar
-}', '2999-01-01', 0, 'Multiple instances of a *series* of beans', 2);
-insert into post values (5, 'Is it possible to call a constructor from another (within the same class, not from a subclass)? If yes how? And what could be the best way to call another constructor (if there are several ways to do it)?', '2999-01-01', 0, 'How do I call one constructor from another in Java', 2);
+}', '2999-01-01', true, 0, 'Multiple instances of a *series* of beans', 2);
+insert into post values (5, 'Is it possible to call a constructor from another (within the same class, not from a subclass)? If yes how? And what could be the best way to call another constructor (if there are several ways to do it)?', '2999-01-01', true, 0, 'How do I call one constructor from another in Java in Java in java', 2);
 insert into post values (6, 'I have the following class:
 
 class Pair
@@ -72,17 +72,16 @@ class Pair
         this(car);
         this(cdr);
     }
-}', '2999-01-01', 0, 'How to avoid constructor code redudancy in Java?', 2);
+}', '2999-01-01', true, 0, 'How to avoid constructor code redudancy in Java?', 2);
 
 
---insert into post_topic values(1, 'Springboot');
---insert into post_topic values(1, 'Java');
---insert into post_topic values(2, 'Java');
 insert into topic values(1,'Javra');
 insert into topic values(2,'Nu vreau');
+--post id, apoi topic id
 insert into post_topic values(1,1);
 insert into post_topic values(1,2);
-
+insert into post_topic values(4,1);
+insert into post_topic values(5,1);
 
 
 --create table comment (id bigint not null, approved_comment boolean, body varchar(255), create_date timestamp not null, vote_count bigint, post_id bigint, user_id bigint, primary key (id))
@@ -90,7 +89,7 @@ insert into post_topic values(1,2);
 insert into comment values (1, 'It depends on attribute scope of bean tag. If scope="singleton" which is by default then each time you will get single instance and if scope="prototype" then you will get different instances. And it doesn''t depend on autowire', '1974-01-01', false,-2, 1, 3);
 insert into comment values (2, 'By using @Autowired you instruct classloader to associate any class instance available in container to associate with the callee. You need to make sure that you have made an entry to instantiate the bean in your config file like <bean id="test" class="xxx.Test" />. Also you might want to check scopes too.
 
-If you have multiple instances of same class define with different names then with @Autowired you need to provide specific name that you want to use with the help of qualifier.', '1975-01-01', false, 10, 1, 4);
+If you have multiple instances of same class define with different names then with @Autowired you need to provide specific name that you want to use with the help of qualifier.', '1975-01-01', true, 10, 1, 4);
 insert into comment values (3,  'Yes, Spring does some magic. Check the Spring Docs:
 
 This is where the magic comes in: All @Configuration classes are subclassed at startup-time with CGLIB. In the subclass, the child method checks the container first for any cached (scoped) beans before it calls the parent method and creates a new instance.

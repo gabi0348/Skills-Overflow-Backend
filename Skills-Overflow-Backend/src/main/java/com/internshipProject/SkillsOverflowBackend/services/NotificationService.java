@@ -1,6 +1,6 @@
 package com.internshipProject.SkillsOverflowBackend.services;
 
-import com.internshipProject.SkillsOverflowBackend.Configuration.JwtTokenProvider;
+import com.internshipProject.SkillsOverflowBackend.configuration.JwtTokenProvider;
 import com.internshipProject.SkillsOverflowBackend.convertors.NotificationConverter;
 import com.internshipProject.SkillsOverflowBackend.dto.NotificationDTO;
 import com.internshipProject.SkillsOverflowBackend.models.Comment;

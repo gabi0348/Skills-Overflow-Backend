@@ -1,13 +1,15 @@
 package com.internshipProject.SkillsOverflowBackend.controllers;
 
-import com.internshipProject.SkillsOverflowBackend.Configuration.JwtTokenProvider;
+import com.internshipProject.SkillsOverflowBackend.configuration.JwtTokenProvider;
 import com.internshipProject.SkillsOverflowBackend.models.*;
 
-import com.internshipProject.SkillsOverflowBackend.repositories.TopicRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
+
+import com.internshipProject.SkillsOverflowBackend.services.comment_service.CommentService;
+import com.internshipProject.SkillsOverflowBackend.services.post_service.PostService;
+
 import com.internshipProject.SkillsOverflowBackend.repositories.UserTopicRepository;
-import com.internshipProject.SkillsOverflowBackend.services.CommentService;
-import com.internshipProject.SkillsOverflowBackend.services.PostService;
+
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
 import com.internshipProject.SkillsOverflowBackend.utils.Owner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,20 +38,15 @@ public class CommentController {
     JwtTokenProvider jwtTokenProvider;
     @Autowired
     UserRepository userRepository;
-    @Autowired
-    TopicRepository topicRepository;
 
     @Autowired
     UserTopicRepository userTopicRepository;
-
-//    List<Topic> topicList= new A
 
     @PostMapping(value = "addComment/{postId}/{userId}")
     public String addComment(@RequestBody @Valid Comment comment, @PathVariable Long postId,
                              @PathVariable Long userId) {
         Optional<Post> optionalPost = postService.findById(postId);
         User user = userService.findById(userId);
-
 
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
@@ -81,10 +78,11 @@ public class CommentController {
 
                 UserTopic userTopic =userTopicRepository.findByTopicIdAndUserId(topic.getId(),id);
                 if(userTopic != null) {
-                    userTopic= userTopicRepository.findById(userTopic.getUserTopicId()).get();
+                    //nu mai e nevoie? userTopic= userTopicRepository.findById(userTopic.getUserTopicId()).get();
                     userTopic.setVoteCount(userTopic.getVoteCount()+1);
                     userTopicRepository.save(userTopic);
-                }else {
+                }
+                else{
                     UserTopic userTopic1 =new UserTopic();
                     userTopic1.setTopicId(topic.getId());
                     userTopic1.setUserId(id);
@@ -105,8 +103,8 @@ public class CommentController {
         return null;
     }
 
-    @PutMapping(value = "voteComment/{commentId}/{how}")
-    public String voteComment(@PathVariable String how, @PathVariable Long commentId) {
+    @PutMapping(value = "likeComment/{commentId}/{how}")
+    public String likeComment(@PathVariable String how, @PathVariable Long commentId) {
         Optional<Comment> optionalComment = commentService.findById(commentId);
         User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
 
@@ -114,14 +112,15 @@ public class CommentController {
             Comment comment = optionalComment.get();
             Long postId = comment.getPost().getId();
 
-            for (VotedComm votedComm : user.getVotedComms()) {
-                if (votedComm.getPostId().equals(postId)) return "you already voted";
+            for (LikedComm likedComm : user.getLikedComms()) {
+                if (likedComm.getPostId().equals(postId))
+                    return "you already voted this comment";
             }
 
             if (how.equals("up")) comment.setVoteCount(comment.getVoteCount() + 1L);
             if (how.equals("down")) comment.setVoteCount(comment.getVoteCount() - 1L);
 
-            user.getVotedComms().add(new VotedComm(postId));
+            user.getLikedComms().add(new LikedComm(postId));
             userService.saveUser(user);
             commentService.save(comment);
             return "voted";
@@ -139,6 +138,7 @@ public class CommentController {
 
             if (Owner.isPrincipalOwnerOfComment(user, oldComment))
                 return commentService.updateComment(oldComment, newComment);
+
         }
         return null;
     }
@@ -158,50 +158,9 @@ public class CommentController {
 
                 return "successful delete";
             }
-
             return "not the owner";
         }
-
         return "no comment found";
-    }
-
-    @GetMapping(value = "getPostWithSortedComments/{postId}/{pageNo}")
-    public List<Comment> getPostWithSortedComments(@PathVariable Long postId, @PathVariable Long pageNo) {
-
-        Optional<Post> optionalPost = postService.findById(postId);
-        if (optionalPost.isPresent()) {
-
-            Post post = optionalPost.get();
-            //daca sunt mai multe pagini decat am
-            int noOfPages = post.getComments().size() / 10 + 1;
-            if (pageNo > noOfPages) {
-                return new ArrayList<>();
-            }
-
-            //daca imi trimite pagina nr.0 (prima)
-            int comLimit = 10;
-            List<Comment> comments = new ArrayList<>();
-            if (pageNo == 0) {
-                comLimit = 9;
-                comments = post.getComments().
-                        stream().
-                        filter(Comment::getIsMostRelevantComment).
-                        collect(Collectors.toList());
-            }
-
-            //compar in functie de vote count
-            List<Comment> sortedComments = post.getComments()
-                    .stream()
-                    .sorted(Comparator.comparing(Comment::getVoteCount).reversed())
-                    .skip(pageNo * 10)
-                    .limit(comLimit)
-                    .collect(Collectors.toList());
-
-            comments.addAll(sortedComments);
-            return comments;
-        }
-
-        return new ArrayList<>();
     }
 
     @GetMapping(value = "allCommentsForUser")

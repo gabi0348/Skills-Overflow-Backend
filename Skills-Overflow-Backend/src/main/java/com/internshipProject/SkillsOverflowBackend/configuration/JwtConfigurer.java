@@ -1,4 +1,4 @@
-package com.internshipProject.SkillsOverflowBackend.Configuration;
+package com.internshipProject.SkillsOverflowBackend.configuration;
 
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

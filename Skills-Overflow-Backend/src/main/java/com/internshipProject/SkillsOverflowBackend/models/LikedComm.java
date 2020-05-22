@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class VotedComm {
+public class LikedComm {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class VotedComm {
     @ManyToOne
     User user;
 
-    public VotedComm(Long postId){
+    public LikedComm(Long postId){
         this.postId = postId;
     }
 }
