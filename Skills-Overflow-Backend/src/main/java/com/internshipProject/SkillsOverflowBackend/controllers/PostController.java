@@ -1,13 +1,12 @@
 package com.internshipProject.SkillsOverflowBackend.controllers;
 
-import com.internshipProject.SkillsOverflowBackend.Configuration.JwtTokenProvider;
+import com.internshipProject.SkillsOverflowBackend.configuration.JwtTokenProvider;
 import com.internshipProject.SkillsOverflowBackend.convertors.PostConverter;
 import com.internshipProject.SkillsOverflowBackend.models.Post;
 import com.internshipProject.SkillsOverflowBackend.models.TopicFront;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.post_service.PostService;
-import com.internshipProject.SkillsOverflowBackend.services.post_service.PostServiceImpl;
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
 import com.internshipProject.SkillsOverflowBackend.utils.Owner;
 import org.springframework.beans.factory.annotation.Autowired;

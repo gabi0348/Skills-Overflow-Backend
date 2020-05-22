@@ -1,4 +1,4 @@
-package com.internshipProject.SkillsOverflowBackend.Configuration;
+package com.internshipProject.SkillsOverflowBackend.configuration;
 
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
