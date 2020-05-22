@@ -2,12 +2,13 @@ package com.internshipProject.SkillsOverflowBackend.services.post_service;
 
 import com.internshipProject.SkillsOverflowBackend.convertors.PostConverter;
 import com.internshipProject.SkillsOverflowBackend.dto.PostDTO;
-import com.internshipProject.SkillsOverflowBackend.models.Post;
-import com.internshipProject.SkillsOverflowBackend.models.Topic;
-import com.internshipProject.SkillsOverflowBackend.models.TopicFront;
+import com.internshipProject.SkillsOverflowBackend.models.*;
 import com.internshipProject.SkillsOverflowBackend.repositories.PostRepository;
+import com.internshipProject.SkillsOverflowBackend.utils.Owner;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -43,7 +44,7 @@ public class PostServiceImpl implements PostService{
 
     //https://howtodoinjava.com/spring-boot2/pagination-sorting-example/
     //asta e baza!!!
-   public List<Post> getAllFilteredPosts(Integer pageNo, String criteria, TopicFront topic) {
+   public List<PostDTO> getAllFilteredPosts(Integer pageNo, String criteria, TopicFront topic) {
 
         int noOfPages = postRepository.findAll().size() / 10 + 1;
         if (pageNo > noOfPages) {
@@ -54,7 +55,7 @@ public class PostServiceImpl implements PostService{
                 .stream()
                 .filter(Post::getIsApproved);
         //null???
-       //aici DOAR DACA am filtrare
+       //aici DOAR DACA am filtrare - array primit din front-end
         if (topic.getTopics() != null && topic.getTopics().length>0) {
 
             //filtare pe postari
@@ -91,11 +92,12 @@ public class PostServiceImpl implements PostService{
         }
     }
 
-    private List<Post> getPostsOnCriteria(String criteria, Stream<Post> posts, Integer pageNo) {
+    private List<PostDTO> getPostsOnCriteria(String criteria, Stream<Post> posts, Integer pageNo) {
         if (criteria.equals("date")) {
             return posts.sorted(Comparator.comparing(Post::getCreateDate).reversed())
                     .skip(pageNo * 10)
                     .limit(10)
+                    .map(PostConverter::convertToPostDTO)
                     .collect(Collectors.toList());
         }
 
@@ -103,17 +105,19 @@ public class PostServiceImpl implements PostService{
             return posts.sorted(Comparator.comparing(Post::getNumberOfComments).reversed())
                     .skip(pageNo * 10)
                     .limit(10)
+                    .map(PostConverter::convertToPostDTO)
                     .collect(Collectors.toList());
         }
         return null;
     }
 
     //metoda utilitara
-    private List<Post> getPostsJustByDate(Integer pageNo, Stream<Post> posts) {
+    private List<PostDTO> getPostsJustByDate(Integer pageNo, Stream<Post> posts) {
         return posts
                 .sorted(Comparator.comparing(Post::getCreateDate).reversed())
                 .skip(pageNo*10)
                 .limit(10)
+                .map(PostConverter::convertToPostDTO)
                 .collect(Collectors.toList());
     }
 
@@ -123,13 +127,20 @@ public class PostServiceImpl implements PostService{
             return null;
         }
 
-        List<PostDTO> bodys = postRepository.findAll()
+        List<PostDTO> searchedPosts = postRepository.findAll()
                 .stream()
-                .filter(post->post.getTitle().contains(queryParam))
+                .filter(post->post.getTitle().toLowerCase().contains(queryParam.toLowerCase()))
                 .sorted(Comparator.comparingInt(post -> {
-                    String[] array = post.getBody().split("\\s+");
+                    String[] bodyArray = post.getBody().split("\\s+");
+                    String[] titleArray = post.getTitle().split("\\s+");
+                    String[] both = ArrayUtils.addAll(bodyArray, titleArray);
+
                     int count = 0;
-                    for (String s: array) {if (s.equals(queryParam)) count ++;}
+                    for (String s: both) {
+                        if (s.toLowerCase().equals(queryParam.toLowerCase()))
+                            count ++;
+                    }
+                    System.out.println(count);
                     return count;
                 }))
                 .skip(pageNo * 10)
@@ -137,16 +148,66 @@ public class PostServiceImpl implements PostService{
                 .map(PostConverter::convertToPostDTO)
                 .collect(Collectors.toList());
 
-        Collections.reverse(bodys);
+        Collections.reverse(searchedPosts);
+
         Object[] object = new Object[2];
-        object[0] = bodys.size();
-        object[1] = bodys;
+        object[0] = searchedPosts.size();
+        object[1] = searchedPosts;
         return object;
         //faci aici convertirea direct
     }
 
     public Integer getNumberOfPosts(){
         return postRepository.findAll().size();
+    }
+
+    public Object[] getPostWithSortedComments(Long postId, Long pageNo, User user) {
+
+        //hardcodez page number sa fie 0 oricum!!!!
+        pageNo = 0L;
+
+        Object[] array = new Object[3];
+
+        Optional<Post> optionalPost = findById(postId);
+        if (optionalPost.isPresent()) {
+
+            List<Comment> commentList = new ArrayList<>();
+            Post post = optionalPost.get();
+            array[0] = PostConverter.convertToPostDTO(post);
+
+            //daca sunt mai multe pagini decat am
+            int noOfPages = post.getComments().size() / 10 + 1;
+            if (pageNo > noOfPages) {
+                return null;
+            }
+
+            int comLimit = 10;
+            //daca imi trimite pagina nr.0 (prima); din toate comentariile, il caut pe cel most relevant
+            List<Comment> comments = new ArrayList<>();
+            if (pageNo == 0) {
+                comLimit = 9;
+                comments = post.getComments().
+                        stream().
+                        filter(Comment::getIsMostRelevantComment).
+                        collect(Collectors.toList());
+            }
+
+            //compar in functie de vote count
+            List<Comment> sortedComments = post.getComments()
+                    .stream()
+                    .sorted(Comparator.comparing(Comment::getVoteCount).reversed())
+                    .skip(pageNo * 10)
+                    .limit(comLimit)
+                    .collect(Collectors.toList());
+
+            //aici voi converti si comentariile in dto
+            comments.addAll(sortedComments);
+            array[1] = comments;
+            array[2] = Owner.isPrincipalOwnerOfPost(user, post);
+            return array;
+        }
+
+        return null;
     }
 
 }

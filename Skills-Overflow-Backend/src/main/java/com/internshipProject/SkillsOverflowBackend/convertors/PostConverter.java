@@ -4,6 +4,9 @@ import com.internshipProject.SkillsOverflowBackend.dto.NotificationDTO;
 import com.internshipProject.SkillsOverflowBackend.dto.PostDTO;
 import com.internshipProject.SkillsOverflowBackend.models.Notification;
 import com.internshipProject.SkillsOverflowBackend.models.Post;
+import com.internshipProject.SkillsOverflowBackend.models.Topic;
+
+import java.util.stream.Collectors;
 
 public class PostConverter {
 
@@ -14,7 +17,7 @@ public class PostConverter {
         postDTO.setCreateDate(post.getCreateDate().toLocalDate().toString());
         postDTO.setNumberOfComments(post.getNumberOfComments());
         postDTO.setTitle(post.getTitle());
-        postDTO.setTopics(post.getTopics());
+        postDTO.setTopics(post.getTopics().stream().map(Topic::getTopic).collect(Collectors.toList()));
         return postDTO;
     }
 }

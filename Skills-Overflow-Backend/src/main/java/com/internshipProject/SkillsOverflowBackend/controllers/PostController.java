@@ -31,7 +31,7 @@ public class PostController {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
-    //{userId} și @PathVariable Long userId nu mai sunt necesare deci
+    //user id nu mai e necesar, il ia direct security
     @PostMapping(value = "createPost")
     public String newPost(@RequestBody @Valid Post post) {
         //aici trebuie sa dai mail cu mail service
@@ -87,20 +87,16 @@ public class PostController {
         Object[] arr = new Object[2];
 
         arr[0] = postService.getAllFilteredPosts(pageNo, criteria, topic).size();
-        arr[1] = postService.getAllFilteredPosts(pageNo, criteria, topic)
-                .stream()
-                .map(PostConverter::convertToPostDTO)
-                .collect(Collectors.toList());
+        arr[1] = postService.getAllFilteredPosts(pageNo, criteria, topic);
 
         return arr;
     }
 
+    //i'm returning the comment, the posts, and IF this actual user is the owner of the post
     @GetMapping(value = "/singlePost/{postId}")
-    public void getPost(@PathVariable Long postId){
-        Optional<Post> optionalPost = postService.findById(postId);
-        //return optionalPost.orElse(null); de returnat obiect care sa zice dace acel user e owner (boolean)
-        //3 chestii
-        //check
+    public Object[] getPost(@PathVariable Long postId){
+        User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
+        return postService.getPostWithSortedComments(postId, 0L, user);
     }
 
     @GetMapping(value = "/allPostsForUser")
@@ -111,10 +107,12 @@ public class PostController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping (value = "/allSearchedPosts/{pageNo}/{searchParam}")
+    @GetMapping (value = "/allSearchedPosts/{pageNo}/{searchParam}")
     public Object[] getSearchedPosts(@PathVariable Integer pageNo, @PathVariable String searchParam){
         return postService.searchForPosts(searchParam, pageNo);
     }
+
+
 
 }
 

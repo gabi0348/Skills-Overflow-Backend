@@ -163,47 +163,6 @@ public class CommentController {
         return "no comment found";
     }
 
-
-    //pageNo
-    @GetMapping(value = "getPostWithSortedComments/{postId}/{pageNo}")
-    public List<Comment> getPostWithSortedComments(@PathVariable Long postId, @PathVariable Long pageNo) {
-
-        Optional<Post> optionalPost = postService.findById(postId);
-        if (optionalPost.isPresent()) {
-
-            Post post = optionalPost.get();
-            //daca sunt mai multe pagini decat am
-            int noOfPages = post.getComments().size() / 10 + 1;
-            if (pageNo > noOfPages) {
-                return new ArrayList<>();
-            }
-
-            //daca imi trimite pagina nr.0 (prima)
-            int comLimit = 10;
-            List<Comment> comments = new ArrayList<>();
-            if (pageNo == 0) {
-                comLimit = 9;
-                comments = post.getComments().
-                        stream().
-                        filter(Comment::getIsMostRelevantComment).
-                        collect(Collectors.toList());
-            }
-
-            //compar in functie de vote count
-            List<Comment> sortedComments = post.getComments()
-                    .stream()
-                    .sorted(Comparator.comparing(Comment::getVoteCount).reversed())
-                    .skip(pageNo * 10)
-                    .limit(comLimit)
-                    .collect(Collectors.toList());
-
-            comments.addAll(sortedComments);
-            return comments;
-        }
-
-        return new ArrayList<>();
-    }
-
     @GetMapping(value = "allCommentsForUser")
     public List<Comment> getAllCommsForUser() {
         User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
