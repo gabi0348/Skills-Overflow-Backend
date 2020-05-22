@@ -16,6 +16,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -29,19 +30,6 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JsonIgnore
-//    @JoinTable(
-//            name = "post_topic",
-//            joinColumns = { @JoinColumn(name = "post_id") },
-//            inverseJoinColumns = { @JoinColumn(name = "topic_id") }
-//    )
-//    private List<Topic> topics;
-
-    @ElementCollection
-    @CollectionTable(name = "post_topic", joinColumns = @JoinColumn(name = "post_id"))
-    private List<String> topics = new ArrayList<>();
-
     private String title;
     private String body;
     private Long numberOfComments = 0L;
@@ -50,6 +38,10 @@ public class Post {
     @Column(updatable = false)
     @CreationTimestamp
     private LocalDateTime createDate;
+
+    @ElementCollection
+    @CollectionTable(name = "post_topic", joinColumns = @JoinColumn(name = "post_id"))
+    private List<String> topics = new ArrayList<>();
 
     //merge sau persist
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})

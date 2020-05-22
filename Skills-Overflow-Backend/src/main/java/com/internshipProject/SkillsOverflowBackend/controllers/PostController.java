@@ -32,13 +32,13 @@ public class PostController {
 
     //{userId} și @PathVariable Long userId nu mai sunt necesare deci
     @PostMapping(value = "createPost")
-    public Post newPost(@RequestBody @Valid Post post) {
-//        User user = userService.findById(userId);
+    public String newPost(@RequestBody @Valid Post post) {
+        //aici trebuie sa dai mail cu mail service
 
         User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
         post.setUser(user);
         postService.save(post);
-        return post;
+        return "your post is under review";
     }
 
     @PutMapping(value = "/editPost/{userId}")
@@ -90,9 +90,11 @@ public class PostController {
     }
 
     @GetMapping(value = "/singlePost/{postId}")
-    public Post getPost(@PathVariable Long postId){
+    public void getPost(@PathVariable Long postId){
         Optional<Post> optionalPost = postService.findById(postId);
-        return optionalPost.orElse(null);
+        //return optionalPost.orElse(null); de returnat obiect care sa zice dace acel user e owner (boolean)
+
+        //check
     }
 
     @GetMapping(value = "/allPostsForUser")
@@ -101,6 +103,11 @@ public class PostController {
         return user.getPosts().stream()
                 .sorted(Comparator.comparing(Post::getCreateDate).reversed())
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping (value = "/allSearchedPosts/{pageNo}/{searchParam}")
+    public Object[] getSearchedPosts(@PathVariable Integer pageNo, @PathVariable String searchParam){
+        return postService.searchForPosts(searchParam, pageNo);
     }
 
 }

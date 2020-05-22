@@ -1,11 +1,9 @@
 package com.internshipProject.SkillsOverflowBackend.controllers;
 
 import com.internshipProject.SkillsOverflowBackend.Configuration.JwtTokenProvider;
-import com.internshipProject.SkillsOverflowBackend.models.Comment;
-import com.internshipProject.SkillsOverflowBackend.models.Post;
-import com.internshipProject.SkillsOverflowBackend.models.User;
+import com.internshipProject.SkillsOverflowBackend.models.*;
 
-import com.internshipProject.SkillsOverflowBackend.models.VotedComm;
+import com.internshipProject.SkillsOverflowBackend.repositories.TopicRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.CommentService;
 import com.internshipProject.SkillsOverflowBackend.services.PostService;
@@ -37,12 +35,18 @@ public class CommentController {
     JwtTokenProvider jwtTokenProvider;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    TopicRepository topicRepository;
+
+//    List<Topic> topicList= new A
 
     @PostMapping(value = "addComment/{postId}/{userId}")
-    public Comment addComment(@RequestBody @Valid Comment comment, @PathVariable Long postId,
+    public String addComment(@RequestBody @Valid Comment comment, @PathVariable Long postId,
                               @PathVariable Long userId) {
         Optional<Post> optionalPost = postService.findById(postId);
         User user = userService.findById(userId);
+
+
 
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
@@ -55,21 +59,33 @@ public class CommentController {
             comment.setPost(post);
             commentService.save(comment);
 
-            return comment;
+            return "your comment is under review";
         }
         return null;
     }
 
-    @PutMapping(value = "approveComment/{commentId}/{userId}")
-    public Comment approveComment(@PathVariable Long commentId, @PathVariable Long userId) {
+    @PutMapping(value = "voteMostRelevantComment/{commentId}/{userId}")
+    public Comment voteMostRelevantComment(@PathVariable Long commentId, @PathVariable Long userId) {
         User user = userService.findById(userId);
         Optional<Comment> optionalComment = commentService.findById(commentId);
 
         if (optionalComment.isPresent()) {
             Comment comment = optionalComment.get();
+
+//            Set<Topic> topicList = comment.getPost().getTopics();
+//            for (Topic topic: topicList){
+//                String to = topic.getTopic();
+//                //topicRepository.save(topic);
+//            }
+//            Set<Topic> topics = new HashSet<>(topicList);
+//            User userWhoVoted =comment.getUser();
+//            userWhoVoted.setTopics(topics);
+//            userRepository.save(user);
+
             if (Owner.isPrincipalOwnerOfPost(user, comment.getPost())) {
 
-                comment.setApprovedComment(Boolean.TRUE);
+                comment.setIsMostRelevantComment(Boolean.TRUE);
+//                trebuie sa gasesc comentariile acelei postari si sa dau false la acea comentarii
 
                 commentService.save(comment);
                 return comment;
@@ -158,7 +174,7 @@ public class CommentController {
                 comLimit = 9;
                 comments = post.getComments().
                         stream().
-                        filter(Comment::getApprovedComment).
+                        filter(Comment::getIsMostRelevantComment).
                         collect(Collectors.toList());
             }
 
