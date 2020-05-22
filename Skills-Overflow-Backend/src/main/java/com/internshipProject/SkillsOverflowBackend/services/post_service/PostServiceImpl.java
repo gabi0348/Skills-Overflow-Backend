@@ -1,4 +1,4 @@
-package com.internshipProject.SkillsOverflowBackend.services;
+package com.internshipProject.SkillsOverflowBackend.services.post_service;
 
 import com.internshipProject.SkillsOverflowBackend.convertors.PostConverter;
 import com.internshipProject.SkillsOverflowBackend.dto.PostDTO;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-public class PostService {
+public class PostServiceImpl implements PostService{
 
     @Autowired
     PostRepository postRepository;
@@ -30,10 +30,6 @@ public class PostService {
     }
 
     public Post updateAndSavePost(Post updatePost, Post post) {
-        //updatePost.setComments(post.getComments());
-        //updatePost.setCreateDate(post.getCreateDate());
-        //updatePost.setUser(post.getUser());
-
         updatePost.setBody(post.getBody());
         updatePost.setTitle(post.getTitle());
         updatePost.setTopics(post.getTopics());
