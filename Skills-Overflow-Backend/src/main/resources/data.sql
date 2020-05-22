@@ -17,12 +17,20 @@ insert into user values(4, 0, false,'cristos@gmail.com', true, 'data','lastname'
 
 insert into post values(1, 'ascult abi talent', '2020-01-01', 4, 'Cum fac bani fara sa muncesc?', 1);
 insert into post values (2, 'ascult stravinsky', '1970-01-01', 341141, 'Este legal sa munceti pana mori?', 1);
-insert into post values (3, 'mananc chipsuri', '2001-01-01', 0,'mancarica', 2);
-insert into post values (4, 'mananc caviar', '2999-01-01', 0, 'caviar', 2);
+insert into post values (3, 'mananc chipsuri', '2001-01-01', 0,'java java java', 2);
+insert into post values (4, 'mananc caviar', '2999-01-01', 0, 'spring si java', 2);
+insert into post values(5, 'ascult abi talent', '2020-01-01', 4, 'Cum fac bani fara sa muncesc?', 1);
+insert into post values (6, 'ascult stravinsky', '1970-01-01', 341141, 'Este legal sa munceti pana mori?', 1);
+insert into post values (7, 'mananc chipsuri', '2001-01-01', 0,'java java java', 2);
+insert into post values (8, 'mananc caviar', '2999-01-01', 0, 'spring si java', 2);
+insert into post values(9, 'ascult abi talent', '2020-01-01', 4, 'Cum fac bani fara sa muncesc?', 1);
+insert into post values (10, 'ascult stravinsky', '1970-01-01', 341141, 'Este legal sa munceti pana mori?', 1);
+insert into post values (11, 'mananc chipsuri', '2001-01-01', 0,'java java java', 2);
+insert into post values (12, 'mananc caviar', '2999-01-01', 0, 'spring si java', 2);
 
---insert into post_topic values(1, 'Springboot');
---insert into post_topic values(1, 'Java');
---insert into post_topic values(2, 'Java');
+insert into post_topic values(1, 'Springboot');
+insert into post_topic values(1, 'Java');
+insert into post_topic values(2, 'Java');
 
 
 --create table comment (id bigint not null, approved_comment boolean, body varchar(255), create_date timestamp not null, vote_count bigint, post_id bigint, user_id bigint, primary key (id))

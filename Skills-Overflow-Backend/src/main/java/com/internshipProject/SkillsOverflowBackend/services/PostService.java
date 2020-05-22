@@ -1,5 +1,7 @@
 package com.internshipProject.SkillsOverflowBackend.services;
 
+import com.internshipProject.SkillsOverflowBackend.convertors.PostConverter;
+import com.internshipProject.SkillsOverflowBackend.dto.PostDTO;
 import com.internshipProject.SkillsOverflowBackend.models.Post;
 import com.internshipProject.SkillsOverflowBackend.models.Topic;
 import com.internshipProject.SkillsOverflowBackend.models.TopicFront;
@@ -123,9 +125,9 @@ public class PostService {
             return null;
         }
 
-        List<Post> bodys = postRepository.findAll()
+        List<PostDTO> bodys = postRepository.findAll()
                 .stream()
-                .filter(post->post.getBody().contains(queryParam))
+                .filter(post->post.getTitle().contains(queryParam))
                 .sorted(Comparator.comparingInt(post -> {
                     String[] array = post.getBody().split("\\s+");
                     int count = 0;
@@ -134,6 +136,7 @@ public class PostService {
                 }))
                 .skip(pageNo * 10)
                 .limit(10)
+                .map(PostConverter::convertToPostDTO)
                 .collect(Collectors.toList());
 
         Collections.reverse(bodys);
@@ -141,6 +144,7 @@ public class PostService {
         object[0] = bodys.size();
         object[1] = bodys;
         return object;
+        //faci aici convertirea direct
     }
 
     public Integer getNumberOfPosts(){

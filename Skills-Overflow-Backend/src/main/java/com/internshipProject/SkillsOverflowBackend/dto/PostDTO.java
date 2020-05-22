@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -18,6 +19,7 @@ public class PostDTO {
     private String body;
     private Long numberOfComments;
     private String createDate;
+    private List<String> topics;
 
 
 }
