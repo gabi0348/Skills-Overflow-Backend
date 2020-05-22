@@ -1,22 +1,17 @@
 package com.internshipProject.SkillsOverflowBackend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
-
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -31,6 +26,7 @@ public class Post {
     private Long id;
 
     private String title;
+    @Column(length = 700)
     private String body;
     private Long numberOfComments = 0L;
 
