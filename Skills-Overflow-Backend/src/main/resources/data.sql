@@ -93,6 +93,7 @@ insert into post values(23,'doc', '2999-01-01', true, 0, 'docx', 2);
 
 insert into topic values(1,'Java ');
 insert into topic values(2,'CSS ');
+insert into topic values(3,'HTML ');
 --post id, apoi topic id
 insert into post_topic values(1,1);
 insert into post_topic values(1,2);

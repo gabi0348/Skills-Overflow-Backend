@@ -146,6 +146,7 @@ public class PostServiceImpl implements PostService{
 
         String paramLowerCase= queryParam.toLowerCase();
 
+        //doar o sortare in functie de numarul de aparitii ale unui string
         List<Post> searchedPosts = getQueryStream(paramLowerCase)
                 .sorted(Comparator.comparingInt(post -> {
                     String[] all = getSearchedStrings(post, paramLowerCase);
@@ -258,6 +259,7 @@ public class PostServiceImpl implements PostService{
 
             int comLimit = 10;
             //daca imi trimite pagina nr.0 (prima); din toate comentariile, il caut pe cel most relevant
+
             List<Comment> comments = new ArrayList<>();
             if (pageNo == 0) {
                 comLimit = 9;
@@ -277,7 +279,7 @@ public class PostServiceImpl implements PostService{
 
             //aici voi converti si comentariile in dto
             comments.addAll(sortedComments);
-            array[1] = comments;
+            array[1] = comments.stream().filter(Comment::getIsApproved).collect(Collectors.toList());
             array[2] = Owner.isPrincipalOwnerOfPost(user, post);
             return array;
         }
