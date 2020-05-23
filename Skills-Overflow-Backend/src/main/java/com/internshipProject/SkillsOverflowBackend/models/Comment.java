@@ -29,6 +29,8 @@ public class Comment {
     private Long voteCount = 0L;
     private Boolean isMostRelevantComment;
 
+    private Boolean isApproved = false;
+
     @Column(updatable = false)
     @CreationTimestamp
     private LocalDateTime createDate;

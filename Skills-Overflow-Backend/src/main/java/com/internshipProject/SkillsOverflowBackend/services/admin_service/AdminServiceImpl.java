@@ -1,8 +1,12 @@
 package com.internshipProject.SkillsOverflowBackend.services.admin_service;
 
 import com.internshipProject.SkillsOverflowBackend.enums.UsersRoles;
+import com.internshipProject.SkillsOverflowBackend.models.Comment;
+import com.internshipProject.SkillsOverflowBackend.models.Post;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.repositories.BlockedUserTokenRepository;
+import com.internshipProject.SkillsOverflowBackend.repositories.CommentRepository;
+import com.internshipProject.SkillsOverflowBackend.repositories.PostRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.MailService;
 import com.internshipProject.SkillsOverflowBackend.services.role_service.RoleService;
@@ -23,6 +27,12 @@ public class AdminServiceImpl implements AdminService{
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Override
     public String approveRequest(Long id){
@@ -74,5 +84,27 @@ public class AdminServiceImpl implements AdminService{
             return "promoted to admin";
         }
         return "conditions not met";
+    }
+
+    public String approvePost(Long id) {
+        Post existingPost = postRepository.getOne(id);
+        if(!existingPost.getIsApproved()){
+            existingPost.setIsApproved(true);
+            mailService.approvedPostMail(existingPost.getUser());
+            postRepository.saveAndFlush(existingPost);
+            return "your post has been approved";
+        }
+        return "cannot approve post";
+    }
+
+    public String approveComment(Long id) {
+        Comment existingComment = commentRepository.getOne(id);
+        if(!existingComment.getIsApproved()) {
+            existingComment.setIsApproved(true);
+            mailService.approveCommentMail(existingComment.getUser());
+            commentRepository.saveAndFlush(existingComment);
+            return "your comment has been approved";
+        }
+        return "cannot approve comment";
     }
 }

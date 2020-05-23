@@ -86,16 +86,16 @@ insert into post_topic values(5,1);
 
 --create table comment (id bigint not null, approved_comment boolean, body varchar(255), create_date timestamp not null, vote_count bigint, post_id bigint, user_id bigint, primary key (id))
 --toat sunt comentarii la postarea 1!!!
-insert into comment values (1, 'It depends on attribute scope of bean tag. If scope="singleton" which is by default then each time you will get single instance and if scope="prototype" then you will get different instances. And it doesn''t depend on autowire', '1974-01-01', false,-2, 1, 3);
+insert into comment values (1, 'It depends on attribute scope of bean tag. If scope="singleton" which is by default then each time you will get single instance and if scope="prototype" then you will get different instances. And it doesn''t depend on autowire', '1974-01-01', true, false,-2, 1, 3);
 insert into comment values (2, 'By using @Autowired you instruct classloader to associate any class instance available in container to associate with the callee. You need to make sure that you have made an entry to instantiate the bean in your config file like <bean id="test" class="xxx.Test" />. Also you might want to check scopes too.
 
-If you have multiple instances of same class define with different names then with @Autowired you need to provide specific name that you want to use with the help of qualifier.', '1975-01-01', true, 10, 1, 4);
+If you have multiple instances of same class define with different names then with @Autowired you need to provide specific name that you want to use with the help of qualifier.', '1975-01-01', false,  true, 10, 1, 4);
 insert into comment values (3,  'Yes, Spring does some magic. Check the Spring Docs:
 
 This is where the magic comes in: All @Configuration classes are subclassed at startup-time with CGLIB. In the subclass, the child method checks the container first for any cached (scoped) beans before it calls the parent method and creates a new instance.
 
-This means that the calls to @Bean methods are proxied via CGLIB and therefore the cached version of the bean is returned (a new one is not created).','1976-01-01', false, 6969, 1, 2);
-insert into comment values (4,  'Using this(args). The preferred pattern is to work from the smallest constructor to the largest.', '1977-01-01', false, 0, 1, 1);
+This means that the calls to @Bean methods are proxied via CGLIB and therefore the cached version of the bean is returned (a new one is not created).','1976-01-01', false, false, 6969, 1, 2);
+insert into comment values (4,  'Using this(args). The preferred pattern is to work from the smallest constructor to the largest.', '1977-01-01', true, false, 0, 1, 1);
 
 --//inserare notificari
 

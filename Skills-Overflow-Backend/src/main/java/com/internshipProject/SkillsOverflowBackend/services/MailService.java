@@ -124,7 +124,37 @@ public class MailService {
 
         return "mail sent";
 
+    }
 
+    public String approvedPostMail(User user) {
+
+        String recipientAddress = user.getEmail();
+        String subject = "Post approved";
+        String message = "Your post has been approved by an admin";
+
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(recipientAddress);
+        email.setSubject(subject);
+
+        email.setText(message);
+        mailSender.send(email);
+
+        return "mail sent";
+    }
+
+    public String approveCommentMail(User user) {
+        String recipientAddress = user.getEmail();
+        String subject = "Comment approved";
+        String message = "Your comment has been approved by an admin";
+
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(recipientAddress);
+        email.setSubject(subject);
+
+        email.setText(message);
+        mailSender.send(email);
+
+        return "mail sent";
     }
 
 }
