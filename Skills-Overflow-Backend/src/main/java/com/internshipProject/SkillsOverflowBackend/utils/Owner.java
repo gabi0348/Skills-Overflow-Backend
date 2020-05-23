@@ -17,6 +17,8 @@ public class Owner {
         return user != null && user.getUserName().equals(comment.getUser().getUserName());
     }
 
+
+
     public static boolean equalStrings(String word1, String word2) { //word2 este queryParam care imi vine
 
         int mistakesAllowed = 2;
