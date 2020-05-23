@@ -42,7 +42,6 @@ public class PostServiceImpl implements PostService{
     }
 
 
-    //https://howtodoinjava.com/spring-boot2/pagination-sorting-example/
     //asta e baza!!!
    public List<PostDTO> getAllFilteredPosts(Integer pageNo, String criteria, TopicFront topic) {
 
@@ -179,7 +178,7 @@ public class PostServiceImpl implements PostService{
                      .stream()
                      .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
                      .collect(Collectors.toList());
-            object[2] = entries.isEmpty() ? null : entries.get(0);
+            object[2] = entries.isEmpty() ? null : entries.get(0).getKey();
         }
 
         List<PostDTO> postDTOS = getFilteredAndSortedPostDTOS(pageNo, criteria, topic, searchedPosts.stream());

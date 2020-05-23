@@ -80,8 +80,8 @@ insert into post values(11,'doc', '2999-01-01', true, 0, 'docx', 2);
 insert into post values(12,'doc', '2999-01-01', true, 0, 'docx', 2);
 insert into post values(13,'doc', '2999-01-01', true, 0, 'docx', 2);
 insert into post values(14,'doc', '2999-01-01', true, 0, 'docx', 2);
-insert into post values(15,'doc', '2999-01-01', true, 0, 'docx', 2);
-insert into post values(16,'doc', '2999-01-01', true, 0, 'docx', 2);
+insert into post values(15,'doc', '1000-01-01', true, 0, 'docx', 2);
+insert into post values(16,'doc', '2999-01-01', true, 42, 'docx', 2);
 insert into post values(17,'doc', '2999-01-01', true, 0, 'docx', 2);
 insert into post values(18,'doc', '2999-01-01', true, 0, 'docx', 2);
 insert into post values(19,'doc', '2999-01-01', true, 0, 'docx', 2);
@@ -99,6 +99,10 @@ insert into post_topic values(1,1);
 insert into post_topic values(1,2);
 insert into post_topic values(4,1);
 insert into post_topic values(5,1);
+insert into post_topic values(15,1);
+insert into post_topic values(15,2);
+insert into post_topic values(15,3);
+insert into post_topic values(16,1);
 
 
 --create table comment (id bigint not null, approved_comment boolean, body varchar(255), create_date timestamp not null, vote_count bigint, post_id bigint, user_id bigint, primary key (id))
