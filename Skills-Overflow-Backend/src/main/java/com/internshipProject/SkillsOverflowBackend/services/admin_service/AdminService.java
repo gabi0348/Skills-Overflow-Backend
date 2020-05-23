@@ -1,7 +1,5 @@
 package com.internshipProject.SkillsOverflowBackend.services.admin_service;
 
-import com.internshipProject.SkillsOverflowBackend.models.User;
-
 public interface AdminService {
 
     String approveRequest(Long id);
@@ -9,4 +7,6 @@ public interface AdminService {
     String unblockUser(Long id);
     String declineRequest(Long id);
     String promoteUserToAdmin(Long id);
+    String approvePost(Long id);
+    String approveComment(Long id);
 }

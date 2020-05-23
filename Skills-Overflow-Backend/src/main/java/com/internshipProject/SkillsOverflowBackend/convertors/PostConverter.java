@@ -1,8 +1,6 @@
 package com.internshipProject.SkillsOverflowBackend.convertors;
 
-import com.internshipProject.SkillsOverflowBackend.dto.NotificationDTO;
 import com.internshipProject.SkillsOverflowBackend.dto.PostDTO;
-import com.internshipProject.SkillsOverflowBackend.models.Notification;
 import com.internshipProject.SkillsOverflowBackend.models.Post;
 import com.internshipProject.SkillsOverflowBackend.models.Topic;
 

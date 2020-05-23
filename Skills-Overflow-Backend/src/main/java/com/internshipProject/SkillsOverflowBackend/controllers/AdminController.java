@@ -55,4 +55,18 @@ public class AdminController {
     public void removeUser(@PathVariable Long id) {
         userService.removeUserById(id);
     }
+
+    @PutMapping("/approvePost/{id}")
+    @ResponseBody
+    public String approvePost(@PathVariable Long id) {
+        return adminService.approvePost(id);
+    }
+
+    @PutMapping("/approveComment/{id}")
+    @ResponseBody
+    public String approveComment(@PathVariable Long id) {
+        return adminService.approveComment(id);
+    }
+
+
 }

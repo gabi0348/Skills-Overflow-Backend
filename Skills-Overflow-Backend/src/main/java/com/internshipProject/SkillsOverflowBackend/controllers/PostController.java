@@ -1,10 +1,7 @@
 package com.internshipProject.SkillsOverflowBackend.controllers;
 
 import com.internshipProject.SkillsOverflowBackend.configuration.JwtTokenProvider;
-import com.internshipProject.SkillsOverflowBackend.convertors.PostConverter;
-import com.internshipProject.SkillsOverflowBackend.dto.PostDTO;
 import com.internshipProject.SkillsOverflowBackend.models.Post;
-import com.internshipProject.SkillsOverflowBackend.models.Topic;
 import com.internshipProject.SkillsOverflowBackend.models.TopicFront;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.repositories.PostRepository;

@@ -8,7 +8,6 @@ import com.internshipProject.SkillsOverflowBackend.utils.Owner;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.lang.reflect.Array;
 import java.util.*;
