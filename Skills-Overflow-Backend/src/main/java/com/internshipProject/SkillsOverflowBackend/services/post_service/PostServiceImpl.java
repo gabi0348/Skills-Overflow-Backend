@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -56,6 +57,11 @@ public class PostServiceImpl implements PostService{
                 .filter(Post::getIsApproved);
         //null???
        //aici DOAR DACA am filtrare - array primit din front-end
+       return getFilteredAndSortedPostDTOS(pageNo, criteria, topic, allPosts);
+   }
+
+    public List<PostDTO> getFilteredAndSortedPostDTOS(Integer pageNo, String criteria, TopicFront topic, Stream<Post> allPosts) {
+
         if (topic.getTopics().length>0) {
 
             //filtare pe postari
@@ -130,44 +136,101 @@ public class PostServiceImpl implements PostService{
                 .collect(Collectors.toList());
     }
 
-    public Object[] searchForPosts(String queryParam, Integer pageNo){
+    public Object[] searchForPosts(String queryParam, Integer pageNo, String criteria,
+                                   TopicFront topic){
         int noOfPages = postRepository.findAll().size() / 10 + 1;
         if (pageNo > noOfPages) {
             return null;
         }
 
-        List<PostDTO> searchedPosts = getQueryStream(queryParam)
+        Object[] object = new Object[3]; //obiectul pe care il voi returna
+
+        String paramLowerCase= queryParam.toLowerCase();
+
+        List<Post> searchedPosts = getQueryStream(paramLowerCase)
                 .sorted(Comparator.comparingInt(post -> {
-                    String[] bodyArray = post.getBody().split("\\s+");
-                    String[] titleArray = post.getTitle().split("\\s+");
-                    String[] both = ArrayUtils.addAll(bodyArray, titleArray);
+                    String[] all = getSearchedStrings(post, paramLowerCase);
 
                     int count = 0;
-                    for (String s: both) {
-                        if (s.toLowerCase().equals(queryParam.toLowerCase()))
+                    for (String s: all) {
+                        if (s.toLowerCase().equals(paramLowerCase))
                             count ++;
                     }
-                    System.out.println(count);
                     return count;
                 }))
-                .skip(pageNo * 10)
-                .limit(10)
-                .map(PostConverter::convertToPostDTO)
+//                .skip(pageNo * 10)
+//                .limit(10)
                 .collect(Collectors.toList());
 
-        Collections.reverse(searchedPosts);
+        if (searchedPosts.size() == 0) {
+            HashMap<String, Integer> hashMap = new HashMap<>();
+            postRepository.findAll()
+                    .stream()
+                    .map(this::getSearchedStringsByTopic)// i get ALL strings
+                    .flatMap(Stream::of)// then i convert them to strings
+                    .filter(s->s.length()>2)
+                    .filter(string-> Owner.equalStrings(string, paramLowerCase))
+                    .forEach(s->{
+                        hashMap.merge(s, 1, Integer::sum);
+                        System.out.println(hashMap);
+                    }); // ce tare e auto-complete :)))))
 
-        Object[] object = new Object[2];
+            List<Map.Entry<String, Integer>> entries = hashMap.entrySet()
+                     .stream()
+                     .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                     .collect(Collectors.toList());
+            object[2] = entries.isEmpty() ? null : entries.get(0);
+        }
+
+        List<PostDTO> postDTOS = getFilteredAndSortedPostDTOS(pageNo, criteria, topic, searchedPosts.stream());
+        //in ordinea descrescatoare a comentariilor
+
+        //aici trebuie schimbat ca intoarce numarul gresit
         object[0] = (int) getQueryStream(queryParam).count();
-        object[1] = searchedPosts;
+        object[1] = postDTOS;
         return object;
-        //faci aici convertirea direct
     }
 
+    //AICI le fac pe toate lower case!!! metoda utilitare
+    private String[] getSearchedStrings(Post post, String queryParam) {
+        String[] bodyArray = post.getBody().split("[^a-zA-Z']+");
+        String[] titleArray = post.getTitle().split("[^a-zA-Z']+"); // nu \s+ !!!
+        String[] topicList = post.getTopics().
+                stream()
+                .map(topic-> topic.getTopic().replaceAll("\\s+","")) //scot whitespace de la topics
+                .toArray(String[]::new);
+        String[] both = ArrayUtils.addAll(bodyArray, titleArray);
+        String[] all = ArrayUtils.addAll(topicList, both);
+
+        //sa nu mai fac split cu regex??
+        return Arrays.stream(all)
+                .map(s -> s.split("(?=" + queryParam + ")"))
+                .flatMap(Stream::of)
+                .distinct()
+                .map(String::toLowerCase)
+                .toArray(String[]::new);
+    }
+
+    //aici imi filtra ca doar pe cele in titlu cu java sa apara
     private Stream<Post> getQueryStream(String queryParam) {
         return postRepository.findAll()
                 .stream()
-                .filter(post->post.getTitle().toLowerCase().contains(queryParam.toLowerCase()));
+                .filter(Post::getIsApproved) //if the post is approved !!
+                .filter(post->  Arrays
+                        .asList(getSearchedStrings(post, queryParam)) //aici caut toate stringurile si fac si split, caut in array parametru
+                        .contains(queryParam.toLowerCase()));
+    }
+
+    private String[] getSearchedStringsByTopic(Post post){
+       return post.getTopics()
+               .stream()
+               .map(topic-> topic.getTopic().replaceAll("\\s+",""))
+               .map(s-> {
+                   System.out.println("this is the strong-->" + s);
+                   return s.toLowerCase();
+               })
+               .distinct()
+               .toArray(String[]::new);
     }
 
     public Integer getNumberOfPosts(){

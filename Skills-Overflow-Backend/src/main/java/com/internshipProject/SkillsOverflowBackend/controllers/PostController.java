@@ -4,6 +4,7 @@ import com.internshipProject.SkillsOverflowBackend.configuration.JwtTokenProvide
 import com.internshipProject.SkillsOverflowBackend.convertors.PostConverter;
 import com.internshipProject.SkillsOverflowBackend.dto.PostDTO;
 import com.internshipProject.SkillsOverflowBackend.models.Post;
+import com.internshipProject.SkillsOverflowBackend.models.Topic;
 import com.internshipProject.SkillsOverflowBackend.models.TopicFront;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.repositories.PostRepository;
@@ -93,7 +94,7 @@ public class PostController {
         //all posts counted, regardless of page number, depending if the topic array is empty or not
         arr[0] = (topic.getTopics().length>0)
                 ? (int) postService.getPostWithTopicStream(topic, postDTOStream).count()
-                : postRepository.findAll().size();
+                : postRepository.findAll().stream().filter(Post::getIsApproved).count();
         arr[1] = postService.getAllFilteredPosts(pageNo, criteria, topic);
 
         return arr;
@@ -114,9 +115,11 @@ public class PostController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping (value = "/allSearchedPosts/{pageNo}/{searchParam}")
-    public Object[] getSearchedPosts(@PathVariable Integer pageNo, @PathVariable String searchParam){
-        return postService.searchForPosts(searchParam, pageNo);
+    //aici trebuie post fiindca asa e metoda din front-end
+    @PostMapping (value = "/allSearchedPosts/{pageNo}/{searchParam}/{criteria}")
+    public Object[] getSearchedPosts(@PathVariable Integer pageNo, @PathVariable String searchParam,
+                                     @PathVariable String criteria, @RequestBody TopicFront topicFront){
+        return postService.searchForPosts(searchParam, pageNo, criteria, topicFront);
     }
 
 

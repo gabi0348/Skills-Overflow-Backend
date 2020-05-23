@@ -73,18 +73,22 @@ class Pair
         this(cdr);
     }
 }', '2999-01-01', true, 0, 'How to avoid constructor code redudancy in Java?', 2);
-insert into post values(8, 'doc', '2999-01-01', true, 0, 'docx', 2);
-insert into post values(9, 'doc', '2999-01-01', true, 0, 'docx', 2);
-insert into post values(10,'doc', '2999-01-01', true, 0, 'docx', 2);
+insert into post values(8, 'doc', '2001-01-02', true, 1, 'java java java', 2);
+insert into post values(9, ' java java java ', '2121-01-01', true, -24, 'docx', 2);
+insert into post values(10,'doc', '1111-01-01', true, 23423, 'docx', 2);
 insert into post values(11,'doc', '2999-01-01', true, 0, 'docx', 2);
 insert into post values(12,'doc', '2999-01-01', true, 0, 'docx', 2);
 insert into post values(13,'doc', '2999-01-01', true, 0, 'docx', 2);
 insert into post values(14,'doc', '2999-01-01', true, 0, 'docx', 2);
 insert into post values(15,'doc', '2999-01-01', true, 0, 'docx', 2);
 insert into post values(16,'doc', '2999-01-01', true, 0, 'docx', 2);
-
-
-
+insert into post values(17,'doc', '2999-01-01', true, 0, 'docx', 2);
+insert into post values(18,'doc', '2999-01-01', true, 0, 'docx', 2);
+insert into post values(19,'doc', '2999-01-01', true, 0, 'docx', 2);
+insert into post values(20,'doc', '2999-01-01', true, 0, 'docx', 2);
+insert into post values(21,'doc', '2999-01-01', true, 0, 'docx', 2);
+insert into post values(22,'doc', '2999-01-01', true, 0, 'docx', 2);
+insert into post values(23,'doc', '2999-01-01', true, 0, 'docx', 2);
 
 
 insert into topic values(1,'Java ');

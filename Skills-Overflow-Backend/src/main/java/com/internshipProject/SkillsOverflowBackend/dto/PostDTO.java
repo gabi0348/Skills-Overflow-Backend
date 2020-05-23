@@ -21,5 +21,4 @@ public class PostDTO {
     private String createDate;
     private List<String> topics;
 
-
 }
