@@ -53,14 +53,14 @@ public class PostServiceImpl implements PostService{
         Stream<Post> allPosts = postRepository.findAll()
                 .stream()
                 .filter(Post::getIsApproved);
-        //null???
+
        //aici DOAR DACA am filtrare - array primit din front-end
        return getFilteredAndSortedPostDTOS(pageNo, criteria, topic, allPosts);
    }
 
     public List<PostDTO> getFilteredAndSortedPostDTOS(Integer pageNo, String criteria, TopicFront topic, Stream<Post> allPosts) {
 
-        if (topic.getTopics().length>0) {
+        if (topic.getTopics() != null && topic.getTopics().length>0) {
 
             //filtare pe postari
             Stream<Post> postTopicList = getPostWithTopicStream(topic, allPosts);
@@ -95,7 +95,7 @@ public class PostServiceImpl implements PostService{
                             for(Topic topic1 :post.getTopics()) {
                                 String topicName = topic1.getTopic();
                                 for (String frontTopic: topic.getTopics()) {
-                                    if (topicName.equals(frontTopic)) {
+                                    if (topicName.equalsIgnoreCase(frontTopic)) {
                                         found++;
                                         if (found == totalNumberOfTopics) return true;
                                     }
@@ -110,7 +110,7 @@ public class PostServiceImpl implements PostService{
             return posts.sorted(Comparator.comparing(Post::getCreateDate).reversed())
                     .skip(pageNo * 10)
                     .limit(10)
-                    .map(PostConverter::convertToPostDTO)
+                    .map(PostConverter::convertToPostDTO) //to dto
                     .collect(Collectors.toList());
         }
 
@@ -118,7 +118,7 @@ public class PostServiceImpl implements PostService{
             return posts.sorted(Comparator.comparing(Post::getNumberOfComments).reversed())
                     .skip(pageNo * 10)
                     .limit(10)
-                    .map(PostConverter::convertToPostDTO)
+                    .map(PostConverter::convertToPostDTO) //to dto
                     .collect(Collectors.toList());
         }
         return null;
@@ -130,7 +130,7 @@ public class PostServiceImpl implements PostService{
                 .sorted(Comparator.comparing(Post::getCreateDate).reversed())
                 .skip(pageNo*10)
                 .limit(10)
-                .map(PostConverter::convertToPostDTO)
+                .map(PostConverter::convertToPostDTO) //to dto
                 .collect(Collectors.toList());
     }
 
@@ -202,8 +202,9 @@ public class PostServiceImpl implements PostService{
         String[] all = ArrayUtils.addAll(topicList, both);
 
         //sa nu mai fac split cu regex??
+        //https://stackoverflow.com/questions/2206378/how-to-split-a-string-but-also-keep-the-delimiters
         return Arrays.stream(all)
-                .map(s -> s.split("(?=" + queryParam + ")"))
+                .map(s -> s.split("((?<=" + queryParam + ")|(?=" + queryParam + "))"))
                 .flatMap(Stream::of)
                 .distinct()
                 .map(String::toLowerCase)
@@ -246,7 +247,6 @@ public class PostServiceImpl implements PostService{
         Optional<Post> optionalPost = findById(postId);
         if (optionalPost.isPresent()) {
 
-            List<Comment> commentList = new ArrayList<>();
             Post post = optionalPost.get();
             array[0] = PostConverter.convertToPostDTO(post);
 
@@ -271,6 +271,7 @@ public class PostServiceImpl implements PostService{
             //compar in functie de vote count
             List<Comment> sortedComments = post.getComments()
                     .stream()
+                    .filter(c->!c.getIsMostRelevantComment())
                     .sorted(Comparator.comparing(Comment::getVoteCount).reversed())
                     .skip(pageNo * 10)
                     .limit(comLimit)

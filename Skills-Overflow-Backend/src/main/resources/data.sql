@@ -89,6 +89,7 @@ insert into post values(20,'doc', '2999-01-01', true, 0, 'docx', 2);
 insert into post values(21,'doc', '2999-01-01', true, 0, 'docx', 2);
 insert into post values(22,'doc', '2999-01-01', true, 0, 'docx', 2);
 insert into post values(23,'doc', '2999-01-01', true, 0, 'docx', 2);
+insert into post values(24,'doc', '2999-01-01', true, 0, 'docx', 1); --postarea adminului popescu
 
 
 insert into topic values(1,'Java ');

@@ -3,6 +3,7 @@ package com.internshipProject.SkillsOverflowBackend.controllers;
 import com.internshipProject.SkillsOverflowBackend.configuration.JwtTokenProvider;
 import com.internshipProject.SkillsOverflowBackend.models.*;
 
+import com.internshipProject.SkillsOverflowBackend.repositories.CommentRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 
 import com.internshipProject.SkillsOverflowBackend.services.comment_service.CommentService;
@@ -38,6 +39,8 @@ public class CommentController {
     JwtTokenProvider jwtTokenProvider;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    CommentRepository commentRepository;
 
     @Autowired
     UserTopicRepository userTopicRepository;
@@ -72,6 +75,56 @@ public class CommentController {
         if (optionalComment.isPresent()) {
             Comment comment = optionalComment.get();
 
+            if (Owner.isPrincipalOwnerOfPost(user, comment.getPost())) {
+
+                Long id= user.getUserId();
+                List<Topic> topicList = comment.getPost().getTopics();
+                for (Topic topic : topicList) {
+
+                    UserTopic userTopic =userTopicRepository.findByTopicIdAndUserId(topic.getId(),id);
+                    if (userTopic != null) {
+                        //nu mai e nevoie? userTopic= userTopicRepository.findById(userTopic.getUserTopicId()).get();
+                        userTopic.setVoteCount(userTopic.getVoteCount()+1);
+                        userTopicRepository.save(userTopic);
+                    }
+                    else {
+                        UserTopic userTopic1 =new UserTopic();
+                        userTopic1.setTopicId(topic.getId());
+                        userTopic1.setUserId(id);
+                        userTopic1.setVoteCount(1);
+                        userTopicRepository.save(userTopic1);
+                    }
+                }
+
+                comment.setIsMostRelevantComment(Boolean.TRUE);
+                commentService.save(comment);
+                return comment;
+            }
+        }
+        return null;
+    }
+
+    @PutMapping(value = "unVoteMostRelevantComment/{commentId}")
+    public Comment unVoteMostRelevantComment(@PathVariable Long commentId) {
+    User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
+    Optional<Comment> optionalComment = commentService.findById(commentId);
+
+        if (optionalComment.isPresent()) {
+        Comment comment = optionalComment.get();
+
+        if (Owner.isPrincipalOwnerOfPost(user, comment.getPost())) {
+
+            //verific daca mai exista UN comentariu cu mostRelevantComment = true
+            List<Comment> oneComment = commentRepository.findAll()
+                        .stream()
+                        .filter(Comment::getIsMostRelevantComment)
+                        .collect(Collectors.toList());
+                if (oneComment.size() != 0) {
+                    oneComment.get(0).setIsMostRelevantComment(false);
+                    commentRepository.save(comment);
+                }
+                else { return new Comment();}
+
             Long id= user.getUserId();
             List<Topic> topicList = comment.getPost().getTopics();
             for (Topic topic : topicList) {
@@ -79,29 +132,22 @@ public class CommentController {
                 UserTopic userTopic =userTopicRepository.findByTopicIdAndUserId(topic.getId(),id);
                 if (userTopic != null) {
                     //nu mai e nevoie? userTopic= userTopicRepository.findById(userTopic.getUserTopicId()).get();
-                    userTopic.setVoteCount(userTopic.getVoteCount()+1);
+                    userTopic.setVoteCount(userTopic.getVoteCount()-1);
                     userTopicRepository.save(userTopic);
                 }
                 else {
-                    UserTopic userTopic1 =new UserTopic();
-                    userTopic1.setTopicId(topic.getId());
-                    userTopic1.setUserId(id);
-                    userTopic1.setVoteCount(1);
-                    userTopicRepository.save(userTopic1);
+                    System.out.println("This topic is not associated with this user");
                 }
             }
 
-            if (Owner.isPrincipalOwnerOfPost(user, comment.getPost())) {
-
-                comment.setIsMostRelevantComment(Boolean.TRUE);
-//                trebuie sa gasesc comentariile acelei postari si sa dau false la acea comentarii
-
-                commentService.save(comment);
-                return comment;
+            comment.setIsMostRelevantComment(Boolean.FALSE);
+            commentService.save(comment);
+            return comment;
             }
         }
         return null;
     }
+
 
     @PutMapping(value = "likeComment/{commentId}/{how}")
     public String likeComment(@PathVariable String how, @PathVariable Long commentId) {
