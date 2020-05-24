@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CommentDTO {
 
-    private Long id;
+    private Long commentId;
     private String userName;
     private String body;
     private String createDate;

@@ -8,7 +8,12 @@ public class CommentConverter {
     public static CommentDTO commentConverter(Comment comment){
 
         CommentDTO commentDTO = new CommentDTO();
+<<<<<<< HEAD
         commentDTO.setId(comment.getId());
+=======
+
+        commentDTO.setCommentId(comment.getCommentId());
+>>>>>>> CatalinBranch
         commentDTO.setUserName(comment.getUser().getUserName());
         commentDTO.setBody(comment.getBody());
         commentDTO.setCreateDate(comment.getCreateDate().toLocalDate().toString());

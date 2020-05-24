@@ -175,7 +175,7 @@ public class CommentController {
     @PutMapping(value = "editCommentBody/{userId}")
     public Comment editCommentBody(@RequestBody @Valid Comment newComment, @PathVariable Long userId) {
         User user = userService.findById(userId);
-        Optional<Comment> optionalComment = commentService.findById(newComment.getId());
+        Optional<Comment> optionalComment = commentService.findById(newComment.getCommentId());
 
         if (optionalComment.isPresent()) {
             Comment oldComment = optionalComment.get();
