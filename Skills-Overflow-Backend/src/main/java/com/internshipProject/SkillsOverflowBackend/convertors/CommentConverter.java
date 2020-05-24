@@ -9,7 +9,7 @@ public class CommentConverter {
 
         CommentDTO commentDTO = new CommentDTO();
 
-        commentDTO.setId(comment.getId());
+        commentDTO.setCommentId(comment.getCommentId());
         commentDTO.setUserName(comment.getUser().getUserName());
         commentDTO.setBody(comment.getBody());
         commentDTO.setCreateDate(comment.getCreateDate().toLocalDate().toString());
