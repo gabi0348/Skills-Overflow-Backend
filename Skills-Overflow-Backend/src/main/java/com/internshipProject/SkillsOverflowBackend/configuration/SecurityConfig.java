@@ -1,4 +1,4 @@
-package com.internshipProject.SkillsOverflowBackend.configuration;
+package com.internshipProject.SkillsOverflowBackend.Configuration;
 
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +28,10 @@ import java.util.Arrays;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    JwtTokenProvider jwtTokenProvider;
+    com.internshipProject.SkillsOverflowBackend.configuration.JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    JwtTokenFilter jwtTokenFilter;
+    com.internshipProject.SkillsOverflowBackend.configuration.JwtTokenFilter jwtTokenFilter;
 
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
     @Override

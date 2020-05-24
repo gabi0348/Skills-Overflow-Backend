@@ -2,24 +2,21 @@ package com.internshipProject.SkillsOverflowBackend.controllers;
 
 import com.internshipProject.SkillsOverflowBackend.configuration.JwtTokenProvider;
 import com.internshipProject.SkillsOverflowBackend.models.*;
-
+import com.internshipProject.SkillsOverflowBackend.repositories.CommentRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
-
+import com.internshipProject.SkillsOverflowBackend.repositories.UserTopicRepository;
+import com.internshipProject.SkillsOverflowBackend.services.NotificationService;
 import com.internshipProject.SkillsOverflowBackend.services.comment_service.CommentService;
 import com.internshipProject.SkillsOverflowBackend.services.post_service.PostService;
-
-import com.internshipProject.SkillsOverflowBackend.repositories.UserTopicRepository;
-
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
 import com.internshipProject.SkillsOverflowBackend.utils.Owner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.internshipProject.SkillsOverflowBackend.services.NotificationService;
 
 import javax.validation.Valid;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
-
-import java.util.*;
 import java.util.stream.Collectors;
 
 @CrossOrigin
@@ -41,6 +38,10 @@ public class CommentController {
 
     @Autowired
     UserTopicRepository userTopicRepository;
+
+    // nou adaugat
+    @Autowired
+    private CommentRepository commentRepository;
 
     @PostMapping(value = "addComment/{postId}/{userId}")
     public String addComment(@RequestBody @Valid Comment comment, @PathVariable Long postId,
@@ -72,18 +73,17 @@ public class CommentController {
         if (optionalComment.isPresent()) {
             Comment comment = optionalComment.get();
 
-            Long id= user.getUserId();
+            Long id = user.getUserId();
             List<Topic> topicList = comment.getPost().getTopics();
             for (Topic topic : topicList) {
 
-                UserTopic userTopic =userTopicRepository.findByTopicIdAndUserId(topic.getId(),id);
-                if(userTopic != null) {
+                UserTopic userTopic = userTopicRepository.findByTopicIdAndUserId(topic.getId(), id);
+                if (userTopic != null) {
                     //nu mai e nevoie? userTopic= userTopicRepository.findById(userTopic.getUserTopicId()).get();
-                    userTopic.setVoteCount(userTopic.getVoteCount()+1);
+                    userTopic.setVoteCount(userTopic.getVoteCount() + 1);
                     userTopicRepository.save(userTopic);
-                }
-                else{
-                    UserTopic userTopic1 =new UserTopic();
+                } else {
+                    UserTopic userTopic1 = new UserTopic();
                     userTopic1.setTopicId(topic.getId());
                     userTopic1.setUserId(id);
                     userTopic1.setVoteCount(1);
@@ -170,5 +170,45 @@ public class CommentController {
                 .stream()
                 .sorted(Comparator.comparing(Comment::getCreateDate).reversed())
                 .collect(Collectors.toList());
+    }
+
+    @PutMapping(value = "toggleVoteComment/{commentId}")
+    public Comment unVoteMostRelevantComment(@PathVariable Long commentId) {
+        User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
+        Comment comment = commentRepository.getOne(commentId);
+        List<Topic> topicList = comment.getPost().getTopics();
+
+        if (Owner.isPrincipalOwnerOfPost(user, comment.getPost())) {
+            if (comment.getIsMostRelevantComment()) {
+                comment.setIsMostRelevantComment(false);
+                commentRepository.saveAndFlush(comment);
+                for (Topic topic : topicList) {
+                    UserTopic userTopic = userTopicRepository.findByTopicIdAndUserId(topic.getId(), user.getUserId());
+                    if (userTopic != null) {
+                        userTopic.setVoteCount(userTopic.getVoteCount() - 1);
+                        userTopicRepository.save(userTopic);
+                    }
+                }
+            } else if (!comment.getIsMostRelevantComment()) {
+                Post post = comment.getPost();
+                for (Comment comment1 : post.getComments()) {
+                    if (comment1.getIsMostRelevantComment()) {
+                        return comment;
+                    }
+                }
+                comment.setIsMostRelevantComment(true);
+                commentRepository.saveAndFlush(comment);
+                for (Topic topic : topicList) {
+                    UserTopic userTopic = userTopicRepository.findByTopicIdAndUserId(topic.getId(), user.getUserId());
+                    if (userTopic != null) {
+                        userTopic.setVoteCount(userTopic.getVoteCount() + 1);
+                        userTopicRepository.save(userTopic);
+                        return  comment;
+                    }
+                }
+            }
+        }
+        return null;
+
     }
 }
