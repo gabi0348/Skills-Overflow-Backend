@@ -248,10 +248,10 @@ public class CommentController {
                     if (userTopic != null) {
                         userTopic.setVoteCount(userTopic.getVoteCount() + 1);
                         userTopicRepository.save(userTopic);
-                        return  comment;
                     }
                 }
             }
+            return  comment;
         }
         return null;
 
