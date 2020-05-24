@@ -12,6 +12,7 @@ public class PostConverter {
         PostDTO postDTO = new PostDTO();
         postDTO.setId(post.getId());
         postDTO.setBody(post.getBody());
+        postDTO.setUserName(post.getUser().getUserName());
         postDTO.setCreateDate(post.getCreateDate().toLocalDate().toString());
         postDTO.setNumberOfComments(post.getNumberOfComments());
         postDTO.setTitle(post.getTitle());
