@@ -46,8 +46,7 @@ public class CommentController {
     UserTopicRepository userTopicRepository;
 
     @PostMapping(value = "addComment/{postId}")
-    public String addComment(@RequestBody @Valid Comment comment, @PathVariable Long postId,
-                             @PathVariable Long userId) {
+    public String addComment(@RequestBody Comment comment, @PathVariable Long postId) {
         Optional<Post> optionalPost = postService.findById(postId);
         User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
 

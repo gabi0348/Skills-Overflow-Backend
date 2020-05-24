@@ -121,6 +121,7 @@ insert into comment values (4,  'Using this(args). The preferred pattern is to w
 
 --//inserare notificari
 
+--Hibernate: create table notification (notification_id bigint not null, date timestamp, is_unread boolean not null, notification_type integer not null, post_id bigint not null, primary key (notification_id))
 insert into notification values(1,'1977-01-01',true,2,4);
 insert into notification values(2,'2020-01-01',true,1,2);
 insert into notification values(3,'2020-03-05',true,1,1);
