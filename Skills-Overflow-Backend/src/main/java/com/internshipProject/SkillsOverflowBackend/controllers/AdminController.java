@@ -59,6 +59,7 @@ public class AdminController {
     @PutMapping("/approvePost/{id}")
     @ResponseBody
     public String approvePost(@PathVariable Long id) {
+
         return adminService.approvePost(id);
     }
 
