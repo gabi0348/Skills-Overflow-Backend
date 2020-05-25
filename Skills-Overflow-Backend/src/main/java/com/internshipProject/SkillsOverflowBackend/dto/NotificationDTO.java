@@ -16,6 +16,7 @@ public class NotificationDTO {
     String postName;
     String postURL;
     String postDate;
+    int notificationType;
 
     public NotificationDTO() {
     }
