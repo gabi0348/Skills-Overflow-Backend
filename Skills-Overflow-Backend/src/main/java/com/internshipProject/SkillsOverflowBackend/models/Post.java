@@ -60,7 +60,7 @@ public class Post {
             joinColumns = {@JoinColumn(name = "post_id")},
             inverseJoinColumns = {@JoinColumn(name = "topic_id")}
     )
-    List<Topic> topics;
+    private List<Topic> topics;
 
     public List<CommentDTO> getApprovedComments() {
         List<Comment> comments = getComments();

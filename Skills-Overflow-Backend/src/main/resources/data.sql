@@ -92,9 +92,23 @@ insert into post values(23,'doc', '2999-01-01', true, 0, 'docx', 2);
 insert into post values(24,'doc', '2999-01-01', true, 0, 'docx', 1); --postarea adminului popescu
 
 
-insert into topic values(1,'Java ');
-insert into topic values(2,'CSS ');
-insert into topic values(3,'HTML ');
+insert into topic values(1,'Java');
+insert into topic values(2,'Spring Boot');
+insert into topic values(3,'SQL');
+insert into topic values(4,'Tomcat');
+insert into topic values(5,'JPA');
+insert into topic values(6,'Google Cloud');
+insert into topic values(7,'Hibernate');
+insert into topic values(8,'MongoDB');
+insert into topic values(9,'HTML');
+insert into topic values(10,'CSS');
+insert into topic values(11,'JavaScript');
+insert into topic values(12,'Bootstrap');
+insert into topic values(13,'React');
+insert into topic values(14,'Angular');
+insert into topic values(15,'JQuery');
+insert into topic values(16,'Other');
+
 --post id, apoi topic id
 insert into post_topic values(1,1);
 insert into post_topic values(1,2);

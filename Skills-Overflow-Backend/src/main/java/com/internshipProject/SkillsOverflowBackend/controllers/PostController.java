@@ -34,7 +34,7 @@ public class PostController {
     JwtTokenProvider jwtTokenProvider;
 
     //user id nu mai e necesar, il ia direct security
-    @PostMapping(value = "createPost")
+    @PostMapping(value = "/createPost")
     public String newPost(@RequestBody @Valid Post post) {
         //aici trebuie sa dai mail cu mail service
 
