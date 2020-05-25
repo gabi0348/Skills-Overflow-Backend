@@ -1,10 +1,16 @@
 package com.internshipProject.SkillsOverflowBackend.controllers;
 
+import com.internshipProject.SkillsOverflowBackend.dto.CommentDTO;
+import com.internshipProject.SkillsOverflowBackend.dto.UserDTO;
+import com.internshipProject.SkillsOverflowBackend.enums.UsersRoles;
 import com.internshipProject.SkillsOverflowBackend.services.admin_service.AdminService;
 import com.internshipProject.SkillsOverflowBackend.services.blocked_user_token_service.BlockedUserTokenService;
+import com.internshipProject.SkillsOverflowBackend.services.comment_service.CommentService;
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -20,6 +26,9 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CommentService commentService;
 
     @PutMapping("/approveRequest/{id}")
     @ResponseBody
@@ -54,6 +63,11 @@ public class AdminController {
     @DeleteMapping("/remove/{id}")
     public void removeUser(@PathVariable Long id) {
         userService.removeUserById(id);
+    }
+
+    @GetMapping("/allUnapprovedComments")
+    public List<CommentDTO> findAllUnapprovedComments(){
+        return commentService.getAllUnapprovedComments();
     }
 
     @PutMapping("/approvePost/{id}")
