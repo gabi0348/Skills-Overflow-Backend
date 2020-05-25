@@ -45,10 +45,14 @@ public class Notification {
     @CreationTimestamp
     private LocalDateTime date;
 
+    private String senderName;
+
     private int notificationType;
     //1 - cineva a comentat
     //2 - mi-a fost votat raspunsul cu cel mai bun raspuns
+    //3- bravo! ai devenit scrum master
 
-    boolean isUnread;
+    //boolean isUnread;
+    private String topics;
 
 }
