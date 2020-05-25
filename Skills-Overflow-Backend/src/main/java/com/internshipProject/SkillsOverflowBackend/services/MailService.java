@@ -157,4 +157,16 @@ public class MailService {
         return "mail sent";
     }
 
+    public void receivedVote(User user, String postOwnerName, String postName, Long postId){
+
+        String recipientAddress = user.getEmail();
+        String subject = "Your comment was voted as the best answer";
+        String message = "Congrats! "+postOwnerName+" voted your comment as the best answer on his question: " + "<a href='http://localhost:3000/singlePost/"+ postId +"'>\" "+ postName +" </a> .";
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(recipientAddress);
+        email.setSubject(subject);
+        email.setText(message);
+        mailSender.send(email);
+    }
+
 }

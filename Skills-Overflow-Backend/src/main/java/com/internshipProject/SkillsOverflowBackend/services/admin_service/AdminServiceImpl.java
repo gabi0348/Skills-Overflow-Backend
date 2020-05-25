@@ -101,6 +101,7 @@ public class AdminServiceImpl implements AdminService{
         Comment existingComment = commentRepository.getOne(id);
         if(!existingComment.getIsApproved()) {
             existingComment.setIsApproved(true);
+            existingComment.getPost().setNumberOfComments(existingComment.getPost().getNumberOfComments() + 1);
             mailService.approveCommentMail(existingComment.getUser());
             commentRepository.saveAndFlush(existingComment);
             return "your comment has been approved";

@@ -22,12 +22,12 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long commentId;
 
     @Column(length = 500)
     private String body;
     private Long voteCount = 0L;
-    private Boolean isMostRelevantComment;
+    private Boolean isMostRelevantComment = false;
 
     private Boolean isApproved = false;
 

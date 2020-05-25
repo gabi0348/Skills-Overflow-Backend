@@ -5,20 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostDTO {
+public class CommentDTO {
 
-    private Long id;
-    private String title;
+    private Long commentId;
     private String userName;
     private String body;
-    private Long numberOfComments;
     private String createDate;
-    private List<String> topics;
-
+    private Long voteCount;
 }

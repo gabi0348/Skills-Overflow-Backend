@@ -29,9 +29,9 @@ public class NotificationController {
         return notificationDTOS;
     }
 
-    @GetMapping("/unreadNotificationsNumber")
+/*    @GetMapping("/unreadNotificationsNumber")
     public int findUnreadNotificationsNumber() {
 
        return userRepository.findByEmail(jwtTokenProvider.getUser().getEmail()).getUnreadNotifications().size();
-    }
+    }*/
 }

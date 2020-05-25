@@ -28,10 +28,10 @@ import java.util.Arrays;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    JwtTokenProvider jwtTokenProvider;
+    com.internshipProject.SkillsOverflowBackend.configuration.JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    JwtTokenFilter jwtTokenFilter;
+    com.internshipProject.SkillsOverflowBackend.configuration.JwtTokenFilter jwtTokenFilter;
 
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
     @Override

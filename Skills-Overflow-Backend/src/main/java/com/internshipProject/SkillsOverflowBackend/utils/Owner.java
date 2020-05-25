@@ -17,24 +17,22 @@ public class Owner {
         return user != null && user.getUserName().equals(comment.getUser().getUserName());
     }
 
+    public static boolean equalStrings(String topicName, String queryParam) { //queryParam este queryParam care imi vine
 
-
-    public static boolean equalStrings(String word1, String word2) { //word2 este queryParam care imi vine
-
-        int mistakesAllowed = 2;
-        int allowedMistakenWordLength = word2.length() + 2;
-        if (word1.length() <= allowedMistakenWordLength) {
+        int mistakesAllowed = 1; //adica doua
+        int allowedMistakenWordLength = queryParam.length() + 2;
+        if (topicName.length() <= allowedMistakenWordLength) {
             int count=0;
-            for (int i = 0; i < word1.length(); i++) { // go from first to last character index the words
-                if (word1.charAt(i) != word2.charAt(i)) { // if this character from word 1 does not equal the character from word 2
+            for (int i = 0; i < topicName.length(); i++) { // go from first to last character index the words
+                if (topicName.charAt(i) != queryParam.charAt(i)) { // if this character from word 1 does not equal the character from word 2
                     mistakesAllowed--;
                     if (mistakesAllowed < 0) {
                         return false;
                     }
                 }
-                else{
+                else {
                     count++;
-                    if (count == word2.length()) return true;
+                    if (count == queryParam.length()) return true;
                 }
             }
             return true;
