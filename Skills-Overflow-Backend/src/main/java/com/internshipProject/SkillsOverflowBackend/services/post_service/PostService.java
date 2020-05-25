@@ -26,5 +26,7 @@ public interface PostService {
     public Object[] searchForPosts(String queryParam, Integer pageNo, String criteria,
                                    TopicFront topic);
 
+    List<PostDTO> getAllUnapprovedPosts();
+
 }
 

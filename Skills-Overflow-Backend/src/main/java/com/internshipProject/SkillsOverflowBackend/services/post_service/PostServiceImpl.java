@@ -1,11 +1,13 @@
 package com.internshipProject.SkillsOverflowBackend.services.post_service;
 
+import com.internshipProject.SkillsOverflowBackend.convertors.CommentConverter;
 import com.internshipProject.SkillsOverflowBackend.convertors.PostConverter;
 import com.internshipProject.SkillsOverflowBackend.dto.CommentDTO;
 import com.internshipProject.SkillsOverflowBackend.dto.PostDTO;
 import com.internshipProject.SkillsOverflowBackend.dto.SinglePostDTO;
 import com.internshipProject.SkillsOverflowBackend.models.*;
 import com.internshipProject.SkillsOverflowBackend.repositories.PostRepository;
+import com.internshipProject.SkillsOverflowBackend.repositories.TopicRepository;
 import com.internshipProject.SkillsOverflowBackend.utils.Owner;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +21,25 @@ import java.util.stream.Stream;
 public class PostServiceImpl implements PostService {
 
     @Autowired
-    PostRepository postRepository;
+    private PostRepository postRepository;
+
+    @Autowired
+    private TopicRepository topicRepository;
+
+    private List<PostDTO> postDTOList = new ArrayList<>();
+
+
 
     public Post save(Post post) {
+//        List<String> topicsList = post.getStringTopics();
+//        List<Topic> topics = topicRepository.findAll();
+//        for(String topic : topicsList) {
+//           for(Topic topicObject : topics) {
+//               if(topic.equals(topicObject.getTopic())){
+//                   post.getTopics().add(topicObject);
+//               }
+//           }
+//        }
         postRepository.save(post);
         return post;
     }
@@ -248,6 +266,18 @@ public class PostServiceImpl implements PostService {
         singlePostDTO.setPostDTO(PostConverter.convertToPostDTO(post));
         singlePostDTO.setPrincipalOwnerOfPost(Owner.isPrincipalOwnerOfPost(user, post));
         return  singlePostDTO;
+    }
+
+    public List<PostDTO> getAllUnapprovedPosts(){
+        postDTOList.clear();
+        List<Post> posts = postRepository.findAll();
+        for(Post post : posts) {
+            if(!post.getIsApproved()) {
+                PostDTO postDTO = PostConverter.convertToPostDTO(post);
+                postDTOList.add(postDTO);
+            }
+        }
+        return postDTOList;
     }
 
 }

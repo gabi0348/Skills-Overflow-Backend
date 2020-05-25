@@ -1,11 +1,14 @@
 package com.internshipProject.SkillsOverflowBackend.controllers;
 
 import com.internshipProject.SkillsOverflowBackend.dto.CommentDTO;
+import com.internshipProject.SkillsOverflowBackend.dto.PostDTO;
 import com.internshipProject.SkillsOverflowBackend.dto.UserDTO;
 import com.internshipProject.SkillsOverflowBackend.enums.UsersRoles;
+import com.internshipProject.SkillsOverflowBackend.models.Post;
 import com.internshipProject.SkillsOverflowBackend.services.admin_service.AdminService;
 import com.internshipProject.SkillsOverflowBackend.services.blocked_user_token_service.BlockedUserTokenService;
 import com.internshipProject.SkillsOverflowBackend.services.comment_service.CommentService;
+import com.internshipProject.SkillsOverflowBackend.services.post_service.PostService;
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +32,9 @@ public class AdminController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private PostService postService;
 
     @PutMapping("/approveRequest/{id}")
     @ResponseBody
@@ -77,10 +83,25 @@ public class AdminController {
         return adminService.approvePost(id);
     }
 
+    @DeleteMapping("/deletePost/{id}")
+    public String deletePost(@PathVariable Long id) {
+       return adminService.deletePost(id);
+    }
+
+    @GetMapping("/allUnapprovedPosts")
+    public List<PostDTO> findAllUnapprovedPosts(){
+        return postService.getAllUnapprovedPosts();
+    }
+
     @PutMapping("/approveComment/{id}")
     @ResponseBody
     public String approveComment(@PathVariable Long id) {
         return adminService.approveComment(id);
+    }
+
+    @DeleteMapping("/deleteComment/{id}")
+    public String deleteComment(@PathVariable Long id) {
+        return adminService.deleteComment(id);
     }
 
 
