@@ -97,6 +97,11 @@ public class AdminServiceImpl implements AdminService{
         return "cannot approve post";
     }
 
+    public String deletePost(Long id) {
+        postRepository.deleteById(id);
+        return "post deleted";
+    }
+
     public String approveComment(Long id) {
         Comment existingComment = commentRepository.getOne(id);
         if(!existingComment.getIsApproved()) {
@@ -107,5 +112,10 @@ public class AdminServiceImpl implements AdminService{
             return "your comment has been approved";
         }
         return "cannot approve comment";
+    }
+
+    public String deleteComment(Long id) {
+        commentRepository.deleteById(id);
+        return "post deleted";
     }
 }

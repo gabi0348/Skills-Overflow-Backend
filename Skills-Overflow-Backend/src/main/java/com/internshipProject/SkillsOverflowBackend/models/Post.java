@@ -62,6 +62,7 @@ public class Post {
     )
     private List<Topic> topics;
 
+
     public List<CommentDTO> getApprovedComments() {
         List<Comment> comments = getComments();
         List<CommentDTO> commentDTOS = new ArrayList<>();

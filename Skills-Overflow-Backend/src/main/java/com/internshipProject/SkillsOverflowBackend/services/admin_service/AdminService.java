@@ -9,4 +9,6 @@ public interface AdminService {
     String promoteUserToAdmin(Long id);
     String approvePost(Long id);
     String approveComment(Long id);
+    String deletePost(Long id);
+    String deleteComment(Long id);
 }
