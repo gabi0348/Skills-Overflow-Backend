@@ -141,8 +141,8 @@ insert into comment values (4,  'Using this(args). The preferred pattern is to w
 insert into notification values(1,'1977-01-01',2,'George','SQL',4);
 insert into notification values(2,'2020-01-01',1,'Andrei','Java',2);
 insert into notification values(3,'2020-03-05',3,'Costel','Java, Spring Boot',1);
-insert into notification values(4,'2020-06-02',3,'Iulian','Java',3);
-insert into notification values(5,'2020-06-02',3,'Costel','SQL',3);
+insert into notification values(4,'2020-06-02',3,'Iulian','Java',1);
+insert into notification values(5,'2020-06-02',3,'Costel','SQL',1);
 insert into notification values(6,'2020-06-02',1,'Iulian',null,3);
 insert into notification values(7,'2020-06-02',2,'Andrei','Oracle',3);
 
