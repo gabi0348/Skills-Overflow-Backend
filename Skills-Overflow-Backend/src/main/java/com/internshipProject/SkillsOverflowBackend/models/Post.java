@@ -2,6 +2,8 @@ package com.internshipProject.SkillsOverflowBackend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.internshipProject.SkillsOverflowBackend.convertors.CommentConverter;
+import com.internshipProject.SkillsOverflowBackend.dto.CommentDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +12,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -54,9 +57,21 @@ public class Post {
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "post_topic",
-            joinColumns = { @JoinColumn(name = "post_id") },
-            inverseJoinColumns = { @JoinColumn(name = "topic_id") }
+            joinColumns = {@JoinColumn(name = "post_id")},
+            inverseJoinColumns = {@JoinColumn(name = "topic_id")}
     )
     List<Topic> topics;
+
+    public List<CommentDTO> getApprovedComments() {
+        List<Comment> comments = getComments();
+        List<CommentDTO> commentDTOS = new ArrayList<>();
+        for (Comment comment : comments) {
+            if (comment.getIsApproved()) {
+                commentDTOS.add(CommentConverter.commentConverter(comment));
+            }
+
+        }
+        return commentDTOS;
+    }
 
 }

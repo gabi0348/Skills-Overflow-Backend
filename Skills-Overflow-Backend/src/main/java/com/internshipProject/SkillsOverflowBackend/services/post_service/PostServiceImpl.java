@@ -1,7 +1,9 @@
 package com.internshipProject.SkillsOverflowBackend.services.post_service;
 
 import com.internshipProject.SkillsOverflowBackend.convertors.PostConverter;
+import com.internshipProject.SkillsOverflowBackend.dto.CommentDTO;
 import com.internshipProject.SkillsOverflowBackend.dto.PostDTO;
+import com.internshipProject.SkillsOverflowBackend.dto.SinglePostDTO;
 import com.internshipProject.SkillsOverflowBackend.models.*;
 import com.internshipProject.SkillsOverflowBackend.repositories.PostRepository;
 import com.internshipProject.SkillsOverflowBackend.utils.Owner;
@@ -9,13 +11,12 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-public class PostServiceImpl implements PostService{
+public class PostServiceImpl implements PostService {
 
     @Autowired
     PostRepository postRepository;
@@ -43,7 +44,7 @@ public class PostServiceImpl implements PostService{
 
 
     //asta e baza!!!
-   public List<PostDTO> getAllFilteredPosts(Integer pageNo, String criteria, TopicFront topic) {
+    public List<PostDTO> getAllFilteredPosts(Integer pageNo, String criteria, TopicFront topic) {
 
         int noOfPages = postRepository.findAll().size() / 10 + 1;
         if (pageNo > noOfPages) {
@@ -54,13 +55,13 @@ public class PostServiceImpl implements PostService{
                 .stream()
                 .filter(Post::getIsApproved);
 
-       //aici DOAR DACA am filtrare - array primit din front-end
-       return getFilteredAndSortedPostDTOS(pageNo, criteria, topic, allPosts);
-   }
+        //aici DOAR DACA am filtrare - array primit din front-end
+        return getFilteredAndSortedPostDTOS(pageNo, criteria, topic, allPosts);
+    }
 
     public List<PostDTO> getFilteredAndSortedPostDTOS(Integer pageNo, String criteria, TopicFront topic, Stream<Post> allPosts) {
 
-        if (topic.getTopics() != null && topic.getTopics().length>0) {
+        if (topic.getTopics() != null && topic.getTopics().length > 0) {
 
             //filtare pe postari
             Stream<Post> postTopicList = getPostWithTopicStream(topic, allPosts);
@@ -77,7 +78,7 @@ public class PostServiceImpl implements PostService{
 
         //else topicurile sunt undefined
         else {
-            if(!criteria.equals("undefined")) {
+            if (!criteria.equals("undefined")) {
                 return getPostsOnCriteria(criteria, allPosts, pageNo);
             }
             //toate postarile buluc, doar in functie de data; topicul si criteria sunt undefined
@@ -89,20 +90,20 @@ public class PostServiceImpl implements PostService{
 
     public Stream<Post> getPostWithTopicStream(TopicFront topic, Stream<Post> allPosts) {
         return allPosts
-                        .filter(post -> {
-                            int found = 0;
-                            int totalNumberOfTopics = topic.getTopics().length;
-                            for(Topic topic1 :post.getTopics()) {
-                                String topicName = topic1.getTopic();
-                                for (String frontTopic: topic.getTopics()) {
-                                    if (topicName.equalsIgnoreCase(frontTopic)) {
-                                        found++;
-                                        if (found == totalNumberOfTopics) return true;
-                                    }
-                                }
+                .filter(post -> {
+                    int found = 0;
+                    int totalNumberOfTopics = topic.getTopics().length;
+                    for (Topic topic1 : post.getTopics()) {
+                        String topicName = topic1.getTopic();
+                        for (String frontTopic : topic.getTopics()) {
+                            if (topicName.equalsIgnoreCase(frontTopic)) {
+                                found++;
+                                if (found == totalNumberOfTopics) return true;
                             }
-                            return false;
-                        });
+                        }
+                    }
+                    return false;
+                });
     }
 
     private List<PostDTO> getPostsOnCriteria(String criteria, Stream<Post> posts, Integer pageNo) {
@@ -114,7 +115,7 @@ public class PostServiceImpl implements PostService{
                     .collect(Collectors.toList());
         }
 
-        if (criteria.equals("comms")){
+        if (criteria.equals("comms")) {
             return posts.sorted(Comparator.comparing(Post::getNumberOfComments).reversed())
                     .skip(pageNo * 10)
                     .limit(10)
@@ -128,14 +129,14 @@ public class PostServiceImpl implements PostService{
     private List<PostDTO> getPostsJustByDate(Integer pageNo, Stream<Post> posts) {
         return posts
                 .sorted(Comparator.comparing(Post::getCreateDate).reversed())
-                .skip(pageNo*10)
+                .skip(pageNo * 10)
                 .limit(10)
                 .map(PostConverter::convertToPostDTO) //to dto
                 .collect(Collectors.toList());
     }
 
     public Object[] searchForPosts(String queryParam, Integer pageNo, String criteria,
-                                   TopicFront topic){
+                                   TopicFront topic) {
         int noOfPages = postRepository.findAll().size() / 10 + 1;
         if (pageNo > noOfPages) {
             return null;
@@ -143,7 +144,7 @@ public class PostServiceImpl implements PostService{
 
         Object[] object = new Object[3]; //obiectul pe care il voi returna
 
-        String paramLowerCase= queryParam.toLowerCase();
+        String paramLowerCase = queryParam.toLowerCase();
 
         //doar o sortare in functie de numarul de aparitii ale unui string
         List<Post> searchedPosts = getQueryStream(paramLowerCase)
@@ -151,9 +152,9 @@ public class PostServiceImpl implements PostService{
                     String[] all = getSearchedStrings(post, paramLowerCase);
 
                     int count = 0;
-                    for (String s: all) {
+                    for (String s : all) {
                         if (s.toLowerCase().equals(paramLowerCase))
-                            count ++;
+                            count++;
                     }
                     return count;
                 }))
@@ -167,17 +168,17 @@ public class PostServiceImpl implements PostService{
                     .stream()
                     .map(this::getSearchedStringsByTopic)// i get ALL strings
                     .flatMap(Stream::of)// then i convert them to strings
-                    .filter(s->s.length()>2)
-                    .filter(string-> Owner.equalStrings(string, paramLowerCase))
-                    .forEach(s->{
+                    .filter(s -> s.length() > 2)
+                    .filter(string -> Owner.equalStrings(string, paramLowerCase))
+                    .forEach(s -> {
                         hashMap.merge(s, 1, Integer::sum);
                         System.out.println(hashMap);
                     }); // ce tare e auto-complete :)))))
 
             List<Map.Entry<String, Integer>> entries = hashMap.entrySet()
-                     .stream()
-                     .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
-                     .collect(Collectors.toList());
+                    .stream()
+                    .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                    .collect(Collectors.toList());
             object[2] = entries.isEmpty() ? null : entries.get(0).getKey();
         }
 
@@ -196,7 +197,7 @@ public class PostServiceImpl implements PostService{
         String[] titleArray = post.getTitle().split("[^a-zA-Z']+"); // nu \s+ !!!
         String[] topicList = post.getTopics().
                 stream()
-                .map(topic-> topic.getTopic().replaceAll("\\s+","")) //scot whitespace de la topics
+                .map(topic -> topic.getTopic().replaceAll("\\s+", "")) //scot whitespace de la topics
                 .toArray(String[]::new);
         String[] both = ArrayUtils.addAll(bodyArray, titleArray);
         String[] all = ArrayUtils.addAll(topicList, both);
@@ -216,75 +217,38 @@ public class PostServiceImpl implements PostService{
         return postRepository.findAll()
                 .stream()
                 .filter(Post::getIsApproved) //if the post is approved !!
-                .filter(post->  Arrays
+                .filter(post -> Arrays
                         .asList(getSearchedStrings(post, queryParam)) //aici caut toate stringurile si fac si split, caut in array parametru
                         .contains(queryParam.toLowerCase()));
     }
 
-    private String[] getSearchedStringsByTopic(Post post){
-       return post.getTopics()
-               .stream()
-               .map(topic-> topic.getTopic().replaceAll("\\s+",""))
-               .map(s-> {
-                   System.out.println("this is the strong-->" + s);
-                   return s.toLowerCase();
-               })
-               .distinct()
-               .toArray(String[]::new);
+    private String[] getSearchedStringsByTopic(Post post) {
+        return post.getTopics()
+                .stream()
+                .map(topic -> topic.getTopic().replaceAll("\\s+", ""))
+                .map(s -> {
+                    System.out.println("this is the strong-->" + s);
+                    return s.toLowerCase();
+                })
+                .distinct()
+                .toArray(String[]::new);
     }
 
-    public Integer getNumberOfPosts(){
+    public Integer getNumberOfPosts() {
         return postRepository.findAll().size();
     }
 
-    public Object[] getPostWithSortedComments(Long postId, Long pageNo, User user) {
 
-        //hardcodez page number sa fie 0 oricum!!!!
-        pageNo = 0L;
 
-        Object[] array = new Object[3];
-
-        Optional<Post> optionalPost = findById(postId);
-        if (optionalPost.isPresent()) {
-
-            Post post = optionalPost.get();
-            array[0] = PostConverter.convertToPostDTO(post);
-
-            //daca sunt mai multe pagini decat am
-            int noOfPages = post.getComments().size() / 10 + 1;
-            if (pageNo > noOfPages) {
-                return null;
-            }
-
-            int comLimit = 10;
-            //daca imi trimite pagina nr.0 (prima); din toate comentariile, il caut pe cel most relevant
-
-            List<Comment> comments = new ArrayList<>();
-            if (pageNo == 0) {
-                comLimit = 9;
-                comments = post.getComments().
-                        stream().
-                        filter(Comment::getIsMostRelevantComment).
-                        collect(Collectors.toList());
-            }
-
-            //compar in functie de vote count
-            List<Comment> sortedComments = post.getComments()
-                    .stream()
-                    .filter(c->!c.getIsMostRelevantComment())
-                    .sorted(Comparator.comparing(Comment::getVoteCount).reversed())
-                    .skip(pageNo * 10)
-                    .limit(comLimit)
-                    .collect(Collectors.toList());
-
-            //aici voi converti si comentariile in dto
-            comments.addAll(sortedComments);
-            array[1] = comments.stream().filter(Comment::getIsApproved).collect(Collectors.toList());
-            array[2] = Owner.isPrincipalOwnerOfPost(user, post);
-            return array;
-        }
-
-        return null;
+    public SinglePostDTO getSinglePostWithComments(Long postId, User user) {
+        SinglePostDTO singlePostDTO = new SinglePostDTO();
+        Post post = postRepository.getOne(postId);
+        List<CommentDTO> commentDTOS =post.getApprovedComments();
+        singlePostDTO.setCommentDTOList(commentDTOS);
+        singlePostDTO.setPostDTO(PostConverter.convertToPostDTO(post));
+        singlePostDTO.setPrincipalOwnerOfPost(Owner.isPrincipalOwnerOfPost(user, post));
+        return  singlePostDTO;
     }
 
 }
+

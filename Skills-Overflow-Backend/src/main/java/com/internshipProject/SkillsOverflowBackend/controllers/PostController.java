@@ -1,6 +1,7 @@
 package com.internshipProject.SkillsOverflowBackend.controllers;
 
 import com.internshipProject.SkillsOverflowBackend.configuration.JwtTokenProvider;
+import com.internshipProject.SkillsOverflowBackend.dto.SinglePostDTO;
 import com.internshipProject.SkillsOverflowBackend.models.Post;
 import com.internshipProject.SkillsOverflowBackend.models.TopicFront;
 import com.internshipProject.SkillsOverflowBackend.models.User;
@@ -8,14 +9,12 @@ import com.internshipProject.SkillsOverflowBackend.repositories.PostRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.post_service.PostService;
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
-import com.internshipProject.SkillsOverflowBackend.utils.Owner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,41 +44,7 @@ public class PostController {
         return "your post is under review";
     }
 
-    @PutMapping(value = "/editPost")
-    public String editPostWithId(@RequestBody @Valid Post newPost) {
 
-        User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
-        Optional<Post> optionalOldPost = postService.findById(newPost.getId());
-
-        if (optionalOldPost.isPresent()) {
-            Post oldPost = optionalOldPost.get();
-
-            if (Owner.isPrincipalOwnerOfPost(user, oldPost)) {
-                postService.updateAndSavePost(oldPost, newPost);
-                return "Updated post";
-            }
-            return "This is not the owner";
-        }
-        return "Post or user not found";
-    }
-
-    @DeleteMapping(value = "/deletePost")
-    public String deletePostWithId(@RequestBody @Valid Post newPost, @PathVariable Long userId) {
-
-        User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
-        Optional<Post> optionalOldPost = postService.findById(newPost.getId());
-
-        if (optionalOldPost.isPresent()) {
-            Post post = optionalOldPost.get();
-
-            if (Owner.isPrincipalOwnerOfPost(user, post)) {
-                postService.deletePost(post);
-                return "Deleted post";
-            }
-            return "This is not the owner";
-        }
-        return "Post or user not found";
-    }
 
     //intoarce null daca n-a mai gasit postari; daca topicul e null, intoarce tot sortat dupa data
     @PostMapping(value = "/allPosts/{pageNo}/{criteria}")
@@ -99,9 +64,9 @@ public class PostController {
 
     //i'm returning the comment, the posts, and IF this actual user is the owner of the post
     @GetMapping(value = "/singlePost/{postId}")
-    public Object[] getPost(@PathVariable Long postId){
+    public SinglePostDTO getPost(@PathVariable Long postId){
         User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
-        return postService.getPostWithSortedComments(postId, 0L, user);
+        return postService.getSinglePostWithComments(postId,  user);
     }
 
     @GetMapping(value = "/allPostsForUser")
