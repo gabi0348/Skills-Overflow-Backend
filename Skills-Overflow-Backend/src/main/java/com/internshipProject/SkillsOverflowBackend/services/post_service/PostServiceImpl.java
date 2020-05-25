@@ -243,7 +243,7 @@ public class PostServiceImpl implements PostService {
     public SinglePostDTO getSinglePostWithComments(Long postId, User user) {
         SinglePostDTO singlePostDTO = new SinglePostDTO();
         Post post = postRepository.getOne(postId);
-        List<CommentDTO> commentDTOS =post.getApprovedComments();
+        List<CommentDTO> commentDTOS = post.getApprovedComments();
         singlePostDTO.setCommentDTOList(commentDTOS);
         singlePostDTO.setPostDTO(PostConverter.convertToPostDTO(post));
         singlePostDTO.setPrincipalOwnerOfPost(Owner.isPrincipalOwnerOfPost(user, post));

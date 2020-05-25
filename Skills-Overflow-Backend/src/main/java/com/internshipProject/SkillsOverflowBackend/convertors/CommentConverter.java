@@ -13,6 +13,7 @@ public class CommentConverter {
         commentDTO.setBody(comment.getBody());
         commentDTO.setCreateDate(comment.getCreateDate().toLocalDate().toString());
         commentDTO.setVoteCount(comment.getVoteCount());
+        commentDTO.setIsMostRelevant(comment.getIsMostRelevantComment());
 
         return commentDTO;
     }

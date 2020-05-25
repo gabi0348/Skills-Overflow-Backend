@@ -16,4 +16,5 @@ public class CommentDTO {
     private String body;
     private String createDate;
     private Long voteCount;
+    private Boolean isMostRelevant;
 }
