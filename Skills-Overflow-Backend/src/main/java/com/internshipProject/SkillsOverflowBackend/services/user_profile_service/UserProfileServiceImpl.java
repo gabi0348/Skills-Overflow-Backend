@@ -8,6 +8,7 @@ import com.internshipProject.SkillsOverflowBackend.models.Post;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,13 +22,18 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
     private List<UserProfilePostDTO> userProfilePostDTOList;
 
     @Override
     public String resetPassword(ResetPasswordDTO resetPasswordDTO){
         User existingUser = userService.findByEmail(jwtTokenProvider.getUser().getEmail());
-        if(existingUser.getPassword().equals(resetPasswordDTO.getOldPassword())){
-            existingUser.setPassword(resetPasswordDTO.getNewPassword());
+
+        if(passwordEncoder.matches(resetPasswordDTO.getOldPassword(), existingUser.getPassword())){
+            existingUser.setPassword(passwordEncoder.encode(resetPasswordDTO.getNewPassword()));
         } else {
             return "old password doesn't match the input";
         }
