@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class NotificationService {
@@ -30,16 +29,25 @@ public class NotificationService {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
+
     public void generateNotification(Post post, User user){
-        Stream<User> stream = post.getComments()
+        Set<User> users = post.getComments()
                 .stream()
-                .map(Comment::getUser); //doar userii
-        Set<User> userList = Stream.concat(Stream.of(post.getUser()), stream)
-                .filter(u -> !(u.getUserId().equals(user.getUserId())))
+                .map(Comment::getUser)
+                .filter(filterUser -> !user.getUserId().equals(filterUser.getUserId()))
                 .collect(Collectors.toSet());
 
         Notification notification = new Notification();
-        notification.setUsers(userList);
+        notification.setUsers(users);
+        notification.setPost(post);
+        notification.setNotificationType(1);
+        notification.setSenderName(user.getUserName());
+        notificationRepository.save(notification);
+    }
+
+    public void generateVoteNotification(Post post, User user) {
+        Notification notification = new Notification();
+        notification.addUser(user);
         notification.setPost(post);
         notification.setNotificationType(1);
         notification.setSenderName(user.getUserName());
