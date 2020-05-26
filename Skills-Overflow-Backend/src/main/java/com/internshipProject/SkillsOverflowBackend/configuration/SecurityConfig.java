@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,"/admin/approveRequest/**").hasAnyAuthority("admin")
                 .antMatchers(HttpMethod.GET,"/allBlockedUsers").hasAnyAuthority("admin")
                 .antMatchers(HttpMethod.GET,"/allDeclinedUsers").hasAnyAuthority("admin")
-                .antMatchers("/userProfile/**").hasAnyAuthority(UsersRoles.APPROVED_USER.toString())
+                .antMatchers("/userProfile/**").hasAnyAuthority(UsersRoles.APPROVED_USER.toString(),UsersRoles.ADMIN.toString())
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
