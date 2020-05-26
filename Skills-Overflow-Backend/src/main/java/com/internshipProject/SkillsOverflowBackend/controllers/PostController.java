@@ -33,14 +33,11 @@ public class PostController {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
-
-
     @PostMapping(value = "/createPost")
     public String newPost(@RequestBody PostCreatedDTO postCreatedDTO) {
         postService.save(postService.convertCreatedPostDTOToPost(postCreatedDTO));
         return "your post is under review";
     }
-
 
     //intoarce null daca n-a mai gasit postari; daca topicul e null, intoarce tot sortat dupa data
     @PostMapping(value = "/allPosts/{pageNo}/{criteria}")
@@ -50,7 +47,7 @@ public class PostController {
 
         Stream<Post> postDTOStream = postRepository.findAll().stream();
         //all posts counted, regardless of page number, depending if the topic array is empty or not
-        arr[0] = (topic.getTopics().length > 0)
+        arr[0] =  (topic.getTopics().length > 0)
                 ? (int) postService.getPostWithTopicStream(topic, postDTOStream).count()
                 : postRepository.findAll().stream().filter(Post::getIsApproved).count();
         arr[1] = postService.getAllFilteredPosts(pageNo, criteria, topic);

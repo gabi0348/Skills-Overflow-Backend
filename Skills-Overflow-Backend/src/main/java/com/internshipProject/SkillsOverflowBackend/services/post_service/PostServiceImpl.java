@@ -300,8 +300,8 @@ public class PostServiceImpl implements PostService {
         List<Topic> topicList = new ArrayList<>();
         for (String topic : postCreatedDTO.getTopics()) {
             if (topic != null) {
-                System.out.println(topic.trim());
-                Topic topic1 = topicRepository.findByTopic(topic.trim());
+                System.out.println(topic);
+                Topic topic1 = topicRepository.findByTopic(topic);
                 topicList.add(topic1);
             }
         }
