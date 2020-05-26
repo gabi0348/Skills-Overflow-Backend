@@ -1,5 +1,6 @@
 package com.internshipProject.SkillsOverflowBackend.configuration;
 
+import com.internshipProject.SkillsOverflowBackend.enums.UsersRoles;
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -49,18 +50,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/login/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/logIn").permitAll()
-                //.antMatchers("/signUp").permitAll()
-                //.antMatchers("/signUp").permitAll()
                 .antMatchers(HttpMethod.POST, "/signIn").permitAll()
                 .antMatchers("/admin/**").hasAnyAuthority("admin")
                 .antMatchers(HttpMethod.GET,"/allPendingUsers/**").hasAnyAuthority("admin")
                 .antMatchers(HttpMethod.POST,"/admin/approveRequest/**").hasAnyAuthority("admin")
                 .antMatchers(HttpMethod.GET,"/allBlockedUsers").hasAnyAuthority("admin")
                 .antMatchers(HttpMethod.GET,"/allDeclinedUsers").hasAnyAuthority("admin")
+                .antMatchers("/userProfile/**").hasAnyAuthority(UsersRoles.APPROVED_USER.toString())
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/**").permitAll()
-                //.antMatchers(HttpMethod.GET, "/allPendingUsers").hasRole("admin")
-                //.antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
 

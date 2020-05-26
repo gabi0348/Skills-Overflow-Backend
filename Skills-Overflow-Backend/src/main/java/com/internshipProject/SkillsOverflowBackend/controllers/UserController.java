@@ -77,13 +77,6 @@ public class UserController {
     }
 
 
-    /*
-    @PostMapping("/logIn")
-    @ResponseBody
-    public String logIn(@RequestBody LoginDTO user){
-            return userService.userExists(user);
-    }*/
-
     @GetMapping("/findById/{id}")
     @ResponseBody
     public UserDTO getById(@PathVariable(value = "id") Long id) {
