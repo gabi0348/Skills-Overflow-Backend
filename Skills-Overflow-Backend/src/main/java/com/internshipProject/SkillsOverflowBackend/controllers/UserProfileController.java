@@ -1,8 +1,10 @@
 package com.internshipProject.SkillsOverflowBackend.controllers;
 
 import com.internshipProject.SkillsOverflowBackend.dto.ResetPasswordDTO;
+import com.internshipProject.SkillsOverflowBackend.dto.UserDTO;
 import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.services.user_profile_service.UserProfileService;
+import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +16,9 @@ public class UserProfileController {
 
     @Autowired
     private UserProfileService userProfileService;
+
+    @Autowired
+    private UserService userService;
 
     @PutMapping("/resetPasswordInUserProfile")
     @ResponseBody
@@ -31,6 +36,12 @@ public class UserProfileController {
     @ResponseBody
     public String changeFirstAndLastName(@RequestBody User user) {
         return  userProfileService.changeFirstAndLastName(user);
+    }
+
+    @GetMapping("/getUserBySessionToken")
+    @ResponseBody
+    public UserDTO getUserDTObySessionToken() {
+        return userService.findBySessionToken();
     }
 
 }
