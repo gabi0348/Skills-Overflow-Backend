@@ -7,6 +7,6 @@ public interface UserProfileService {
 
     String resetPassword(ResetPasswordDTO resetPasswordDTO);
 
-    String changeUsername(User user);
+    String changeUsername(String username);
     String changeFirstAndLastName(User user);
 }

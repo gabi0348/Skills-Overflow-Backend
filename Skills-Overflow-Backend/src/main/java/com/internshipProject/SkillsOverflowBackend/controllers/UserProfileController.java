@@ -28,8 +28,8 @@ public class UserProfileController {
 
     @PutMapping("/changeUsername")
     @ResponseBody
-    public String changeUsername(@RequestBody User user) {
-        return  userProfileService.changeUsername(user);
+    public String changeUsername(@RequestBody String username) {
+        return  userProfileService.changeUsername(username);
     }
 
     @PutMapping("/changeName")
