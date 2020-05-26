@@ -29,9 +29,9 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     @Override
-    public String changeUsername(String username){
+    public String changeUsername(User user){
         User existingUser = userService.findByEmail(jwtTokenProvider.getUser().getEmail());
-        existingUser.setUserName(username);
+        existingUser.setUserName(user.getUserName());
         userService.saveUser(existingUser);
         return "username successfully changed";
     }
