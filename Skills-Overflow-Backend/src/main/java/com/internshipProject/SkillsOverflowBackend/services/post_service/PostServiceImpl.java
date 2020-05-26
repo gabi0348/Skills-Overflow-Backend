@@ -1,13 +1,18 @@
 package com.internshipProject.SkillsOverflowBackend.services.post_service;
 
-import com.internshipProject.SkillsOverflowBackend.convertors.CommentConverter;
+import com.internshipProject.SkillsOverflowBackend.configuration.JwtTokenProvider;
 import com.internshipProject.SkillsOverflowBackend.convertors.PostConverter;
 import com.internshipProject.SkillsOverflowBackend.dto.CommentDTO;
+import com.internshipProject.SkillsOverflowBackend.dto.PostCreatedDTO;
 import com.internshipProject.SkillsOverflowBackend.dto.PostDTO;
 import com.internshipProject.SkillsOverflowBackend.dto.SinglePostDTO;
-import com.internshipProject.SkillsOverflowBackend.models.*;
+import com.internshipProject.SkillsOverflowBackend.models.Post;
+import com.internshipProject.SkillsOverflowBackend.models.Topic;
+import com.internshipProject.SkillsOverflowBackend.models.TopicFront;
+import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.repositories.PostRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.TopicRepository;
+import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.utils.Owner;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -26,21 +32,25 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private TopicRepository topicRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
     private List<PostDTO> postDTOList = new ArrayList<>();
 
-
-
     public Post save(Post post) {
-//        List<String> topicsList = post.getStringTopics();
-//        List<Topic> topics = topicRepository.findAll();
-//        for(String topic : topicsList) {
-//           for(Topic topicObject : topics) {
-//               if(topic.equals(topicObject.getTopic())){
-//                   post.getTopics().add(topicObject);
-//               }
-//           }
-//        }
-        postRepository.save(post);
+/*        List<String> topicsList = post.getStringTopics();
+        List<Topic> topics = topicRepository.findAll();
+        for(String topic : topicsList) {
+           for(Topic topicObject : topics) {
+               if(topic.equals(topicObject.getTopic())){
+                   post.getTopics().add(topicObject);
+               }
+           }
+        }*/
+        postRepository.saveAndFlush(post);
         return post;
     }
 
@@ -59,7 +69,6 @@ public class PostServiceImpl implements PostService {
     public void deletePost(Post post) {
         postRepository.delete(post);
     }
-
 
     //asta e baza!!!
     public List<PostDTO> getAllFilteredPosts(Integer pageNo, String criteria, TopicFront topic) {
@@ -202,7 +211,6 @@ public class PostServiceImpl implements PostService {
 
         List<PostDTO> postDTOS = getFilteredAndSortedPostDTOS(pageNo, criteria, topic, searchedPosts.stream());
         //in ordinea descrescatoare a comentariilor
-
         //aici trebuie schimbat ca intoarce numarul gresit
         object[0] = (int) getQueryStream(queryParam).count();
         object[1] = postDTOS;
@@ -257,7 +265,6 @@ public class PostServiceImpl implements PostService {
     }
 
 
-
     public SinglePostDTO getSinglePostWithComments(Long postId, User user) {
         SinglePostDTO singlePostDTO = new SinglePostDTO();
         Post post = postRepository.getOne(postId);
@@ -265,19 +272,38 @@ public class PostServiceImpl implements PostService {
         singlePostDTO.setCommentDTOList(commentDTOS);
         singlePostDTO.setPostDTO(PostConverter.convertToPostDTO(post));
         singlePostDTO.setPrincipalOwnerOfPost(Owner.isPrincipalOwnerOfPost(user, post));
-        return  singlePostDTO;
+        return singlePostDTO;
     }
 
-    public List<PostDTO> getAllUnapprovedPosts(){
+    public List<PostDTO> getAllUnapprovedPosts() {
         postDTOList.clear();
         List<Post> posts = postRepository.findAll();
-        for(Post post : posts) {
-            if(!post.getIsApproved()) {
+        for (Post post : posts) {
+            if (!post.getIsApproved()) {
                 PostDTO postDTO = PostConverter.convertToPostDTO(post);
                 postDTOList.add(postDTO);
             }
         }
         return postDTOList;
+    }
+
+    public Post convertCreatedPostDTOToPost(PostCreatedDTO postCreatedDTO) {
+        Post post = new Post();
+        User user = userRepository.findByEmail(jwtTokenProvider.getUser().getEmail());
+        post.setUser(user);
+        System.out.println(postCreatedDTO);
+        post.setBody(postCreatedDTO.getBody());
+        post.setTitle(postCreatedDTO.getTitle());
+        List<Topic> topicList = new ArrayList<>();
+        for (String topic : postCreatedDTO.getTopics()) {
+            if (topic != null) {
+                System.out.println(topic);
+                Topic topic1 = topicRepository.findByTopic(topic);
+                topicList.add(topic1);
+            }
+        }
+        post.setTopics(topicList);
+        return post;
     }
 
 }

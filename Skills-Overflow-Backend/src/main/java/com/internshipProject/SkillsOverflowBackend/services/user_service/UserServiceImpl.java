@@ -1,5 +1,6 @@
 package com.internshipProject.SkillsOverflowBackend.services.user_service;
 
+import com.internshipProject.SkillsOverflowBackend.configuration.JwtTokenProvider;
 import com.internshipProject.SkillsOverflowBackend.convertors.UserConverter;
 import com.internshipProject.SkillsOverflowBackend.dto.LoginDTO;
 import com.internshipProject.SkillsOverflowBackend.dto.UserDTO;
@@ -36,6 +37,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
 
     private List<UserDTO> usersDto = new ArrayList<>();
@@ -169,6 +173,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUserName(String userName) {
         return userRepository.findByUserName(userName);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public UserDTO findBySessionToken() {
+        User existingUser = findByEmail(jwtTokenProvider.getUser().getEmail());
+        return UserConverter.convertToUserDto(existingUser);
     }
 }
 
