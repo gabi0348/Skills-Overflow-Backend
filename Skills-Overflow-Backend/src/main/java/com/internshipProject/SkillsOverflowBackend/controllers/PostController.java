@@ -47,7 +47,7 @@ public class PostController {
 
         Stream<Post> postDTOStream = postRepository.findAll().stream();
         //all posts counted, regardless of page number, depending if the topic array is empty or not
-        arr[0] =  (topic.getTopics().length > 0)
+        arr[0] = (topic.getTopics().length > 0)
                 ? (int) postService.getPostWithTopicStream(topic, postDTOStream).count()
                 : postRepository.findAll().stream().filter(Post::getIsApproved).count();
         arr[1] = postService.getAllFilteredPosts(pageNo, criteria, topic);

@@ -30,6 +30,5 @@ public interface PostService {
     List<PostDTO> getAllUnapprovedPosts();
 
     Post convertCreatedPostDTOToPost(PostCreatedDTO postCreatedDTO);
-
 }
 

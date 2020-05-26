@@ -40,7 +40,6 @@ public class PostServiceImpl implements PostService {
 
     private List<PostDTO> postDTOList = new ArrayList<>();
 
-
     public Post save(Post post) {
 /*        List<String> topicsList = post.getStringTopics();
         List<Topic> topics = topicRepository.findAll();
@@ -70,7 +69,6 @@ public class PostServiceImpl implements PostService {
     public void deletePost(Post post) {
         postRepository.delete(post);
     }
-
 
     //asta e baza!!!
     public List<PostDTO> getAllFilteredPosts(Integer pageNo, String criteria, TopicFront topic) {
@@ -213,7 +211,6 @@ public class PostServiceImpl implements PostService {
 
         List<PostDTO> postDTOS = getFilteredAndSortedPostDTOS(pageNo, criteria, topic, searchedPosts.stream());
         //in ordinea descrescatoare a comentariilor
-
         //aici trebuie schimbat ca intoarce numarul gresit
         object[0] = (int) getQueryStream(queryParam).count();
         object[1] = postDTOS;
