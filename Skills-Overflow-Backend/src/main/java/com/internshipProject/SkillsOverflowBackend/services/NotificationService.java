@@ -30,12 +30,17 @@ public class NotificationService {
     JwtTokenProvider jwtTokenProvider;
 
 
-    public void generateNotification(Post post, User user){
+    public void generateNotification(Post post, User user) {
         Set<User> users = post.getComments()
                 .stream()
                 .map(Comment::getUser)
-                .filter(filterUser -> !user.getUserId().equals(filterUser.getUserId()))
+                .filter(filterUser -> !filterUser.getUserId().equals(user.getUserId()))
                 .collect(Collectors.toSet());
+
+        User postUser = post.getUser();
+        if (!postUser.getUserId().equals(user.getUserId())) {
+            users.add(postUser);
+        }
 
         Notification notification = new Notification();
         notification.setUsers(users);
@@ -43,6 +48,9 @@ public class NotificationService {
         notification.setNotificationType(1);
         notification.setSenderName(user.getUserName());
         notificationRepository.save(notification);
+
+        users.stream().forEach(eachUser -> eachUser.getNotifications().add(notification));
+        userRepository.saveAll(users);
     }
 
     public void generateVoteNotification(Post post, User user) {
@@ -73,7 +81,7 @@ public class NotificationService {
         return notificationDTOS;
     }
 
-    public void deleteNotification(Long id){
+    public void deleteNotification(Long id) {
         User user = jwtTokenProvider.getUser();
         Notification notificationToBeRemoved = notificationRepository.findByNotificationId(id);
         notificationToBeRemoved.getUsers().remove(user);

@@ -26,7 +26,7 @@ public class Notification {
     private Long notificationId;
 
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "notification_user",
             joinColumns = {@JoinColumn(name = "notification_id")},

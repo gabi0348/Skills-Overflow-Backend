@@ -51,7 +51,6 @@ public class CommentController {
 
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
-            notificationService.generateNotification(post, user);
 
             comment.setUser(user);
             comment.setPost(post);

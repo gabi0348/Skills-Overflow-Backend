@@ -26,7 +26,7 @@ public class UserProfileController {
     @PutMapping("/resetPasswordInUserProfile")
     @ResponseBody
     public String resetPassword(@RequestBody ResetPasswordDTO resetPasswordDTO) {
-        return  userProfileService.resetPassword(resetPasswordDTO); 
+        return  userProfileService.resetPassword(resetPasswordDTO);
     }
 
     @PutMapping("/changeUsername")

@@ -2,14 +2,15 @@ package com.internshipProject.SkillsOverflowBackend;
 
 //import com.internshipProject.SkillsOverflowBackend.threads.ResetPasswordTokenThread;
 //import com.internshipProject.SkillsOverflowBackend.threads.VerificationTokenThread;
-import com.internshipProject.SkillsOverflowBackend.models.BlockedUserToken;
 import com.internshipProject.SkillsOverflowBackend.threads.BlockedUserTokenThread;
 import com.internshipProject.SkillsOverflowBackend.threads.ResetPasswordTokenThread;
 import com.internshipProject.SkillsOverflowBackend.threads.VerificationTokenThread;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.annotation.EnableAsync;
 
+@EnableAsync
 @SpringBootApplication
 public class SkillsOverflowBackendApplication {
 

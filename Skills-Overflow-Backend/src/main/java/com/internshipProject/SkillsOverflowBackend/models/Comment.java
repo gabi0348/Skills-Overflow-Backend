@@ -35,12 +35,12 @@ public class Comment {
     @CreationTimestamp
     private LocalDateTime createDate;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "post_id")
     @JsonIgnore
     private Post post;
 
-    @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne (cascade = {CascadeType.ALL})
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;

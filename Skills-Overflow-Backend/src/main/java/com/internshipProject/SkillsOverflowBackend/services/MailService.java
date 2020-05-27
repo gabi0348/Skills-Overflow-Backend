@@ -7,6 +7,7 @@ import com.internshipProject.SkillsOverflowBackend.services.verification_token_s
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -142,6 +143,7 @@ public class MailService {
         return "mail sent";
     }
 
+    @Async
     public String approveCommentMail(User user) {
         String recipientAddress = user.getEmail();
         String subject = "Comment approved";
@@ -161,7 +163,7 @@ public class MailService {
 
         String recipientAddress = user.getEmail();
         String subject = "Your comment was voted as the best answer";
-        String message = "Congrats! "+postOwnerName+" voted your comment as the best answer on his question: " + "<a href='http://localhost:3000/singlePost/"+ postId +"'>\" "+ postName +" </a> .";
+        String message = "Congrats! "+postOwnerName+" voted your comment as the best answer on his question: http://localhost:3000/singlePost/"+ postId;
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipientAddress);
         email.setSubject(subject);

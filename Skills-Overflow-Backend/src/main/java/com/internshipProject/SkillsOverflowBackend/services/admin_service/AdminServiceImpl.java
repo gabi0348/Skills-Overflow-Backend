@@ -9,6 +9,7 @@ import com.internshipProject.SkillsOverflowBackend.repositories.CommentRepositor
 import com.internshipProject.SkillsOverflowBackend.repositories.PostRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.MailService;
+import com.internshipProject.SkillsOverflowBackend.services.NotificationService;
 import com.internshipProject.SkillsOverflowBackend.services.role_service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,9 @@ public class AdminServiceImpl implements AdminService{
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @Override
     public String approveRequest(Long id){
@@ -106,9 +110,12 @@ public class AdminServiceImpl implements AdminService{
         Comment existingComment = commentRepository.getOne(id);
         if(!existingComment.getIsApproved()) {
             existingComment.setIsApproved(true);
-            existingComment.getPost().setNumberOfComments(existingComment.getPost().getNumberOfComments() + 1);
+            Post post = existingComment.getPost();
+            post.setNumberOfComments(post.getNumberOfComments() + 1);
             mailService.approveCommentMail(existingComment.getUser());
             commentRepository.saveAndFlush(existingComment);
+            User user = existingComment.getUser();
+            notificationService.generateNotification(post, user);
             return "your comment has been approved";
         }
         return "cannot approve comment";

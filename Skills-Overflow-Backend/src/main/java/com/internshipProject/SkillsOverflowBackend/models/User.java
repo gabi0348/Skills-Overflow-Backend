@@ -70,12 +70,12 @@ public class User {
     //@JsonIgnore
     private List<Notification> notifications;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Comment> comments;
 
     //le-am adaugat eu, merg oare
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> posts;
 
     @OneToMany (mappedBy = "user", cascade = CascadeType.ALL)
