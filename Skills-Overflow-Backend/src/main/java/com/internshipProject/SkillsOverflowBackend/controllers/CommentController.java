@@ -49,9 +49,6 @@ public class CommentController {
 
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
-            post.setNumberOfComments(post.getNumberOfComments() + 1L);
-
-            //metoda lu gabi
             notificationService.generateNotification(post, user);
 
             comment.setUser(user);
