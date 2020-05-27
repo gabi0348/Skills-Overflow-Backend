@@ -77,11 +77,12 @@ public class JwtTokenProvider {
     }
 
     public User getUser(String token) {
-        String email=  Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        String email = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
         return userRepository.findByEmail(email);
     }
+
     public User getUser() {
-        String email=  SecurityContextHolder.getContext().getAuthentication().getName();
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByEmail(email);
     }
 

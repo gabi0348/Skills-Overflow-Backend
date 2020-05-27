@@ -66,7 +66,7 @@ public class User {
     private Role role;
 
     //??? + json_ignore
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "users",  cascade = CascadeType.ALL)
     //@JsonIgnore
     private List<Notification> notifications;
 

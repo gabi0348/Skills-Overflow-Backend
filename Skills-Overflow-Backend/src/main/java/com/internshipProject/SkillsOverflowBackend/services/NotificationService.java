@@ -73,4 +73,11 @@ public class NotificationService {
         return notificationDTOS;
     }
 
+    public void deleteNotification(Long id){
+        User user = jwtTokenProvider.getUser();
+        Notification notificationToBeRemoved = notificationRepository.findByNotificationId(id);
+        notificationToBeRemoved.getUsers().remove(user);
+        notificationRepository.saveAndFlush(notificationToBeRemoved);
+    }
+
 }

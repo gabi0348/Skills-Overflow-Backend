@@ -19,7 +19,6 @@ public class NotificationDTO {
     int notificationType;
     Long notificationId;
 
-
     public NotificationDTO() {
     }
 }
