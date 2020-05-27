@@ -42,7 +42,7 @@ public class AdminServiceImpl implements AdminService{
     public String approveRequest(Long id){
         User existingUser = userRepository.getOne(id);
             existingUser.setRole(roleService.getRoleByRoleName(UsersRoles.APPROVED_USER.toString()));
-            mailService.confirmRegistrationMail(existingUser);
+            //mailService.confirmRegistrationMail(existingUser);
             new Thread(() -> mailService.confirmRegistrationMail(existingUser)).start();
             userRepository.saveAndFlush(existingUser);
             return "Please check your email.";
@@ -52,7 +52,8 @@ public class AdminServiceImpl implements AdminService{
     public String declineRequest(Long id) {
         User existingUser = userRepository.getOne(id);
         existingUser.setRole(roleService.getRoleByRoleName(UsersRoles.DECLINED_USER.toString()));
-        mailService.declineUserEmail(existingUser);
+        new Thread(() -> mailService.declineUserEmail(existingUser)).start();
+        //mailService.declineUserEmail(existingUser);
         userRepository.saveAndFlush(existingUser);
         return "The request has been declined.";
     }
@@ -61,7 +62,8 @@ public class AdminServiceImpl implements AdminService{
     public String blockUser(Long id){
         User existingUser = userRepository.getOne(id);
             existingUser.setRole(roleService.getRoleByRoleName(UsersRoles.BLOCKED_USER.toString()));
-            mailService.blockedUserEmail(existingUser);
+            new Thread(() -> mailService.blockedUserEmail(existingUser)).start();
+            //mailService.blockedUserEmail(existingUser);
             userRepository.saveAndFlush(existingUser);
             return "user blocked";
 
@@ -73,7 +75,8 @@ public class AdminServiceImpl implements AdminService{
         existingUser.setBlockedUserToken(null);
         existingUser.setRole(roleService.getRoleByRoleName(UsersRoles.APPROVED_USER.toString()));
         existingUser.setBlockCount(0L);
-        mailService.unblockedByAdminEmail(existingUser);
+        new Thread(() -> mailService.unblockedByAdminEmail(existingUser)).start();
+        //mailService.unblockedByAdminEmail(existingUser);
         userRepository.saveAndFlush(existingUser);
         return "user unblocked";
     }
@@ -83,7 +86,8 @@ public class AdminServiceImpl implements AdminService{
         User existingUser = userRepository.getOne(id);
         if(existingUser.getRole().getRole().equals(UsersRoles.APPROVED_USER.toString())){
             existingUser.setRole(roleService.getRoleByRoleName(UsersRoles.ADMIN.toString()));
-            mailService.promoteUserToAdminEmail(existingUser);
+            new Thread(() -> mailService.promoteUserToAdminEmail(existingUser)).start();
+            //mailService.promoteUserToAdminEmail(existingUser);
             userRepository.saveAndFlush(existingUser);
             return "promoted to admin";
         }
@@ -94,7 +98,8 @@ public class AdminServiceImpl implements AdminService{
         Post existingPost = postRepository.getOne(id);
         if(!existingPost.getIsApproved()){
             existingPost.setIsApproved(true);
-            mailService.approvedPostMail(existingPost.getUser());
+            new Thread(() -> mailService.approvedPostMail(existingPost.getUser())).start();
+            //mailService.approvedPostMail(existingPost.getUser());
             postRepository.saveAndFlush(existingPost);
             return "your post has been approved";
         }
@@ -112,7 +117,8 @@ public class AdminServiceImpl implements AdminService{
             existingComment.setIsApproved(true);
             Post post = existingComment.getPost();
             post.setNumberOfComments(post.getNumberOfComments() + 1);
-            mailService.approveCommentMail(existingComment.getUser());
+            new Thread(() -> mailService.approveCommentMail(existingComment.getUser())).start();
+//            mailService.approveCommentMail(existingComment.getUser());
             commentRepository.saveAndFlush(existingComment);
             User user = existingComment.getUser();
             notificationService.generateNotification(post, user);

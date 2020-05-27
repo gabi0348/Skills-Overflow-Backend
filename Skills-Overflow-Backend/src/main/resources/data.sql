@@ -36,15 +36,11 @@ insert into user values(21, 0, false,'george.popescu@gmail.com', true, 'Achim','
 --insert into post (body, create_date, number_of_comments, title, topic, user_id, id) values (?, ?, ?, ?, ?, ?, ?)
 
 insert into post values(1, 'I am writing a Rest service to save data into postgres. This program uses Spring boot, Hibernate and maven for dependencies. Those are just my beginnings with spring so I need some help where it causes the error. Here are my logs:
-
 given json request
-
 { "articleId": "1" }
-
 My Controller class:', '2020-01-01', true, 0, 'Sprin JPA Repository throws bean creation error?', 1);
 
 insert into post values (2, 'Exapmele : I have payment object with 3 request formats
-
 1. request 1 card payment: validate card number, exp date and amount
 2. token payment: token , exp date
 3. validate card : card number, exp date
@@ -64,7 +60,6 @@ insert into post values (3, 'How to parse the response JSON and get summary and 
              "action": "Stop"
                    }
        }
-
 }```', '2001-01-01', true, 0, 'How to parse belowJSON in springboot for Java?', 2);
 insert into post values (4, 'I know how to create multiple instances of a bean class. However, now I have a series of classes, say:' ||
                             'class AppleInModule {
@@ -72,22 +67,18 @@ insert into post values (4, 'I know how to create multiple instances of a bean c
   @Autowired OrangeInModule orange; // <-- dependencies to *internal* classes of this package
   @Value("${the_module.apple.some_config_value}") String configValue; // <-- application.yml config values
 }
-
 class OrangeInModule {
   ... // similar
 }', '2999-01-01', true, 0, 'Multiple instances of a *series* of beans', 2);
 insert into post values (5, 'Is it possible to call a constructor from another (within the same class, not from a subclass)? If yes how? And what could be the best way to call another constructor (if there are several ways to do it)?', '2999-01-01', true, 0, 'How do I call one constructor from another in Java in Java in java', 2);
 insert into post values (6, 'I have the following class:
-
 class Pair
 {
     String car;
     Integer cdr;
-
     public Pair () {}
     public Pair (String car) { this.car = car; }
     public Pair (Integer cdr) { this.cdr = cdr; }
-
     public Pair (String car, Integer cdr)
     {
         this(car);
@@ -105,14 +96,10 @@ insert into post values(7, 'like this have historical exchange rate data for mul
 
 insert into post values(8
 ,'I have added 2 colour variations:
-
     Blue
     Green
-
 I added different "short description" for all the colour variations.
-
 Short description currently appears as CRX-00025. Short description for variations was CRX-00026 and CRX-00027.
-
 How can I have short description change when colour variations are selected. Information added to Description column changes and appears right under the qty selector.'
 
 , '2010-03-09'
@@ -129,9 +116,7 @@ insert into post values(9
 , 3);
 insert into post values(10
 ,'We are doing load time weaving of this aspect.
-
 Now while running unit tests for getContract method, the aspect code also gets executed and it throws an NPE at return statement from logAndProceed.
-
 All I want is to disable aspect weaving for testing getContract method only. Is there a good solution for it?'
 , '2020-05-12'
 , false
@@ -140,7 +125,6 @@ All I want is to disable aspect weaving for testing getContract method only. Is 
 , 4);
 insert into post values(11
 ,'I have a navigation menu that triggers popups as a section with different options. Here is the dilemma though, and I see this with lots of sites that have popups or drop down menus.
-
 When you scroll inside the pop up, safari obviously does not recognize this as body scrolling, so there is no way for the browser toolbars on the top and bottom to move out of the way as normal. Is there any way to deal with this?'
 , '2019-08-04'
 , true
@@ -149,9 +133,7 @@ When you scroll inside the pop up, safari obviously does not recognize this as b
 , 5);
 insert into post values(12
 , 'Ive got Drivers and LicenseCodes in my database where many drivers can have many license codes.
-
 Its also the case that many different geographical regions (States in the US, for example), have multiple drivers license codes so I need identify the region for each license code.
-
 My boss has suggested I set up a joining table that simply lists foreign keys. The POCO model for this class would look something like this (I use virtual properties because I;m lazy):'
 , '2018-11-10'
 , true
@@ -174,9 +156,7 @@ insert into post values(14
 , 3);
 insert into post values(15
 , 'Is there any higher method that can catch and handle the exception occurs in the main method?
-
 How can we deal with it?
-
 Here is an example given by Introduction to Java Programming (in Chapter 12)'
 , '2020-05-12'
 , false
@@ -192,7 +172,6 @@ insert into post values(16
 , 2);
 insert into post values(17
 , 'kind of stuck here with react-select. Trying to add up to 5-6 selected options to another group. Id be looking to have two groups (default and selected). Once someones select the option from the dropdown menu then his choice would appear also in "selected" group.
-
 Ive been trying to sort it out with formatGroupLabel & react-select-nested. Unfortunately, Im just stuck here.'
 , '2017-08-07'
 , true
@@ -201,9 +180,7 @@ Ive been trying to sort it out with formatGroupLabel & react-select-nested. Unfo
 , 4);
 insert into post values(18
 ,'Im using google sign in API for my application and for every request made to the server, I validate that the user is logged in, by sending the token (which I store in session storage) in a post method where the server checks its valid. However, I also want to do this before a page renders, so a non-logged in user doesnt see the page.
-
 Ive read that I should put a script in the tag to validate the user, but is this the best way to do it?
-
 Im using Express.js and was wondering if there was a way to do it through this on specific pages, without the need to run a script contained in every HTML file.'
 , '2016-01-09'
 , true
@@ -218,13 +195,9 @@ insert into post values(19, 'like this have historical exchange rate data for mu
 , 3);
 /*insert into post values(20
 ,'Im trying to upload a set of images to Firebase. The upload itself works, the pictures get added. However, Id like to get an URL of the pictures.
-
 I figured that I could store them in an Array, but whatever I do, only one picture gets stored in the URL.
-
 I want to A, upload a set of images (max 3) or B, upload only one image. Therefore, I set the target files in a state, and use that state to check if there are one or more images. Then I loop through the upload for x amount of times, and I push the response into ...URL. No matter what I do, I end up with only one image URL in firebase.
-
 Going to try to clarify a bit more: I want to upload up to three images to Firebase (this works, the images gets uploaded into the image-bucket.
-
 What I want, is to get the download URL of the images (I want to use the image URL in another component. Essentially, I want to create an image gallery or an image carousel with the images.'
 ,'2018-07-12'
 ,true
@@ -336,45 +309,33 @@ insert into post_topic values(20,2);*/
 --toat sunt comentarii la postarea 1!!!
 insert into comment values (1, 'It depends on attribute scope of bean tag. If scope="singleton" which is by default then each time you will get single instance and if scope="prototype" then you will get different instances. And it doesn''t depend on autowire', '1974-01-01', true, false,-2, 1, 3);
 insert into comment values (2, 'By using @Autowired you instruct classloader to associate any class instance available in container to associate with the callee. You need to make sure that you have made an entry to instantiate the bean in your config file like <bean id="test" class="xxx.Test" />. Also you might want to check scopes too.
-
 If you have multiple instances of same class define with different names then with @Autowired you need to provide specific name that you want to use with the help of qualifier.', '1975-01-01', false,  false, 10, 1, 4);
 insert into comment values (3,  'Yes, Spring does some magic. Check the Spring Docs:
-
 This is where the magic comes in: All @Configuration classes are subclassed at startup-time with CGLIB. In the subclass, the child method checks the container first for any cached (scoped) beans before it calls the parent method and creates a new instance.
-
 This means that the calls to @Bean methods are proxied via CGLIB and therefore the cached version of the bean is returned (a new one is not created).','1976-01-01', false, false, 6969, 1, 2);
 insert into comment values (4,  'Using this(args). The preferred pattern is to work from the smallest constructor to the largest.', '1977-01-01', true, false, 0, 1, 1);
 
 insert into comment values (5, 'It depends on attribute scope of bean tag. If scope="singleton" which is by default then each time you will get single instance and if scope="prototype" then you will get different instances. And it doesn''t depend on autowire', '1974-01-01', true, false,-2, 1, 3);
 insert into comment values (6, 'By using @Autowired you instruct classloader to associate any class instance available in container to associate with the callee. You need to make sure that you have made an entry to instantiate the bean in your config file like <bean id="test" class="xxx.Test" />. Also you might want to check scopes too.
-
 If you have multiple instances of same class define with different names then with @Autowired you need to provide specific name that you want to use with the help of qualifier.', '1975-01-01', false,  false, 10, 1, 4);
 insert into comment values (7,  'Yes, Spring does some magic. Check the Spring Docs:
-
 This is where the magic comes in: All @Configuration classes are subclassed at startup-time with CGLIB. In the subclass, the child method checks the container first for any cached (scoped) beans before it calls the parent method and creates a new instance.
-
 This means that the calls to @Bean methods are proxied via CGLIB and therefore the cached version of the bean is returned (a new one is not created).','1976-01-01', false, false, 6969, 1, 2);
 insert into comment values (8,  'Using this(args). The preferred pattern is to work from the smallest constructor to the largest.', '1977-01-01', true, false, 0, 1, 1);
 
 insert into comment values (9, 'It depends on attribute scope of bean tag. If scope="singleton" which is by default then each time you will get single instance and if scope="prototype" then you will get different instances. And it doesn''t depend on autowire', '1974-01-01', true, false,-2, 1, 3);
 insert into comment values (10, 'By using @Autowired you instruct classloader to associate any class instance available in container to associate with the callee. You need to make sure that you have made an entry to instantiate the bean in your config file like <bean id="test" class="xxx.Test" />. Also you might want to check scopes too.
-
 If you have multiple instances of same class define with different names then with @Autowired you need to provide specific name that you want to use with the help of qualifier.', '1975-01-01', false,  false, 10, 1, 4);
 insert into comment values (11,  'Yes, Spring does some magic. Check the Spring Docs:
-
 This is where the magic comes in: All @Configuration classes are subclassed at startup-time with CGLIB. In the subclass, the child method checks the container first for any cached (scoped) beans before it calls the parent method and creates a new instance.
-
 This means that the calls to @Bean methods are proxied via CGLIB and therefore the cached version of the bean is returned (a new one is not created).','1976-01-01', false, false, 6969, 1, 2);
 insert into comment values (12,  'Using this(args). The preferred pattern is to work from the smallest constructor to the largest.', '1977-01-01', true, false, 0, 1, 1);
 
 insert into comment values (13, 'It depends on attribute scope of bean tag. If scope="singleton" which is by default then each time you will get single instance and if scope="prototype" then you will get different instances. And it doesn''t depend on autowire', '1974-01-01', true, false,-2, 1, 3);
 insert into comment values (14, 'By using @Autowired you instruct classloader to associate any class instance available in container to associate with the callee. You need to make sure that you have made an entry to instantiate the bean in your config file like <bean id="test" class="xxx.Test" />. Also you might want to check scopes too.
-
 If you have multiple instances of same class define with different names then with @Autowired you need to provide specific name that you want to use with the help of qualifier.', '1975-01-01', false,  false, 10, 1, 4);
 insert into comment values (15,  'Yes, Spring does some magic. Check the Spring Docs:
-
 This is where the magic comes in: All @Configuration classes are subclassed at startup-time with CGLIB. In the subclass, the child method checks the container first for any cached (scoped) beans before it calls the parent method and creates a new instance.
-
 This means that the calls to @Bean methods are proxied via CGLIB and therefore the cached version of the bean is returned (a new one is not created).','1976-01-01', false, false, 6969, 1, 2);
 insert into comment values (16,  'Using this(args). The preferred pattern is to work from the smallest constructor to the largest.', '1977-01-01', true, false, 0, 1, 1);
 
@@ -493,7 +454,6 @@ insert  into notification_user values ( 43,18 );
 --insert into post_topic values(1, 2);
 --insert into post_topic values(1, 3);
 --insert into post_topic values(2, 1);
-
 
 
 

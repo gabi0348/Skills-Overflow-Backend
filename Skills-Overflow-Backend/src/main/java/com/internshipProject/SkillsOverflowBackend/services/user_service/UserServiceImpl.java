@@ -100,7 +100,8 @@ public class UserServiceImpl implements UserService {
             if (user.getResetPasswordToken() != null) {
                 return "Check your email. Password reset link already sent";
             }
-            mailService.resetPasswordMail(user);
+            new Thread(() -> mailService.resetPasswordMail(user)).start();
+            //mailService.resetPasswordMail(user);
             return "Email found";
         }
         return "No email found";

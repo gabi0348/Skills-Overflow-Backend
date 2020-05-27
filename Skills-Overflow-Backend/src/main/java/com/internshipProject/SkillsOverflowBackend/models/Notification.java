@@ -25,8 +25,9 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long notificationId;
 
+    //am sters cascade type all
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "notification_user",
             joinColumns = {@JoinColumn(name = "notification_id")},
@@ -34,9 +35,10 @@ public class Notification {
     )
     private Set<User> users;
 
+    //si aici am modificat - cand stergi useri, stergi notificari si stergi si postari
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST}
     )
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
