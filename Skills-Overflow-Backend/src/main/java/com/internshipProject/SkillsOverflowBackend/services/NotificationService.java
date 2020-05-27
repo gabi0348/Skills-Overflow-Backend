@@ -47,9 +47,8 @@ public class NotificationService {
         notification.setPost(post);
         notification.setNotificationType(1);
         notification.setSenderName(user.getUserName());
-        notificationRepository.save(notification);
-
         users.stream().forEach(eachUser -> eachUser.getNotifications().add(notification));
+        notificationRepository.save(notification);
         userRepository.saveAll(users);
     }
 

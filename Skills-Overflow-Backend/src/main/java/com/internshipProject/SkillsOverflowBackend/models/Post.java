@@ -40,21 +40,21 @@ public class Post {
     private Boolean isApproved = false;
 
     //merge sau persist
-    @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<Comment> comments;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Notification> notifications;
 
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "post_topic",
             joinColumns = {@JoinColumn(name = "post_id")},

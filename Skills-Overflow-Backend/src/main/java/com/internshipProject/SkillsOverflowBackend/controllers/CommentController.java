@@ -12,6 +12,7 @@ import com.internshipProject.SkillsOverflowBackend.services.post_service.PostSer
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
 import com.internshipProject.SkillsOverflowBackend.utils.Owner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -240,7 +241,8 @@ public class CommentController {
                 }
                 comment.setIsMostRelevantComment(true);
                 notificationService.generateVoteNotification(post,comment.getUser());
-                mailService.receivedVote(comment.getUser(),post.getUser().getUserName(),post.getTitle(),post.getId());
+                new Thread(() -> mailService.receivedVote(comment.getUser(),post.getUser().getUserName(),post.getTitle(),post.getId())).start();
+
                 commentRepository.saveAndFlush(comment);
                 for (Topic topic : topicList) {
                     UserTopic userTopic = userTopicRepository.findByTopicIdAndUserId(topic.getId(), user.getUserId());
