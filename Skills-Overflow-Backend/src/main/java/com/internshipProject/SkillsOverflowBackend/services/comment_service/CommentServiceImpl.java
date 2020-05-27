@@ -1,9 +1,7 @@
 package com.internshipProject.SkillsOverflowBackend.services.comment_service;
 
 import com.internshipProject.SkillsOverflowBackend.convertors.CommentConverter;
-import com.internshipProject.SkillsOverflowBackend.convertors.UserConverter;
 import com.internshipProject.SkillsOverflowBackend.dto.CommentDTO;
-import com.internshipProject.SkillsOverflowBackend.dto.UserDTO;
 import com.internshipProject.SkillsOverflowBackend.models.Comment;
 import com.internshipProject.SkillsOverflowBackend.models.LikedComm;
 import com.internshipProject.SkillsOverflowBackend.models.User;
@@ -27,7 +25,7 @@ public class CommentServiceImpl implements CommentService{
     private List<CommentDTO> commentDTOList = new ArrayList<>();
 
     public Comment save(Comment comment){
-        return commentRepository.save(comment);
+        return commentRepository.saveAndFlush(comment);
     }
 
     public Optional<Comment> findById(Long id){return commentRepository.findById(id);}
