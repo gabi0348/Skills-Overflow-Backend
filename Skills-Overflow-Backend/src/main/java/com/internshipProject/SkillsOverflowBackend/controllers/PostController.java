@@ -9,7 +9,6 @@ import com.internshipProject.SkillsOverflowBackend.models.User;
 import com.internshipProject.SkillsOverflowBackend.repositories.PostRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.services.post_service.PostService;
-import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +23,6 @@ public class PostController {
 
     @Autowired
     PostService postService;
-    @Autowired
-    UserService userService;
     @Autowired
     UserRepository userRepository;
     @Autowired

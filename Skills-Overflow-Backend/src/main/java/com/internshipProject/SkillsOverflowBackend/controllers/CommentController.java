@@ -5,6 +5,7 @@ import com.internshipProject.SkillsOverflowBackend.models.*;
 import com.internshipProject.SkillsOverflowBackend.repositories.CommentRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserRepository;
 import com.internshipProject.SkillsOverflowBackend.repositories.UserTopicRepository;
+import com.internshipProject.SkillsOverflowBackend.services.MailService;
 import com.internshipProject.SkillsOverflowBackend.services.NotificationService;
 import com.internshipProject.SkillsOverflowBackend.services.comment_service.CommentService;
 import com.internshipProject.SkillsOverflowBackend.services.post_service.PostService;
@@ -37,9 +38,10 @@ public class CommentController {
     UserRepository userRepository;
     @Autowired
     CommentRepository commentRepository;
-
     @Autowired
     UserTopicRepository userTopicRepository;
+    @Autowired
+    MailService mailService;
 
 
     @PostMapping(value = "addComment/{postId}")
@@ -49,9 +51,6 @@ public class CommentController {
 
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
-            post.setNumberOfComments(post.getNumberOfComments() + 1L);
-
-            //metoda lu gabi
             notificationService.generateNotification(post, user);
 
             comment.setUser(user);
@@ -241,6 +240,8 @@ public class CommentController {
                     }
                 }
                 comment.setIsMostRelevantComment(true);
+                notificationService.generateVoteNotification(post,comment.getUser());
+                mailService.receivedVote(comment.getUser(),post.getUser().getUserName(),post.getTitle(),post.getId());
                 commentRepository.saveAndFlush(comment);
                 for (Topic topic : topicList) {
                     UserTopic userTopic = userTopicRepository.findByTopicIdAndUserId(topic.getId(), user.getUserId());

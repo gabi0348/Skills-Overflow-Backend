@@ -4,13 +4,17 @@ import com.internshipProject.SkillsOverflowBackend.configuration.JwtTokenProvide
 import com.internshipProject.SkillsOverflowBackend.convertors.UserProfilePostConverter;
 import com.internshipProject.SkillsOverflowBackend.dto.ResetPasswordDTO;
 import com.internshipProject.SkillsOverflowBackend.dto.UserProfilePostDTO;
+import com.internshipProject.SkillsOverflowBackend.models.Comment;
 import com.internshipProject.SkillsOverflowBackend.models.Post;
 import com.internshipProject.SkillsOverflowBackend.models.User;
+import com.internshipProject.SkillsOverflowBackend.services.comment_service.CommentService;
+import com.internshipProject.SkillsOverflowBackend.services.post_service.PostService;
 import com.internshipProject.SkillsOverflowBackend.services.user_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,8 +29,16 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private PostService postService;
 
-    private List<UserProfilePostDTO> userProfilePostDTOList;
+    @Autowired
+    private CommentService commentService;
+
+
+    private List<UserProfilePostDTO> userProfilePostDTOList = new ArrayList<>();
+    private List<UserProfilePostDTO> listWithPostsWhereUserPostedComment = new ArrayList<>();
+    private List<Comment> commentList = new ArrayList<>();
 
     @Override
     public String resetPassword(ResetPasswordDTO resetPasswordDTO){
@@ -58,6 +70,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         return "first name and last name successfully changed";
     }
 
+    @Override
     public List<UserProfilePostDTO> getUserPosts(){
         userProfilePostDTOList.clear();
         User existingUser = userService.findByEmail(jwtTokenProvider.getUser().getEmail());
@@ -68,6 +81,18 @@ public class UserProfileServiceImpl implements UserProfileService {
             }
         }
         return  userProfilePostDTOList;
+    }
+
+    @Override
+    public List<UserProfilePostDTO> getPostsWhereUserPostedComment(){
+        listWithPostsWhereUserPostedComment.clear();
+        User existingUser = userService.findByEmail(jwtTokenProvider.getUser().getEmail());
+        for(Comment comment : existingUser.getComments()){
+            if(comment != null) {
+                listWithPostsWhereUserPostedComment.add(UserProfilePostConverter.convertToUserProfilePostDTO(comment.getPost()));
+            }
+        }
+        return listWithPostsWhereUserPostedComment;
     }
 
 

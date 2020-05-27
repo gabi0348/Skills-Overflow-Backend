@@ -41,15 +41,6 @@ public class PostServiceImpl implements PostService {
     private List<PostDTO> postDTOList = new ArrayList<>();
 
     public Post save(Post post) {
-/*        List<String> topicsList = post.getStringTopics();
-        List<Topic> topics = topicRepository.findAll();
-        for(String topic : topicsList) {
-           for(Topic topicObject : topics) {
-               if(topic.equals(topicObject.getTopic())){
-                   post.getTopics().add(topicObject);
-               }
-           }
-        }*/
         postRepository.saveAndFlush(post);
         return post;
     }
@@ -304,6 +295,11 @@ public class PostServiceImpl implements PostService {
         }
         post.setTopics(topicList);
         return post;
+    }
+
+    @Override
+    public List<Post> findAll(){
+        return postRepository.findAll();
     }
 
 }
