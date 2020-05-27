@@ -306,5 +306,10 @@ public class PostServiceImpl implements PostService {
         return post;
     }
 
+    @Override
+    public List<Post> findAll(){
+        return postRepository.findAll();
+    }
+
 }
 
