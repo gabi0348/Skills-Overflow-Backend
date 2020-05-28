@@ -160,7 +160,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User resetPassword(String token, User user) {
         User existingUser = resetPasswordTokenRepository.findByToken(token).getUser();
-        existingUser.setPassword(user.getPassword());
+        existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.saveAndFlush(existingUser);
         return existingUser;
     }
