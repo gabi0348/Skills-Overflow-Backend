@@ -21,8 +21,8 @@ import java.util.Date;
 public class JwtTokenProvider {
     @Value("${security.jwt.token.secret-key:secret}")
     private String secretKey = "secret";
-    @Value("${security.jwt.token.expire-length:3600000}")
-    private long validityInMilliseconds = 3600000; // 1h- aici e timpul de expirare
+    @Value("${security.jwt.token.expire-length:36000000}")
+    private long validityInMilliseconds = 36000000; // 1h- aici e timpul de expirare
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
