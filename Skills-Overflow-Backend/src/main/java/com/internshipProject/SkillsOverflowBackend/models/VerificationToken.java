@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 
 public class VerificationToken {
 
-    private static final int EXPIRATION = 30;
+    private static final int EXPIRATION = 600;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
