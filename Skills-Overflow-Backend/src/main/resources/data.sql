@@ -41,7 +41,7 @@ insert into user values(22, 0, false,'zoe.ionesco@gmail.com', true, 'Zoe','Iones
 insert into post values(1, 'I am writing a Rest service to save data into postgres. This program uses Spring boot, Hibernate and maven for dependencies. Those are just my beginnings with spring so I need some help where it causes the error. Here are my logs:
 given json request
 { "articleId": "1" }
-My Controller class:', '2020-01-01', true, 4, 'Sprin JPA Repository throws bean creation error?', 2);
+My Controller class:', '2020-01-01', true, 3, 'Sprin JPA Repository throws bean creation error?', 2);
 
 insert into post values (2, 'Exapmele : I have payment object with 3 request formats
 1. request 1 card payment: validate card number, exp date and amount
@@ -63,7 +63,7 @@ insert into post values (3, 'How to parse the response JSON and get summary and 
              "action": "Stop"
                    }
        }
-}```', '2020-01-01', true, 3, 'How to parse belowJSON in springboot for Java?', 2);
+}```', '2020-01-01', true, 4, 'How to parse belowJSON in springboot for Java?', 2);
 insert into post values (4, 'I know how to create multiple instances of a bean class. However, now I have a series of classes, say:' ||
                             'class AppleInModule {
   @Autowired RedisTemplate template; // <-- just any *external* dependencies
@@ -147,7 +147,7 @@ insert into post values(13
 , 'I am generating code using openapi-generator-maven-plugin. The code is getting generated succesfully. But the spring boot is not loading the generated code in the context. I am not sure why, because I have done following things.'
 , '2020-05-02'
 , true
-, 0
+, 1
 , 'SpringBoot not loading controllers which are generated using OpenAPI 3.0'
 , 4);
 insert into post values(14
