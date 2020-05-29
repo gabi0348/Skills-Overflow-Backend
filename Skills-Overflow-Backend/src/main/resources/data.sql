@@ -28,7 +28,10 @@ insert into user values(18, 0, false,'stroe.alexandru@gmail.com', true, 'Vladimi
 insert into user values(19, 0, false,'stefan.antonio@gmail.com', true, 'Vlaicu','Mircea','$2a$04$pMF92/IeIwj7qmUEHYxFb.RrzoIh5i/jPsPXl7QV8JxVhQqUtKfry','fane.moto', 5);
 insert into user values(20, 0, false,'ilie.cristian@gmail.com', true, 'Lascar','Horatiu','$2a$04$pMF92/IeIwj7qmUEHYxFb.RrzoIh5i/jPsPXl7QV8JxVhQqUtKfry','ilieC', 5);
 insert into user values(21, 0, false,'george.popescu@gmail.com', true, 'Achim','Marian','$2a$04$pMF92/IeIwj7qmUEHYxFb.RrzoIh5i/jPsPXl7QV8JxVhQqUtKfry','popesco', 1);
-
+insert into user values(22, 0, false,'petru.maria90@gmail.com', true, 'Petru','Maria','$2a$04$pMF92/IeIwj7qmUEHYxFb.RrzoIh5i/jPsPXl7QV8JxVhQqUtKfry','maria.petru', 2);
+/*
+insert into user values(22, 0, false,'zoe.ionesco@gmail.com', true, 'Zoe','Ionesco','$2a$04$pMF92/IeIwj7qmUEHYxFb.RrzoIh5i/jPsPXl7QV8JxVhQqUtKfry','zoe.farfuridi', 2);
+*/
 
 --insert into user values(5, 0, false,'cristos@gmail.com', true, 'data','lastname','parola','user4', 5);
 
@@ -38,13 +41,13 @@ insert into user values(21, 0, false,'george.popescu@gmail.com', true, 'Achim','
 insert into post values(1, 'I am writing a Rest service to save data into postgres. This program uses Spring boot, Hibernate and maven for dependencies. Those are just my beginnings with spring so I need some help where it causes the error. Here are my logs:
 given json request
 { "articleId": "1" }
-My Controller class:', '2020-01-01', true, 0, 'Sprin JPA Repository throws bean creation error?', 1);
+My Controller class:', '2020-01-01', true, 4, 'Sprin JPA Repository throws bean creation error?', 2);
 
 insert into post values (2, 'Exapmele : I have payment object with 3 request formats
 1. request 1 card payment: validate card number, exp date and amount
 2. token payment: token , exp date
 3. validate card : card number, exp date
-==> How it is possible from single payment object', '1970-01-01', true, 0, 'How to do sring validations on particular fields for each request?', 1);
+==> How it is possible from single payment object', '2018-08-01', true, 2, 'How to do sring validations on particular fields for each request?', 1);
 insert into post values (3, 'How to parse the response JSON and get summary and action each time and form a separate object with that.' ||
                             '{
   "issues": [
@@ -60,7 +63,7 @@ insert into post values (3, 'How to parse the response JSON and get summary and 
              "action": "Stop"
                    }
        }
-}```', '2001-01-01', true, 0, 'How to parse belowJSON in springboot for Java?', 2);
+}```', '2020-01-01', true, 3, 'How to parse belowJSON in springboot for Java?', 2);
 insert into post values (4, 'I know how to create multiple instances of a bean class. However, now I have a series of classes, say:' ||
                             'class AppleInModule {
   @Autowired RedisTemplate template; // <-- just any *external* dependencies
@@ -69,8 +72,8 @@ insert into post values (4, 'I know how to create multiple instances of a bean c
 }
 class OrangeInModule {
   ... // similar
-}', '2999-01-01', true, 0, 'Multiple instances of a *series* of beans', 2);
-insert into post values (5, 'Is it possible to call a constructor from another (within the same class, not from a subclass)? If yes how? And what could be the best way to call another constructor (if there are several ways to do it)?', '2999-01-01', true, 0, 'How do I call one constructor from another in Java in Java in java', 2);
+}', '2019-01-01', true, 2, 'Multiple instances of a *series* of beans', 2);
+insert into post values (5, 'Is it possible to call a constructor from another (within the same class, not from a subclass)? If yes how? And what could be the best way to call another constructor (if there are several ways to do it)?', '2019-01-01', true, 2, 'How do I call one constructor from another in Java in Java in java', 2);
 insert into post values (6, 'I have the following class:
 class Pair
 {
@@ -84,11 +87,11 @@ class Pair
         this(car);
         this(cdr);
     }
-}', '2999-01-01', true, 0, 'How to avoid constructor code redudancy in Java?', 2);
+}', '2019-01-01', true, 1, 'How to avoid constructor code redudancy in Java?', 2);
 /*id-ul postarii / continut / data postarii / aprobat / numar de comm/ titlu/ id-ul user-ului care a postat*/
 
 insert into post values(7, 'like this have historical exchange rate data for multiple currencies and exchange rate for over 3 years, as shown in above table we have start date and enddate for each currency rate in a range of 1 month ,what i need is to basically split it into each day ,so basically need exchange rate daily ,for ex: for 1st record i need 30 rows which should say from_currency as EUR and To_currency as GBP and exchange rate as 33.5 and new date column should be increment date starting from 2018-03-31 to 2018-04-30 .'
-, '2001-01-02'
+, '2020-01-02'
 , true
 , 0
 , 'Split a single row into multiple rows based on date range in sql server'
@@ -102,14 +105,14 @@ I added different "short description" for all the colour variations.
 Short description currently appears as CRX-00025. Short description for variations was CRX-00026 and CRX-00027.
 How can I have short description change when colour variations are selected. Information added to Description column changes and appears right under the qty selector.'
 
-, '2010-03-09'
+, '2017-03-09'
 , true
 , 0
 , 'Change Short description along with variation'
 , 2);
 
 insert into post values(9
-, 'So I bought a site template from a very known site, bought myself a domain and after changing all the things I put it on my hosting and changed the e-mail adress(the author said its the only thing you gotta change) so I did and after that this is the only problem im having. Like I have no idea whats going on. I have zero skill in php and I thought I could ask you guys for some help. I just spent like 6 hours trying to figure it out and nothing, im literally too stupid. Please help a man', '2001-01-02'
+, 'So I bought a site template from a very known site, bought myself a domain and after changing all the things I put it on my hosting and changed the e-mail adress(the author said its the only thing you gotta change) so I did and after that this is the only problem im having. Like I have no idea whats going on. I have zero skill in php and I thought I could ask you guys for some help. I just spent like 6 hours trying to figure it out and nothing, im literally too stupid. Please help a man', '2018-01-02'
 , true
 , 0
 , 'Contact form sends no data via e-mail'
@@ -307,37 +310,37 @@ insert into post_topic values(20,2);*/
 
 --create table comment (id bigint not null, approved_comment boolean, body varchar(255), create_date timestamp not null, vote_count bigint, post_id bigint, user_id bigint, primary key (id))
 --toat sunt comentarii la postarea 1!!!
-insert into comment values (1, 'It depends on attribute scope of bean tag. If scope="singleton" which is by default then each time you will get single instance and if scope="prototype" then you will get different instances. And it doesn''t depend on autowire', '1974-01-01', true, false,-2, 1, 3);
+insert into comment values (1, 'It depends on attribute scope of bean tag. If scope="singleton" which is by default then each time you will get single instance and if scope="prototype" then you will get different instances. And it doesn''t depend on autowire', '2020-01-01', true, true,-2, 1, 3);
 insert into comment values (2, 'By using @Autowired you instruct classloader to associate any class instance available in container to associate with the callee. You need to make sure that you have made an entry to instantiate the bean in your config file like <bean id="test" class="xxx.Test" />. Also you might want to check scopes too.
-If you have multiple instances of same class define with different names then with @Autowired you need to provide specific name that you want to use with the help of qualifier.', '1975-01-01', false,  false, 10, 1, 4);
+If you have multiple instances of same class define with different names then with @Autowired you need to provide specific name that you want to use with the help of qualifier.', '2019-01-01', true,  false, 10, 1, 4);
 insert into comment values (3,  'Yes, Spring does some magic. Check the Spring Docs:
 This is where the magic comes in: All @Configuration classes are subclassed at startup-time with CGLIB. In the subclass, the child method checks the container first for any cached (scoped) beans before it calls the parent method and creates a new instance.
-This means that the calls to @Bean methods are proxied via CGLIB and therefore the cached version of the bean is returned (a new one is not created).','1976-01-01', false, false, 6969, 1, 2);
-insert into comment values (4,  'Using this(args). The preferred pattern is to work from the smallest constructor to the largest.', '1977-01-01', true, false, 0, 2, 1);
+This means that the calls to @Bean methods are proxied via CGLIB and therefore the cached version of the bean is returned (a new one is not created).','2020-01-01', true, false, 1, 13, 2);
+insert into comment values (4,  'Using this(args). The preferred pattern is to work from the smallest constructor to the largest.', '2020-01-01', true, false, 0, 2, 1);
 
-insert into comment values (5, 'It depends on attribute scope of bean tag. If scope="singleton" which is by default then each time you will get single instance and if scope="prototype" then you will get different instances. And it doesn''t depend on autowire', '1974-01-01', true, false,-2, 2, 3);
+insert into comment values (5, 'It depends on attribute scope of bean tag. If scope="singleton" which is by default then each time you will get single instance and if scope="prototype" then you will get different instances. And it doesn''t depend on autowire', '2020-01-01', true, false,-2, 2, 3);
 insert into comment values (6, 'By using @Autowired you instruct classloader to associate any class instance available in container to associate with the callee. You need to make sure that you have made an entry to instantiate the bean in your config file like <bean id="test" class="xxx.Test" />. Also you might want to check scopes too.
-If you have multiple instances of same class define with different names then with @Autowired you need to provide specific name that you want to use with the help of qualifier.', '1975-01-01', false,  false, 10, 2, 4);
+If you have multiple instances of same class define with different names then with @Autowired you need to provide specific name that you want to use with the help of qualifier.', '2020-01-01', false,  false, 10, 2, 4);
 insert into comment values (7,  'Yes, Spring does some magic. Check the Spring Docs:
 This is where the magic comes in: All @Configuration classes are subclassed at startup-time with CGLIB. In the subclass, the child method checks the container first for any cached (scoped) beans before it calls the parent method and creates a new instance.
-This means that the calls to @Bean methods are proxied via CGLIB and therefore the cached version of the bean is returned (a new one is not created).','1976-01-01', false, false, 6969, 1, 2);
-insert into comment values (8,  'Using this(args). The preferred pattern is to work from the smallest constructor to the largest.', '1977-01-01', true, false, 0, 1, 1);
+This means that the calls to @Bean methods are proxied via CGLIB and therefore the cached version of the bean is returned (a new one is not created).','2020-01-01', true, false, 6969, 3, 2);
+insert into comment values (8,  'Using this(args). The preferred pattern is to work from the smallest constructor to the largest.', '2020-01-01', true, false, 0, 3, 1);
 
-insert into comment values (9, 'It depends on attribute scope of bean tag. If scope="singleton" which is by default then each time you will get single instance and if scope="prototype" then you will get different instances. And it doesn''t depend on autowire', '1974-01-01', true, false,-2, 1, 3);
+insert into comment values (9, 'It depends on attribute scope of bean tag. If scope="singleton" which is by default then each time you will get single instance and if scope="prototype" then you will get different instances. And it doesn''t depend on autowire', '2020-01-01', true, false,-2, 3, 3);
 insert into comment values (10, 'By using @Autowired you instruct classloader to associate any class instance available in container to associate with the callee. You need to make sure that you have made an entry to instantiate the bean in your config file like <bean id="test" class="xxx.Test" />. Also you might want to check scopes too.
-If you have multiple instances of same class define with different names then with @Autowired you need to provide specific name that you want to use with the help of qualifier.', '1975-01-01', false,  false, 10, 1, 4);
+If you have multiple instances of same class define with different names then with @Autowired you need to provide specific name that you want to use with the help of qualifier.', '2020-01-01', true,  false, 10, 3, 4);
 insert into comment values (11,  'Yes, Spring does some magic. Check the Spring Docs:
 This is where the magic comes in: All @Configuration classes are subclassed at startup-time with CGLIB. In the subclass, the child method checks the container first for any cached (scoped) beans before it calls the parent method and creates a new instance.
-This means that the calls to @Bean methods are proxied via CGLIB and therefore the cached version of the bean is returned (a new one is not created).','1976-01-01', false, false, 6969, 1, 2);
-insert into comment values (12,  'Using this(args). The preferred pattern is to work from the smallest constructor to the largest.', '1977-01-01', true, false, 0, 1, 1);
+This means that the calls to @Bean methods are proxied via CGLIB and therefore the cached version of the bean is returned (a new one is not created).','2020-01-01', true, false, 6969, 4, 2);
+insert into comment values (12,  'Using this(args). The preferred pattern is to work from the smallest constructor to the largest.', '2020-01-01', true, false, 0, 4, 1);
 
-insert into comment values (13, 'It depends on attribute scope of bean tag. If scope="singleton" which is by default then each time you will get single instance and if scope="prototype" then you will get different instances. And it doesn''t depend on autowire', '1974-01-01', true, false,-2, 1, 3);
+insert into comment values (13, 'It depends on attribute scope of bean tag. If scope="singleton" which is by default then each time you will get single instance and if scope="prototype" then you will get different instances. And it doesn''t depend on autowire', '2020-01-01', true, false,-2, 1, 3);
 insert into comment values (14, 'By using @Autowired you instruct classloader to associate any class instance available in container to associate with the callee. You need to make sure that you have made an entry to instantiate the bean in your config file like <bean id="test" class="xxx.Test" />. Also you might want to check scopes too.
-If you have multiple instances of same class define with different names then with @Autowired you need to provide specific name that you want to use with the help of qualifier.', '1975-01-01', false,  false, 10, 1, 4);
+If you have multiple instances of same class define with different names then with @Autowired you need to provide specific name that you want to use with the help of qualifier.', '2020-01-01', true,  false, 10, 5, 4);
 insert into comment values (15,  'Yes, Spring does some magic. Check the Spring Docs:
 This is where the magic comes in: All @Configuration classes are subclassed at startup-time with CGLIB. In the subclass, the child method checks the container first for any cached (scoped) beans before it calls the parent method and creates a new instance.
-This means that the calls to @Bean methods are proxied via CGLIB and therefore the cached version of the bean is returned (a new one is not created).','1976-01-01', false, false, 6969, 1, 2);
-insert into comment values (16,  'Using this(args). The preferred pattern is to work from the smallest constructor to the largest.', '1977-01-01', true, false, 0, 1, 1);
+This means that the calls to @Bean methods are proxied via CGLIB and therefore the cached version of the bean is returned (a new one is not created).','2020-01-01', true, false, 6969, 5, 2);
+insert into comment values (16,  'Using this(args). The preferred pattern is to work from the smallest constructor to the largest.', '2020-01-01', true, false, 0, 6, 1);
 
 --//inserare notificari
 --Hibernate: create table notification (notification_id bigint not null, date timestamp, notification_type integer not null,

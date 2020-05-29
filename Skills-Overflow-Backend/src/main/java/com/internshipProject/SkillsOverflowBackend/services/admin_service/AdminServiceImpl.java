@@ -42,8 +42,10 @@ public class AdminServiceImpl implements AdminService{
     public String approveRequest(Long id){
         User existingUser = userRepository.getOne(id);
             existingUser.setRole(roleService.getRoleByRoleName(UsersRoles.APPROVED_USER.toString()));
-            //mailService.confirmRegistrationMail(existingUser);
+            mailService.confirmRegistrationMail(existingUser);
+/*
             new Thread(() -> mailService.confirmRegistrationMail(existingUser)).start();
+*/
             userRepository.saveAndFlush(existingUser);
             return "Please check your email.";
     }
